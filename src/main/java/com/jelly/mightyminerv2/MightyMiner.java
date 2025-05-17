@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jelly.mightyminerv2.command.OsamaTestCommandNobodyTouchPleaseLoveYou;
 import com.jelly.mightyminerv2.command.RouteBuilderCommand;
+import com.jelly.mightyminerv2.command.TestCommand;
 import com.jelly.mightyminerv2.config.MightyMinerConfig;
 import com.jelly.mightyminerv2.failsafe.FailsafeManager;
 import com.jelly.mightyminerv2.feature.FeatureManager;
@@ -168,5 +169,6 @@ public class MightyMiner {
     private void initializeCommands() {
         CommandManager.register(OsamaTestCommandNobodyTouchPleaseLoveYou.getInstance());
         CommandManager.register(new RouteBuilderCommand());
+        CommandManager.register(TestCommand.getInstance());
     }
 }

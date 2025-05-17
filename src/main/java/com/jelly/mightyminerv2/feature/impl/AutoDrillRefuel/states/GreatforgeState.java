@@ -32,7 +32,8 @@ public class GreatforgeState implements AutoDrillRefuelState{
                 InventoryUtil.clickContainerSlot(
                         slotID,
                         0,
-                        InventoryUtil.ClickMode.QUICK_MOVE);
+                        InventoryUtil.ClickMode.QUICK_MOVE
+                );
             }
 
             // Click the fuel after 20 ticks (1 second)

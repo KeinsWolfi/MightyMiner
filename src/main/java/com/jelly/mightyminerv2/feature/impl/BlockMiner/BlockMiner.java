@@ -6,6 +6,7 @@ import com.jelly.mightyminerv2.feature.impl.BlockMiner.states.ApplyAbilityState;
 import com.jelly.mightyminerv2.feature.impl.BlockMiner.states.StartingState;
 import com.jelly.mightyminerv2.util.InventoryUtil;
 import com.jelly.mightyminerv2.util.KeyBindUtil;
+import com.jelly.mightyminerv2.util.Logger;
 import com.jelly.mightyminerv2.util.helper.MineableBlock;
 import lombok.Getter;
 import lombok.Setter;
@@ -165,6 +166,15 @@ public class BlockMiner extends AbstractFeature {
             stop();
         }
 
+    }
+
+    @SubscribeEvent
+    protected void onRecieveMessage(ClientChatReceivedEvent event) {
+        String message = event.message.getUnformattedText();
+        // §5§lWOW! §r§aYou found a §r§bGlacite Mineshaft §r§aportal!
+        if (message.contains("WOW! You found a Glacite Mineshaft portal!")) {
+            Logger.sendWarning("Mineshaft Spawned");
+        }
     }
 
     private void transitionTo(BlockMinerState nextState){
