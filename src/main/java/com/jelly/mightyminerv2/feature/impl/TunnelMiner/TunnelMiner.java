@@ -3,11 +3,11 @@ package com.jelly.mightyminerv2.feature.impl.TunnelMiner;
 import com.jelly.mightyminerv2.feature.AbstractFeature;
 import com.jelly.mightyminerv2.feature.impl.BlockMiner.BlockMiner;
 import com.jelly.mightyminerv2.feature.impl.TunnelMiner.states.ApplyAbilityState;
+import com.jelly.mightyminerv2.feature.impl.TunnelMiner.states.DisablePerksState;
 import com.jelly.mightyminerv2.feature.impl.TunnelMiner.states.StartingState;
 import com.jelly.mightyminerv2.feature.impl.TunnelMiner.states.TunnelMinerState;
 import com.jelly.mightyminerv2.util.InventoryUtil;
 import com.jelly.mightyminerv2.util.KeyBindUtil;
-import com.jelly.mightyminerv2.util.helper.MineableBlock;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.block.Block;
@@ -16,7 +16,6 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,18 +59,26 @@ public class TunnelMiner extends AbstractFeature {
     @Getter
     private Map<Integer, Integer> blockPriority = new HashMap<>();
 
+    @Getter
+    @Setter
+    private TunnelMinerStateEnum tunnelMinerState = TunnelMinerStateEnum.FORWARD;
+    public enum TunnelMinerStateEnum {
+        FORWARD,
+        BACKWARD
+    }
+
     @Override
     public String getName() {
         return "TunnelMiner";
     }
 
     public void start(String miningTool) {
-        // if (!miningTool.isEmpty() && !InventoryUtil.holdItem(miningTool)) {
-        //     logError(miningTool + " not found in inventory!");
-        //     error = TunnelMinerError.NO_TOOLS_AVAILABLE;
-        //     this.stop();
-        //     return;
-        // }
+        if (!miningTool.isEmpty() && !InventoryUtil.holdItem(miningTool)) {
+            logError(miningTool + " not found in inventory!");
+            error = TunnelMinerError.NO_TOOLS_AVAILABLE;
+            this.stop();
+            return;
+        }
 
         this.enabled = true;
         this.error = TunnelMinerError.NONE;
@@ -94,7 +101,9 @@ public class TunnelMiner extends AbstractFeature {
     @SubscribeEvent
     protected void onTick(TickEvent.ClientTickEvent event) {
         // Skip if not enabled, GUI is open, or not in the correct phase
-        if (!this.enabled || mc.currentScreen != null || event.phase == TickEvent.Phase.END) {
+        if (!this.enabled || event.phase == TickEvent.Phase.END) return;
+
+        if (mc.currentScreen != null && !(currentState instanceof DisablePerksState)) {
             return;
         }
 

@@ -35,7 +35,7 @@ public class CommissionHUD extends TextHud {
         // - renderBorder: true to render border
         // - borderThickness: 2 border thickness
         // - borderColor: new OneColor(0, 255, 0, 255) bright green border color
-        super(true,
+        super(false,
                 5f,
                 5f,
                 1.0f,

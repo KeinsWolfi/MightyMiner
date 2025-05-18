@@ -38,6 +38,7 @@ public class DisablePerksState implements TunnelMinerState {
     public void onStart(TunnelMiner miner) {
         Logger.sendMessage("Entering DisablePerksState");
         state = STATE.TOGGLE_PERKS;
+        substate = SUBSTATE.OPENING_HOTM;
     }
 
     @Override
@@ -46,11 +47,11 @@ public class DisablePerksState implements TunnelMinerState {
             switch (substate) {
                 case OPENING_HOTM:
                     mc.thePlayer.sendChatMessage("/hotm");
-                    swapSubState(SUBSTATE.TOGGLING_PERKS, 2000);
+                    swapSubState(SUBSTATE.TOGGLING_PERKS, 1000);
                     break;
                 case TOGGLING_PERKS:
                     if (!timer.passed() && timer.isScheduled()) {
-                        Logger.sendWarning("Waiting for GUI to open... " + timer.getRemainingTime() + "ms left (" + timer.isScheduled() + " " + timer.passed() + ")");
+                        //Logger.sendWarning("Waiting for GUI to open... " + timer.getRemainingTime() + "ms left (" + timer.isScheduled() + " " + timer.passed() + ")");
                         break;
                     }
                     Logger.sendMessage("Toggling perks...");
