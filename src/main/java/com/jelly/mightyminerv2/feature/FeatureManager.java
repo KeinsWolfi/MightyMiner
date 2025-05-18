@@ -4,6 +4,7 @@ import com.jelly.mightyminerv2.failsafe.AbstractFailsafe.Failsafe;
 import com.jelly.mightyminerv2.feature.impl.*;
 import com.jelly.mightyminerv2.feature.impl.AutoDrillRefuel.AutoDrillRefuel;
 import com.jelly.mightyminerv2.feature.impl.BlockMiner.BlockMiner;
+import com.jelly.mightyminerv2.feature.impl.TunnelMiner.TunnelMiner;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -30,7 +31,8 @@ public class FeatureManager {
                 AutoDrillRefuel.getInstance(),
                 AutoChestUnlocker.instance,
                 WorldScanner.getInstance(),
-                AutoSell.getInstance()
+                AutoSell.getInstance(),
+                TunnelMiner.getInstance()
         ));
     }
 

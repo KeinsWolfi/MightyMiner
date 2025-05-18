@@ -40,6 +40,7 @@ public class MightyMinerConfig extends Config {
     private transient static final String FAILSAFE = "Failsafe";
     private transient static final String DEBUG = "Debug";
     private transient static final String DISCORD_INTEGRATION = "Discord Integration";
+    private transient static final String SCATHA_MACRO = "Scatha Macro";
 
 
     public MightyMinerConfig() {
@@ -63,7 +64,8 @@ public class MightyMinerConfig extends Config {
                     "Glacial Commissions",
                     "Mining Macro",
                     "Route Miner",
-                    "Gemstone Powder"
+                    "Gemstone Powder",
+                    "Scatha Macro",
             },
             subcategory = "Macro"
     )
