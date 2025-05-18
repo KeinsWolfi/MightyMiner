@@ -1,5 +1,6 @@
 package com.jelly.mightyminerv2.macro.impl.ScathaMacro;
 
+import com.jelly.mightyminerv2.config.MightyMinerConfig;
 import com.jelly.mightyminerv2.feature.FeatureManager;
 import com.jelly.mightyminerv2.feature.impl.TunnelMiner.TunnelMiner;
 import com.jelly.mightyminerv2.macro.AbstractMacro;
@@ -34,5 +35,11 @@ public class ScathaMacro extends AbstractMacro {
     public void onResume() {
         FeatureManager.getInstance().resumeAll();
         log("Scatha macro resumed");
+    }
+
+    @Override
+    public void onEnable() {
+        log("Scatha macro enabled");
+        miner.start(MightyMinerConfig.miningTool);
     }
 }

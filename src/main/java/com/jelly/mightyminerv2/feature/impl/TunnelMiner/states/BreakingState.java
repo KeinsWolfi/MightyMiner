@@ -19,11 +19,28 @@ public class BreakingState implements TunnelMinerState {
 
     @Override
     public TunnelMinerState onTick(TunnelMiner miner) {
+
+
+
         return this;
     }
 
     @Override
     public void onEnd(TunnelMiner miner) {
         log("Exiting Breaking State");
+    }
+
+    public boolean atBorder() {
+        int radius = 3; // Adjust this value as needed
+        double x = mc.thePlayer.posX;
+        double z = mc.thePlayer.posZ;
+
+        double minX = 201, maxX = 824;
+        double minZ = 201, maxZ = 824;
+
+        boolean nearXEdge = (x >= minX && x <= minX + radius) || (x <= maxX && x >= maxX - radius);
+        boolean nearZEdge = (z >= minZ && z <= minZ + radius) || (z <= maxZ && z >= maxZ - radius);
+
+        return (nearXEdge || nearZEdge);
     }
 }

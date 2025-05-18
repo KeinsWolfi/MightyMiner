@@ -65,25 +65,13 @@ public class TunnelMiner extends AbstractFeature {
         return "TunnelMiner";
     }
 
-    public void start(MineableBlock[] blocksToMine, final int[] priority, String miningTool) {
-        if (!miningTool.isEmpty() && !InventoryUtil.holdItem(miningTool)) {
-            logError(miningTool + " not found in inventory!");
-            error = TunnelMinerError.NO_TOOLS_AVAILABLE;
-            this.stop();
-            return;
-        }
-
-        if (blocksToMine == null || Arrays.stream(priority).allMatch(i -> i == 0)) {
-            logError("Target blocks not set!");
-            error = TunnelMinerError.NO_TARGET_BLOCKS;
-            return;
-        }
-
-        for (int i = 0; i < blocksToMine.length; i++) {
-            for (int j : blocksToMine[i].stateIds) {
-                blockPriority.put(j, priority[i]);
-            }
-        }
+    public void start(String miningTool) {
+        // if (!miningTool.isEmpty() && !InventoryUtil.holdItem(miningTool)) {
+        //     logError(miningTool + " not found in inventory!");
+        //     error = TunnelMinerError.NO_TOOLS_AVAILABLE;
+        //     this.stop();
+        //     return;
+        // }
 
         this.enabled = true;
         this.error = TunnelMinerError.NONE;
