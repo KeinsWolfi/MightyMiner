@@ -2,19 +2,19 @@ package com.jelly.mightyminerv2.macro.impl.ScathaMacro.states;
 
 import com.jelly.mightyminerv2.macro.impl.ScathaMacro.ScathaMacro;
 
-public class StartingState implements ScathaMacroState {
+public class KillingState implements ScathaMacroState {
     @Override
     public void onStart(ScathaMacro macro) {
-        log("Entering Starting State");
+        log("Entering Killing State");
     }
 
     @Override
     public ScathaMacroState onTick(ScathaMacro macro) {
-        return new MiningState();
+        return null;
     }
 
     @Override
     public void onEnd(ScathaMacro macro) {
-        log("Exiting Starting State");
+        log("Exiting Killing State");
     }
 }

@@ -2,10 +2,7 @@ package com.jelly.mightyminerv2.feature.impl.TunnelMiner;
 
 import com.jelly.mightyminerv2.feature.AbstractFeature;
 import com.jelly.mightyminerv2.feature.impl.BlockMiner.BlockMiner;
-import com.jelly.mightyminerv2.feature.impl.TunnelMiner.states.ApplyAbilityState;
-import com.jelly.mightyminerv2.feature.impl.TunnelMiner.states.DisablePerksState;
-import com.jelly.mightyminerv2.feature.impl.TunnelMiner.states.StartingState;
-import com.jelly.mightyminerv2.feature.impl.TunnelMiner.states.TunnelMinerState;
+import com.jelly.mightyminerv2.feature.impl.TunnelMiner.states.*;
 import com.jelly.mightyminerv2.util.InventoryUtil;
 import com.jelly.mightyminerv2.util.KeyBindUtil;
 import lombok.Getter;
@@ -44,6 +41,7 @@ public class TunnelMiner extends AbstractFeature {
         NO_POINTS_FOUND,    // Cannot find valid points to target on block
         NO_TARGET_BLOCKS,
         NO_PICKAXE_ABILITY,
+        SHOULD_KILL_SCATHA,
     }
 
     @Getter
@@ -67,6 +65,13 @@ public class TunnelMiner extends AbstractFeature {
         BACKWARD
     }
 
+    @Getter
+    @Setter
+    private DIRECTION direction;
+    public enum DIRECTION {
+        NORTH, EAST, SOUTH, WEST
+    }
+
     @Override
     public String getName() {
         return "TunnelMiner";
@@ -86,7 +91,6 @@ public class TunnelMiner extends AbstractFeature {
         this.retryActivatePickaxeAbility = 0;
 
         // Initialize with starting state
-        this.currentState = new StartingState();
         this.start();
     }
 
@@ -139,6 +143,12 @@ public class TunnelMiner extends AbstractFeature {
             return;
         }
 
+        if (currentState instanceof ShouldKillScathaState) {
+            log("Should kill");
+            setError(TunnelMinerError.SHOULD_KILL_SCATHA);
+            return;
+        }
+
         currentState.onStart(this);
     }
 
@@ -155,5 +165,7 @@ public class TunnelMiner extends AbstractFeature {
         if (message.contains("You used your") || message.contains("Your pickaxe ability is on cooldown for")) {
             pickaxeAbilityState = BlockMiner.PickaxeAbilityState.UNAVAILABLE;
         }
+
+        currentState.onChatMessage(event);
     }
 }

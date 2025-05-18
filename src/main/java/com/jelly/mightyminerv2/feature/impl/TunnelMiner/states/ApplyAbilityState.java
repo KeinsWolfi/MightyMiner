@@ -39,7 +39,7 @@ public class ApplyAbilityState implements TunnelMinerState {
 
         // If the second timer has ended, transition back to the starting state
         if (timer2.isScheduled() && timer2.passed()) {
-            return new StartingState();
+            return (miner.getDirection() != null) ? new BreakingState() : new StartingState();
         }
 
         // Wait for the timer to expire

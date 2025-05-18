@@ -1,6 +1,8 @@
 package com.jelly.mightyminerv2.feature.impl.TunnelMiner.states;
 
+import cc.polyfrost.oneconfig.events.event.ChatReceiveEvent;
 import com.jelly.mightyminerv2.feature.impl.TunnelMiner.TunnelMiner;
+import net.minecraftforge.client.event.ClientChatReceivedEvent;
 
 public interface TunnelMinerState {
     void onStart(TunnelMiner miner);
@@ -15,5 +17,8 @@ public interface TunnelMinerState {
 
     default void logError(String message) {
         System.out.println("[" + this.getClass().getSimpleName() + "] ERROR: " + message);
+    }
+
+    default void onChatMessage(ClientChatReceivedEvent event) {
     }
 }

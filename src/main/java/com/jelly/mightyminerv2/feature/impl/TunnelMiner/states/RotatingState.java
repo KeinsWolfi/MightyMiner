@@ -28,6 +28,8 @@ public class RotatingState implements TunnelMinerState {
     public TunnelMinerState onTick(TunnelMiner miner) {
         if (rotating && !RotationHandler.getInstance().isEnabled()) {
             Logger.sendMessage("Rotation complete, transitioning to Breaking State. New yaw: " + mc.thePlayer.rotationYaw + ", pitch: " + mc.thePlayer.rotationPitch);
+            miner.setDirection(getDirection());
+            log("New direction: " + miner.getDirection());
             return new BreakingState();
         }
 
@@ -46,7 +48,7 @@ public class RotatingState implements TunnelMinerState {
         float pitch = mc.thePlayer.rotationPitch;
 
         targetYaw = getClosestYaw(yaw, 90);
-        targetPitch = miner.getTunnelMinerState() == TunnelMiner.TunnelMinerStateEnum.FORWARD ? 30 : -45;
+        targetPitch = miner.getTunnelMinerState() == TunnelMiner.TunnelMinerStateEnum.FORWARD ? 56 : -45;
 
         RotationHandler.getInstance().stop();
         RotationHandler.getInstance().queueRotation(
@@ -69,5 +71,25 @@ public class RotatingState implements TunnelMinerState {
         // Optional: Normalisiere zurück auf [-180, 180)
         if (closest > 180) closest -= 360;
         return closest;
+    }
+
+    private TunnelMiner.DIRECTION getDirection() {
+        final Minecraft mc1 = Minecraft.getMinecraft();
+        double x = mc1.thePlayer.posX;
+        double z = mc1.thePlayer.posZ;
+        float yaw = mc1.thePlayer.rotationYaw;
+
+        // Yaw normalisieren auf [0, 360)
+        yaw = (yaw % 360 + 360) % 360;
+
+        if (yaw >= 315 || yaw < 45) {
+            return TunnelMiner.DIRECTION.SOUTH;
+        } else if (yaw >= 45 && yaw < 135) {
+            return TunnelMiner.DIRECTION.WEST;
+        } else if (yaw >= 135 && yaw < 225) {
+            return TunnelMiner.DIRECTION.NORTH;
+        } else {
+            return TunnelMiner.DIRECTION.EAST;
+        }
     }
 }

@@ -51,10 +51,8 @@ public class DisablePerksState implements TunnelMinerState {
                     break;
                 case TOGGLING_PERKS:
                     if (!timer.passed() && timer.isScheduled()) {
-                        //Logger.sendWarning("Waiting for GUI to open... " + timer.getRemainingTime() + "ms left (" + timer.isScheduled() + " " + timer.passed() + ")");
                         break;
                     }
-                    Logger.sendMessage("Toggling perks...");
 
                     if (
                             !(mc.currentScreen instanceof GuiChest)
@@ -63,11 +61,9 @@ public class DisablePerksState implements TunnelMinerState {
                     ) {
                         break;
                     }
-                    Logger.sendMessage("Opening perks...");
 
                     int moleSlot = InventoryUtil.getSlotIdOfItemInContainer("Mole");
                     int efficientMinerSlot = InventoryUtil.getSlotIdOfItemInContainer("Efficient Miner");
-                    Logger.sendMessage(moleSlot + " " + efficientMinerSlot);
 
                     switch (perk) {
                         case MOLE:
@@ -84,7 +80,6 @@ public class DisablePerksState implements TunnelMinerState {
                             );
                             perk = PERK.EFFICIENT_MINER;
                             perksTimer.schedule(MightyMinerConfig.getRandomGuiWaitDelay());
-                            Logger.sendMessage("Swapping to Efficient Miner");
                             break;
                         case EFFICIENT_MINER:
                             if (perksTimer.isScheduled() && !perksTimer.passed()) break;
@@ -119,12 +114,12 @@ public class DisablePerksState implements TunnelMinerState {
     private void swapSubState(final SUBSTATE newSubState, final int time) {
         substate = newSubState;
         timer.schedule(time);
-        Logger.sendMessage("Swapping to substate: " + newSubState);
+        Logger.sendLog("Swapping to substate: " + newSubState);
     }
 
     @Override
     public void onEnd(TunnelMiner miner) {
-        Logger.sendMessage("Exiting DisablePerksState");
+        Logger.sendLog("Exiting DisablePerksState");
         state = STATE.NONE;
     }
 }

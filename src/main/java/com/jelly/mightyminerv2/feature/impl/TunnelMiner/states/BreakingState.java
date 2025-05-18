@@ -1,57 +1,114 @@
 package com.jelly.mightyminerv2.feature.impl.TunnelMiner.states;
 
+import com.jelly.mightyminerv2.feature.impl.BlockMiner.BlockMiner;
 import com.jelly.mightyminerv2.feature.impl.TunnelMiner.TunnelMiner;
+import com.jelly.mightyminerv2.macro.impl.ScathaMacro.states.MiningState;
 import com.jelly.mightyminerv2.util.KeyBindUtil;
 import com.jelly.mightyminerv2.util.Logger;
+import com.jelly.mightyminerv2.util.SystemNotificationUtil;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
+import net.minecraftforge.client.event.ClientChatReceivedEvent;
 
 public class BreakingState implements TunnelMinerState {
 
-    private static final int FAILSAFE_TICKS = 20;         // Safety mechanism if we've been trying to break for too long
+    private static final int FAILSAFE_TICKS = 40;         // Safety mechanism if we've been trying to break for too long
+    private static final int CHEST_TICkS = 7;
 
     private final Minecraft mc = Minecraft.getMinecraft();
 
     private int breakAttemptTime;  // Tracks how long we've been trying to break the block (in ticks)
+    private int chestAttemptTime;  // Tracks how long we've been trying to open the chest (in ticks)
+
+    private MINING_STATE miningState;
+    private enum MINING_STATE {
+        BREAKING,
+        OPENING_CHEST,
+        SHOULD_KILL
+    }
+
+    private boolean shouldKill;
 
     @Override
     public void onStart(TunnelMiner miner) {
         log("Entering Breaking State");
         breakAttemptTime = 0;
+        chestAttemptTime = 0;
+        miningState = MINING_STATE.BREAKING;
+        shouldKill = false;
     }
 
     @Override
     public TunnelMinerState onTick(TunnelMiner miner) {
         BlockPos targetBlockPos = mc.thePlayer.rayTrace(6, 1).getBlockPos();
-        if (mc.theWorld.getBlockState(targetBlockPos).getBlock() == Blocks.bedrock || mc.theWorld.getBlockState(targetBlockPos).getBlock() == Blocks.chest) {
+        IBlockState state = mc.theWorld.getBlockState(targetBlockPos);
+        if (state.getBlock() == Blocks.bedrock || state.getBlock() == Blocks.air) {
             breakAttemptTime++;
         } else {
             breakAttemptTime = 0;
         }
 
-        if (miner.getTunnelMinerState() == TunnelMiner.TunnelMinerStateEnum.FORWARD) {
-            if (atBorder() && facingBorder()) {
-                miner.setTunnelMinerState(TunnelMiner.TunnelMinerStateEnum.BACKWARD);
-                Logger.sendMessage("At border, switching to BACKWARD state");
-                KeyBindUtil.releaseAllExcept();
-                return new DisablePerksState();
+        if (state.getBlock() == Blocks.chest) {
+            if (chestAttemptTime == 0) Logger.sendMessage("Chest detected, attempting to open...");
+            chestAttemptTime++;
+            if (chestAttemptTime >= CHEST_TICkS) {
+                miningState = MINING_STATE.OPENING_CHEST;
             }
-            KeyBindUtil.setKeyBindState(mc.gameSettings.keyBindAttack, true);
-            KeyBindUtil.setKeyBindState(mc.gameSettings.keyBindForward, true);
-        } else if (miner.getTunnelMinerState() == TunnelMiner.TunnelMinerStateEnum.BACKWARD) {
-            KeyBindUtil.setKeyBindState(mc.gameSettings.keyBindAttack, true);
-            KeyBindUtil.setKeyBindState(mc.gameSettings.keyBindBack, true);
-            if (atBorder() && !facingBorder()) {
-                miner.setTunnelMinerState(TunnelMiner.TunnelMinerStateEnum.FORWARD);
-                Logger.sendMessage("At border, switching to FORWARD state");
-                KeyBindUtil.releaseAllExcept();
-                return new DisablePerksState();
+        } else {
+            chestAttemptTime = 0;
+            if (miningState == MINING_STATE.OPENING_CHEST) {
+                Logger.sendMessage("No chest detected, resuming mining...");
+                miningState = MINING_STATE.BREAKING;
             }
         }
 
+        if (miningState == MINING_STATE.BREAKING) {
+            if (miner.getTunnelMinerState() == TunnelMiner.TunnelMinerStateEnum.FORWARD) {
+                if (atBorder() && facingBorder()) {
+                    miner.setTunnelMinerState(TunnelMiner.TunnelMinerStateEnum.BACKWARD);
+                    Logger.sendMessage("At border, switching to BACKWARD state");
+                    KeyBindUtil.releaseAllExcept();
+                    return new DisablePerksState();
+                }
+                KeyBindUtil.setKeyBindState(mc.gameSettings.keyBindAttack, true);
+                KeyBindUtil.setKeyBindState(mc.gameSettings.keyBindForward, true);
+                KeyBindUtil.setKeyBindState(mc.gameSettings.keyBindUseItem, false);
+            } else if (miner.getTunnelMinerState() == TunnelMiner.TunnelMinerStateEnum.BACKWARD) {
+                KeyBindUtil.setKeyBindState(mc.gameSettings.keyBindAttack, true);
+                KeyBindUtil.setKeyBindState(mc.gameSettings.keyBindBack, true);
+                if (atBorder() && !facingBorder()) {
+                    Logger.sendMessage("At border, switching lanes");
+                    KeyBindUtil.releaseAllExcept();
+                    return new EndOfPathState();
+                }
+            }
+        } else if (miningState == MINING_STATE.OPENING_CHEST) {
+            KeyBindUtil.setKeyBindState(mc.gameSettings.keyBindAttack, false);
+            KeyBindUtil.setKeyBindState(mc.gameSettings.keyBindUseItem, true);
+        } else if (miningState == MINING_STATE.SHOULD_KILL) {
+            KeyBindUtil.releaseAllExcept();
+            Logger.sendLog("Worm spawned");
+            return null;
+        }
+
         if (breakAttemptTime >= FAILSAFE_TICKS) {
-            Logger.sendError("Failed to break block after " + FAILSAFE_TICKS + " ticks. Stopping.");
+            if(mc.theWorld.getBlockState(targetBlockPos).getBlock() == Blocks.bedrock) {
+                Logger.sendError("Failed to break block after " + FAILSAFE_TICKS + " ticks. Stopping.");
+                KeyBindUtil.releaseAllExcept();
+                return null;
+            }
+        }
+
+        if (miner.getPickaxeAbilityState() == BlockMiner.PickaxeAbilityState.AVAILABLE) {
+            Logger.sendLog("Pickaxe ability available, transitioning to ApplyAbilityState");
+            KeyBindUtil.releaseAllExcept();
+            return new ApplyAbilityState();
+        }
+
+        if (shouldKill) {
+            Logger.sendLog("Worm spawned, transitioning to MiningState");
             KeyBindUtil.releaseAllExcept();
             return null;
         }
@@ -110,5 +167,21 @@ public class BreakingState implements TunnelMinerState {
             return x >= maxX - radius && x <= maxX;
         }
         return false;
+    }
+
+    // §7§oYou hear the sound of something approaching...
+    @Override
+    public void onChatMessage(ClientChatReceivedEvent event) {
+        if (event.type != 0) {
+            return;
+        }
+        String message = event.message.getFormattedText();
+
+        if (message.equals("§7§oYou hear the sound of something approaching...")) {
+            SystemNotificationUtil.systemNotification("Worm spawned", "A worm has spawned nearby!");
+            shouldKill = true;
+        }
+
+        TunnelMinerState.super.onChatMessage(event);
     }
 }
