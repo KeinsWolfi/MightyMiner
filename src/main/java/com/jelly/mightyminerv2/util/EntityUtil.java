@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.StringUtils;
 import net.minecraft.util.Vec3;
 
 import java.util.*;
@@ -61,6 +62,36 @@ public class EntityUtil {
         });
         if (!possible.isEmpty()) return Collections.min(possible, Comparator.comparing(e2 -> e2.getDistanceToEntity(e)));
         return null;
+    }
+
+    public static List<EntityLivingBase> getEntitiesSimple(Set<String> entityNames, Set<EntityLivingBase> entitiesToIgnore) {
+        List<EntityLivingBase> entities = new ArrayList<>();
+        mc.theWorld.loadedEntityList.stream()
+                .filter(entity -> entity instanceof EntityArmorStand)
+                .filter((v) ->
+                        entityNames.stream().anyMatch((a) -> (v.hasCustomName() ? StringUtils.stripControlCodes(v.getCustomNameTag()) : "").contains(a)))
+                .collect(Collectors.toList()).forEach((entity) -> {
+                    Entity livingBase = getEntityCuttingOtherEntity(entity, null);
+                    if (livingBase instanceof EntityLivingBase) {
+                        if (!entitiesToIgnore.contains((EntityLivingBase) livingBase) && !livingBase.equals(mc.thePlayer)) {
+                            entities.add((EntityLivingBase) livingBase);
+                            entities.add((EntityLivingBase) entity);
+                            Logger.sendLog("Found entity: " + entity.getName() + " with health: " + ((EntityLivingBase) entity).getHealth() + " and name: " + (entity.hasCustomName() ? entity.getCustomNameTag() : entity.getName()));
+                            Logger.sendLog("Found entity: " + livingBase.getName() + " with health: " + ((EntityLivingBase) livingBase).getHealth() + " and name: " + (livingBase.hasCustomName() ? livingBase.getCustomNameTag() : livingBase.getName()));
+                        }
+                    }
+                });
+
+        Vec3 playerPos = mc.thePlayer.getPositionVector();
+        float normalizedYaw = AngleUtil.normalizeAngle(mc.thePlayer.rotationYaw);
+        return entities.stream()
+                .sorted(Comparator.comparingDouble(ent -> {
+                            Vec3 entPos = ent.getPositionVector();
+                            double distanceCost = playerPos.distanceTo(entPos);
+                            double angleCost = Math.abs(AngleUtil.getNeededYawChange(normalizedYaw, AngleUtil.getRotationYaw(entPos)));
+                            return distanceCost * ((float) MightyMinerConfig.devMKillDist / 100f) + angleCost * ((float) MightyMinerConfig.devMKillRot / 100f);
+                        }
+                )).collect(Collectors.toList());
     }
 
     public static List<EntityLivingBase> getEntities(Set<String> entityNames, Set<EntityLivingBase> entitiesToIgnore) {

@@ -7,6 +7,9 @@ import com.jelly.mightyminerv2.util.Logger;
 import com.jelly.mightyminerv2.util.helper.Clock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiChest;
+import net.minecraft.util.StringUtils;
+
+import java.util.List;
 
 public class DisablePerksState implements TunnelMinerState {
     protected final Clock timer = new Clock();
@@ -16,7 +19,8 @@ public class DisablePerksState implements TunnelMinerState {
 
     enum STATE {
         NONE,
-        TOGGLE_PERKS,
+        ENABLE_PERKS,
+        DISABLE_PERKS,
     }
 
     enum SUBSTATE {
@@ -37,75 +41,171 @@ public class DisablePerksState implements TunnelMinerState {
     @Override
     public void onStart(TunnelMiner miner) {
         Logger.sendMessage("Entering DisablePerksState");
-        state = STATE.TOGGLE_PERKS;
+        state = miner.getTunnelMinerState() == TunnelMiner.TunnelMinerStateEnum.FORWARD ? STATE.DISABLE_PERKS : STATE.ENABLE_PERKS;
         substate = SUBSTATE.OPENING_HOTM;
     }
 
     @Override
     public TunnelMinerState onTick(TunnelMiner miner) {
-        if (state == STATE.TOGGLE_PERKS) {
-            switch (substate) {
-                case OPENING_HOTM:
-                    mc.thePlayer.sendChatMessage("/hotm");
-                    swapSubState(SUBSTATE.TOGGLING_PERKS, 1000);
-                    break;
-                case TOGGLING_PERKS:
-                    if (!timer.passed() && timer.isScheduled()) {
+        switch (state) {
+            case ENABLE_PERKS:
+                switch (substate) {
+                    case OPENING_HOTM:
+                        mc.thePlayer.sendChatMessage("/hotm");
+                        swapSubState(SUBSTATE.TOGGLING_PERKS, 1000);
                         break;
-                    }
+                    case TOGGLING_PERKS:
+                        if (!timer.passed() && timer.isScheduled()) {
+                            break;
+                        }
 
-                    if (
-                            !(mc.currentScreen instanceof GuiChest)
-                                    || !InventoryUtil.getInventoryName().equals("Heart of the Mountain")
-                                    || !InventoryUtil.isInventoryLoaded()
-                    ) {
+                        if (!(mc.currentScreen instanceof GuiChest)
+                                || !InventoryUtil.getInventoryName().equals("Heart of the Mountain")
+                                || !InventoryUtil.isInventoryLoaded()
+                        ) {
+                            break;
+                        }
+
+                        int moleSlot = InventoryUtil.getSlotIdOfItemInContainer("Mole");
+                        int efficientMinerSlot = InventoryUtil.getSlotIdOfItemInContainer("Efficient Miner");
+
+                        switch (perk) {
+                            case MOLE:
+                                if (moleSlot == -1) {
+                                    logError("No Mole perk found! In theory this should NEVER happen!!! Please contact the developer");
+                                    miner.stop();
+                                    miner.setError(TunnelMiner.TunnelMinerError.NO_POINTS_FOUND);
+                                    return null;
+                                }
+
+                                List<String> lore = InventoryUtil.getLoreOfItemInContainer(moleSlot);
+                                boolean disabled = lore.stream().anyMatch((string) ->
+                                        StringUtils.stripControlCodes(string).toLowerCase().contains("disabled"));
+                                Logger.sendLog("Mole disabled: " + disabled);
+
+                                if (disabled) {
+                                    InventoryUtil.clickContainerSlot(
+                                            moleSlot,
+                                            1,
+                                            InventoryUtil.ClickMode.QUICK_MOVE
+                                    );
+                                }
+
+                                perk = PERK.EFFICIENT_MINER;
+                                perksTimer.schedule(MightyMinerConfig.getRandomGuiWaitDelay());
+                                break;
+                            case EFFICIENT_MINER:
+                                if (perksTimer.isScheduled() && !perksTimer.passed()) break;
+
+                                if (efficientMinerSlot == -1) {
+                                    logError("No Efficient Miner perk found! In theory this should NEVER happen!!! Please contact the developer");
+                                    miner.stop();
+                                    miner.setError(TunnelMiner.TunnelMinerError.NO_POINTS_FOUND);
+                                    return null;
+                                }
+
+                                List<String> efficientMinerLore = InventoryUtil.getLoreOfItemInContainer(efficientMinerSlot);
+                                boolean efficientMinerDisabled = efficientMinerLore.stream().anyMatch((string) ->
+                                        StringUtils.stripControlCodes(string).toLowerCase().contains("disabled"));
+                                Logger.sendLog("Efficient Miner disabled: " + efficientMinerDisabled);
+
+                                if (efficientMinerDisabled) {
+                                    InventoryUtil.clickContainerSlot(
+                                            efficientMinerSlot,
+                                            1,
+                                            InventoryUtil.ClickMode.QUICK_MOVE
+                                    );
+                                }
+                                swapSubState(SUBSTATE.CLOSING_HOTM, 1000);
+                                break;
+                        }
                         break;
-                    }
+                    case CLOSING_HOTM:
+                        if (timer.isScheduled() && !timer.passed()) break;
 
-                    int moleSlot = InventoryUtil.getSlotIdOfItemInContainer("Mole");
-                    int efficientMinerSlot = InventoryUtil.getSlotIdOfItemInContainer("Efficient Miner");
-
-                    switch (perk) {
-                        case MOLE:
-                            if (moleSlot == -1) {
-                                logError("No Mole perk found! In theory this should NEVER happen!!! Please contact the developer");
-                                miner.stop();
-                                miner.setError(TunnelMiner.TunnelMinerError.NO_POINTS_FOUND);
-                                return null;
-                            }
-                            InventoryUtil.clickContainerSlot(
-                                    moleSlot,
-                                    1,
-                                    InventoryUtil.ClickMode.QUICK_MOVE
-                            );
-                            perk = PERK.EFFICIENT_MINER;
-                            perksTimer.schedule(MightyMinerConfig.getRandomGuiWaitDelay());
+                        InventoryUtil.closeScreen();
+                        state = STATE.NONE;
+                        return new RotatingState();
+                }
+                break;
+            case DISABLE_PERKS:
+                switch (substate) {
+                    case OPENING_HOTM:
+                        mc.thePlayer.sendChatMessage("/hotm");
+                        swapSubState(SUBSTATE.TOGGLING_PERKS, 1000);
+                        break;
+                    case TOGGLING_PERKS:
+                        if (!timer.passed() && timer.isScheduled()) {
                             break;
-                        case EFFICIENT_MINER:
-                            if (perksTimer.isScheduled() && !perksTimer.passed()) break;
+                        }
 
-                            if (efficientMinerSlot == -1) {
-                                logError("No Efficient Miner perk found! In theory this should NEVER happen!!! Please contact the developer");
-                                miner.stop();
-                                miner.setError(TunnelMiner.TunnelMinerError.NO_POINTS_FOUND);
-                                return null;
-                            }
-                            InventoryUtil.clickContainerSlot(
-                                    efficientMinerSlot,
-                                    1,
-                                    InventoryUtil.ClickMode.QUICK_MOVE
-                            );
-                            swapSubState(SUBSTATE.CLOSING_HOTM, 1000);
+                        if (!(mc.currentScreen instanceof GuiChest)
+                                || !InventoryUtil.getInventoryName().equals("Heart of the Mountain")
+                                || !InventoryUtil.isInventoryLoaded()
+                        ) {
                             break;
-                    }
-                    break;
-                case CLOSING_HOTM:
-                    if (timer.isScheduled() && !timer.passed()) break;
+                        }
 
-                    InventoryUtil.closeScreen();
-                    state = STATE.NONE;
-                    return new RotatingState();
-            }
+                        int moleSlot = InventoryUtil.getSlotIdOfItemInContainer("Mole");
+                        int efficientMinerSlot = InventoryUtil.getSlotIdOfItemInContainer("Efficient Miner");
+
+                        switch (perk) {
+                            case MOLE:
+                                if (moleSlot == -1) {
+                                    logError("No Mole perk found! In theory this should NEVER happen!!! Please contact the developer");
+                                    miner.stop();
+                                    miner.setError(TunnelMiner.TunnelMinerError.NO_POINTS_FOUND);
+                                    return null;
+                                }
+
+                                List<String> lore = InventoryUtil.getLoreOfItemInContainer(moleSlot);
+                                boolean disabled = lore.stream().anyMatch((string) ->
+                                        StringUtils.stripControlCodes(string).toLowerCase().contains("disabled"));
+                                Logger.sendLog("Mole disabled: " + disabled);
+
+                                if (!disabled) {
+                                    InventoryUtil.clickContainerSlot(
+                                            moleSlot,
+                                            1,
+                                            InventoryUtil.ClickMode.QUICK_MOVE
+                                    );
+                                }
+                                perk = PERK.EFFICIENT_MINER;
+                                perksTimer.schedule(MightyMinerConfig.getRandomGuiWaitDelay());
+                                break;
+                            case EFFICIENT_MINER:
+                                if (perksTimer.isScheduled() && !perksTimer.passed()) break;
+
+                                if (efficientMinerSlot == -1) {
+                                    logError("No Efficient Miner perk found! In theory this should NEVER happen!!! Please contact the developer");
+                                    miner.stop();
+                                    miner.setError(TunnelMiner.TunnelMinerError.NO_POINTS_FOUND);
+                                    return null;
+                                }
+
+                                List<String> efficientMinerLore = InventoryUtil.getLoreOfItemInContainer(efficientMinerSlot);
+                                boolean efficientMinerDisabled = efficientMinerLore.stream().anyMatch((string) ->
+                                        StringUtils.stripControlCodes(string).toLowerCase().contains("disabled"));
+                                Logger.sendLog("Efficient Miner disabled: " + efficientMinerDisabled);
+
+                                if (!efficientMinerDisabled) {
+                                    InventoryUtil.clickContainerSlot(
+                                            efficientMinerSlot,
+                                            1,
+                                            InventoryUtil.ClickMode.QUICK_MOVE
+                                    );
+                                }
+                                swapSubState(SUBSTATE.CLOSING_HOTM, 1000);
+                                break;
+                        }
+                        break;
+                    case CLOSING_HOTM:
+                        if (timer.isScheduled() && !timer.passed()) break;
+
+                        InventoryUtil.closeScreen();
+                        state = STATE.NONE;
+                        return new RotatingState();
+                }
         }
 
         return this;

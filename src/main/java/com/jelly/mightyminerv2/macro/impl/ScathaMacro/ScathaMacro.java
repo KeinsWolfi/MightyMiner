@@ -8,6 +8,7 @@ import com.jelly.mightyminerv2.macro.impl.ScathaMacro.states.KillingState;
 import com.jelly.mightyminerv2.macro.impl.ScathaMacro.states.ScathaMacroState;
 import com.jelly.mightyminerv2.macro.impl.ScathaMacro.states.StartingState;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.Collections;
@@ -54,6 +55,9 @@ public class ScathaMacro extends AbstractMacro {
     public void onDisable() {
         if (currentState != null) currentState.onEnd(this);
 
+        tunnelMiner.setError(TunnelMiner.TunnelMinerError.NONE);
+        tunnelMiner.setDirection(null);
+
         log("Scatha macro disabled");
     }
 
@@ -65,7 +69,7 @@ public class ScathaMacro extends AbstractMacro {
         ScathaMacroState state = currentState.onTick(this);
         transitionTo(state);
 
-        if (tunnelMiner.getError() == TunnelMiner.TunnelMinerError.SHOULD_KILL_SCATHA) {
+        if (tunnelMiner.getError() == TunnelMiner.TunnelMinerError.SHOULD_KILL_SCATHA && !(currentState instanceof KillingState)) {
             transitionTo(new KillingState());
         }
     }

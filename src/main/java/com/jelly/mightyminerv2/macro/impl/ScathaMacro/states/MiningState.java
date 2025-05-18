@@ -2,6 +2,7 @@ package com.jelly.mightyminerv2.macro.impl.ScathaMacro.states;
 
 import com.jelly.mightyminerv2.config.MightyMinerConfig;
 import com.jelly.mightyminerv2.macro.impl.ScathaMacro.ScathaMacro;
+import com.jelly.mightyminerv2.util.Logger;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,10 +19,14 @@ public class MiningState implements ScathaMacroState {
 
     @Override
     public ScathaMacroState onTick(ScathaMacro macro) {
-        if (!macro.tunnelMiner.isRunning())
+        if (!macro.tunnelMiner.isRunning()) {
             macro.tunnelMiner.start(MightyMinerConfig.miningTool);
-        if (shouldScathaKill)
+            Logger.sendLog("Starting Tunnel Miner");
+        }
+        if (shouldScathaKill) {
+            Logger.sendLog("Starting Scatha Kill");
             return new KillingState();
+        }
         return this;
     }
 

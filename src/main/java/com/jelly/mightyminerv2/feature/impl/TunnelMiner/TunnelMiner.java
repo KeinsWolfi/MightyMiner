@@ -90,6 +90,8 @@ public class TunnelMiner extends AbstractFeature {
         this.pickaxeAbilityState = BlockMiner.PickaxeAbilityState.AVAILABLE;
         this.retryActivatePickaxeAbility = 0;
 
+        log("Starting Tunnel Miner");
+        currentState = new StartingState();
         // Initialize with starting state
         this.start();
     }

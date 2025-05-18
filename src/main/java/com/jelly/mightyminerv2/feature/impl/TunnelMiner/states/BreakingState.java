@@ -51,7 +51,7 @@ public class BreakingState implements TunnelMinerState {
         }
 
         if (state.getBlock() == Blocks.chest) {
-            if (chestAttemptTime == 0) Logger.sendMessage("Chest detected, attempting to open...");
+            if (chestAttemptTime == 0) Logger.sendLog("Chest detected, attempting to open...");
             chestAttemptTime++;
             if (chestAttemptTime >= CHEST_TICkS) {
                 miningState = MINING_STATE.OPENING_CHEST;
@@ -59,7 +59,7 @@ public class BreakingState implements TunnelMinerState {
         } else {
             chestAttemptTime = 0;
             if (miningState == MINING_STATE.OPENING_CHEST) {
-                Logger.sendMessage("No chest detected, resuming mining...");
+                Logger.sendLog("No chest detected, resuming mining...");
                 miningState = MINING_STATE.BREAKING;
             }
         }
@@ -110,7 +110,7 @@ public class BreakingState implements TunnelMinerState {
         if (shouldKill) {
             Logger.sendLog("Worm spawned, transitioning to MiningState");
             KeyBindUtil.releaseAllExcept();
-            return null;
+            return new ShouldKillScathaState();
         }
 
         return this;
@@ -175,9 +175,9 @@ public class BreakingState implements TunnelMinerState {
         if (event.type != 0) {
             return;
         }
-        String message = event.message.getFormattedText();
+        String message = event.message.getUnformattedText();
 
-        if (message.equals("§7§oYou hear the sound of something approaching...")) {
+        if (message.equals("You hear the sound of something approaching...")) {
             SystemNotificationUtil.systemNotification("Worm spawned", "A worm has spawned nearby!");
             shouldKill = true;
         }

@@ -124,7 +124,7 @@ public class AutoMobKiller extends AbstractFeature {
                 log("Starting");
             case FINDING_MOB:
                 if (!this.recheckTimer.isScheduled() || this.recheckTimer.passed()) {
-                    List<EntityLivingBase> mobs = EntityUtil.getEntities(this.mobToKill, this.mobQueue);
+                    List<EntityLivingBase> mobs = EntityUtil.getEntitiesSimple(this.mobToKill, this.mobQueue);
 
                     if (mobs.isEmpty()) {
                         if (!this.shutdownTimer.isScheduled()) {
