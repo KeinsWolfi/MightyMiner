@@ -138,7 +138,7 @@ public class AutoMobKiller extends AbstractFeature {
 
                     EntityLivingBase best = null;
                     for (EntityLivingBase mob : mobs) {
-                        BlockPos mobPos = EntityUtil.getBlockStandingOn(mob);
+                        BlockPos mobPos = EntityUtil.getBlockBelow(mob);
                         if (BlockUtil.canStandOn(mobPos)) {
                             best = mob;
                             break;

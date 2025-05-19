@@ -92,7 +92,7 @@ public class DisablePerksState implements TunnelMinerState {
                                 }
 
                                 perk = PERK.EFFICIENT_MINER;
-                                perksTimer.schedule(MightyMinerConfig.getRandomGuiWaitDelay());
+                                perksTimer.schedule(disabled ? MightyMinerConfig.getRandomGuiWaitDelay() : 100);
                                 break;
                             case EFFICIENT_MINER:
                                 if (perksTimer.isScheduled() && !perksTimer.passed()) break;
@@ -171,7 +171,7 @@ public class DisablePerksState implements TunnelMinerState {
                                     );
                                 }
                                 perk = PERK.EFFICIENT_MINER;
-                                perksTimer.schedule(MightyMinerConfig.getRandomGuiWaitDelay());
+                                perksTimer.schedule(disabled ? 100 : MightyMinerConfig.getRandomGuiWaitDelay());
                                 break;
                             case EFFICIENT_MINER:
                                 if (perksTimer.isScheduled() && !perksTimer.passed()) break;
@@ -195,7 +195,7 @@ public class DisablePerksState implements TunnelMinerState {
                                             InventoryUtil.ClickMode.QUICK_MOVE
                                     );
                                 }
-                                swapSubState(SUBSTATE.CLOSING_HOTM, 1000);
+                                swapSubState(SUBSTATE.CLOSING_HOTM, 200);
                                 break;
                         }
                         break;

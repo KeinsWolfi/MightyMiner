@@ -6,6 +6,7 @@ import cc.polyfrost.oneconfig.utils.commands.annotations.SubCommand;
 import com.google.common.collect.ImmutableSet;
 import com.jelly.mightyminerv2.MightyMiner;
 import com.jelly.mightyminerv2.config.MightyMinerConfig;
+import com.jelly.mightyminerv2.feature.impl.ArmorSwapper;
 import com.jelly.mightyminerv2.feature.impl.AutoMobKiller;
 import com.jelly.mightyminerv2.feature.impl.TunnelMiner.states.BreakingState;
 import com.jelly.mightyminerv2.util.Logger;
@@ -69,5 +70,11 @@ public class TestCommand {
     public void stopKiller() {
         AutoMobKiller.getInstance().stop();
         Logger.sendMessage("Stopped the killer");
+    }
+
+    @SubCommand
+    public void wardrobe(String page, String slot) {
+        ArmorSwapper.getInstance().start(Short.parseShort(page), Short.parseShort(slot));
+        Logger.sendMessage("Started the wardrobe swapper");
     }
 }

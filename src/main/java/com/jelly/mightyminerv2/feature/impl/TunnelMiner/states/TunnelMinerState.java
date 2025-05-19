@@ -1,6 +1,7 @@
 package com.jelly.mightyminerv2.feature.impl.TunnelMiner.states;
 
 import cc.polyfrost.oneconfig.events.event.ChatReceiveEvent;
+import com.jelly.mightyminerv2.event.WormSpawnEvent;
 import com.jelly.mightyminerv2.feature.impl.TunnelMiner.TunnelMiner;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 
@@ -20,5 +21,8 @@ public interface TunnelMinerState {
     }
 
     default void onChatMessage(ClientChatReceivedEvent event) {
+    }
+
+    default void onWormSpawn(WormSpawnEvent event) {
     }
 }

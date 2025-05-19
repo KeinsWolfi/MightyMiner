@@ -32,7 +32,8 @@ public class FeatureManager {
                 AutoChestUnlocker.instance,
                 WorldScanner.getInstance(),
                 AutoSell.getInstance(),
-                TunnelMiner.getInstance()
+                TunnelMiner.getInstance(),
+                ArmorSwapper.getInstance()
         ));
     }
 

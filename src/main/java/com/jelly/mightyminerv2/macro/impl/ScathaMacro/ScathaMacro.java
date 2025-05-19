@@ -57,6 +57,7 @@ public class ScathaMacro extends AbstractMacro {
 
         tunnelMiner.setError(TunnelMiner.TunnelMinerError.NONE);
         tunnelMiner.setDirection(null);
+        tunnelMiner.setTunnelMinerState(TunnelMiner.TunnelMinerStateEnum.FORWARD);
 
         log("Scatha macro disabled");
     }

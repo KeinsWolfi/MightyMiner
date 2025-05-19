@@ -13,6 +13,8 @@ import net.minecraft.util.StringUtils;
 import net.minecraft.util.Vec3;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class EntityUtil {
@@ -29,6 +31,16 @@ public class EntityUtil {
         return !TablistUtil.getTabListPlayersSkyblock().contains(entity.getName());
     }
 
+    public static BlockPos getBlockBelow(Entity entity) {
+        for (int i = 1; i < 20; i++) {
+            BlockPos pos = new BlockPos(entity.posX, 30, entity.posZ);
+            if (mc.theWorld.getBlockState(pos).getBlock().isFullCube()) {
+                return pos;
+            }
+        }
+        return new BlockPos(entity.posX, entity.posY - 1, entity.posZ);
+    }
+
     public static BlockPos getBlockStandingOn(Entity entity) {
         return new BlockPos(entity.posX, Math.ceil(entity.posY - 0.25) - 1, entity.posZ);
     }
@@ -38,16 +50,30 @@ public class EntityUtil {
     }
 
     public static boolean isStandDead(String name) {
-        return getHealthFromStandName(name) == 0;
+        return getHealthFromStandName(name, true) == 0;
     }
 
-    public static int getHealthFromStandName(String name) {
+    public static int getHealthFromStandName(String name, boolean noMaxHealth) {
         int health = 0;
         try {
-            String[] arr = name.split(" ");
-            health = Integer.parseInt(arr[arr.length - 1].split("/")[0].replace(",", ""));
+            String cleanedName = StringUtils.stripControlCodes(name).replace(",", "");
+
+            if (noMaxHealth) {
+                // Use regex to find the number before ❤
+                Pattern pattern = Pattern.compile("(\\d+)(?=❤)");
+                Matcher matcher = pattern.matcher(cleanedName);
+                if (matcher.find()) {
+                    health = Integer.parseInt(matcher.group(1));
+                }
+            } else {
+                // Get last part and extract the number before "/"
+                String[] arr = cleanedName.split(" ");
+                health = Integer.parseInt(arr[arr.length - 1].split("/")[0].replace(",", ""));
+            }
         } catch (Exception ignored) {
+            // You can log or handle exceptions if needed
         }
+
         return health;
     }
 
@@ -71,12 +97,15 @@ public class EntityUtil {
                 .filter((v) ->
                         entityNames.stream().anyMatch((a) -> (v.hasCustomName() ? StringUtils.stripControlCodes(v.getCustomNameTag()) : "").contains(a)))
                 .collect(Collectors.toList()).forEach((entity) -> {
+                    if (!entitiesToIgnore.contains((EntityLivingBase) entity) && !entity.equals(mc.thePlayer)) {
+                        entities.add((EntityLivingBase) entity);
+                        Logger.sendLog("Found entity: " + entity.getName() + " with health: " + ((EntityLivingBase) entity).getHealth() + " and name: " + (entity.hasCustomName() ? entity.getCustomNameTag() : entity.getName()));
+                    }
+
                     Entity livingBase = getEntityCuttingOtherEntity(entity, null);
                     if (livingBase instanceof EntityLivingBase) {
                         if (!entitiesToIgnore.contains((EntityLivingBase) livingBase) && !livingBase.equals(mc.thePlayer)) {
                             entities.add((EntityLivingBase) livingBase);
-                            entities.add((EntityLivingBase) entity);
-                            Logger.sendLog("Found entity: " + entity.getName() + " with health: " + ((EntityLivingBase) entity).getHealth() + " and name: " + (entity.hasCustomName() ? entity.getCustomNameTag() : entity.getName()));
                             Logger.sendLog("Found entity: " + livingBase.getName() + " with health: " + ((EntityLivingBase) livingBase).getHealth() + " and name: " + (livingBase.hasCustomName() ? livingBase.getCustomNameTag() : livingBase.getName()));
                         }
                     }

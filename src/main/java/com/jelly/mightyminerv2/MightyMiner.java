@@ -10,10 +10,7 @@ import com.jelly.mightyminerv2.command.TestCommand;
 import com.jelly.mightyminerv2.config.MightyMinerConfig;
 import com.jelly.mightyminerv2.failsafe.FailsafeManager;
 import com.jelly.mightyminerv2.feature.FeatureManager;
-import com.jelly.mightyminerv2.handler.GameStateHandler;
-import com.jelly.mightyminerv2.handler.GraphHandler;
-import com.jelly.mightyminerv2.handler.RotationHandler;
-import com.jelly.mightyminerv2.handler.RouteHandler;
+import com.jelly.mightyminerv2.handler.*;
 import com.jelly.mightyminerv2.macro.MacroManager;
 import com.jelly.mightyminerv2.util.Logger;
 import com.jelly.mightyminerv2.util.ReflectionUtils;
@@ -164,6 +161,7 @@ public class MightyMiner {
         MinecraftForge.EVENT_BUS.register(OsamaTestCommandNobodyTouchPleaseLoveYou.getInstance());
         MinecraftForge.EVENT_BUS.register(new ScoreboardUtil());
         MinecraftForge.EVENT_BUS.register(new TablistUtil());
+        MinecraftForge.EVENT_BUS.register(new EventDispatcher());
     }
 
     private void initializeCommands() {

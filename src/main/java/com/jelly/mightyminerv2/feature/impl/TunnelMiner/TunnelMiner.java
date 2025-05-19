@@ -1,5 +1,6 @@
 package com.jelly.mightyminerv2.feature.impl.TunnelMiner;
 
+import com.jelly.mightyminerv2.event.WormSpawnEvent;
 import com.jelly.mightyminerv2.feature.AbstractFeature;
 import com.jelly.mightyminerv2.feature.impl.BlockMiner.BlockMiner;
 import com.jelly.mightyminerv2.feature.impl.TunnelMiner.states.*;
@@ -169,5 +170,10 @@ public class TunnelMiner extends AbstractFeature {
         }
 
         currentState.onChatMessage(event);
+    }
+
+    @SubscribeEvent
+    protected void onWormSpawn(WormSpawnEvent event) {
+        currentState.onWormSpawn(event);
     }
 }

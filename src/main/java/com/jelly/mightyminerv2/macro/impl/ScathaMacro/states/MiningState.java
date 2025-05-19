@@ -25,6 +25,7 @@ public class MiningState implements ScathaMacroState {
         }
         if (shouldScathaKill) {
             Logger.sendLog("Starting Scatha Kill");
+            shouldScathaKill = false;
             return new KillingState();
         }
         return this;

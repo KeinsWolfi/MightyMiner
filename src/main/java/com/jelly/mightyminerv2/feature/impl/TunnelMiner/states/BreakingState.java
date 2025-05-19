@@ -1,5 +1,6 @@
 package com.jelly.mightyminerv2.feature.impl.TunnelMiner.states;
 
+import com.jelly.mightyminerv2.event.WormSpawnEvent;
 import com.jelly.mightyminerv2.feature.impl.BlockMiner.BlockMiner;
 import com.jelly.mightyminerv2.feature.impl.TunnelMiner.TunnelMiner;
 import com.jelly.mightyminerv2.macro.impl.ScathaMacro.states.MiningState;
@@ -170,18 +171,10 @@ public class BreakingState implements TunnelMinerState {
     }
 
     // §7§oYou hear the sound of something approaching...
+
     @Override
-    public void onChatMessage(ClientChatReceivedEvent event) {
-        if (event.type != 0) {
-            return;
-        }
-        String message = event.message.getUnformattedText();
-
-        if (message.equals("You hear the sound of something approaching...")) {
-            SystemNotificationUtil.systemNotification("Worm spawned", "A worm has spawned nearby!");
-            shouldKill = true;
-        }
-
-        TunnelMinerState.super.onChatMessage(event);
+    public void onWormSpawn(WormSpawnEvent event) {
+        SystemNotificationUtil.systemNotification("Worm spawned", "A worm has spawned nearby!");
+        shouldKill = true;
     }
 }
