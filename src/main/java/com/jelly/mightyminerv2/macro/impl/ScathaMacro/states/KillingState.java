@@ -44,6 +44,7 @@ public class KillingState implements ScathaMacroState {
                 changeState(KILLER_STATE.QUEUEING, 500);
                 Logger.sendLog("Killing State: Starting, changing to QUEUEING");
                 InventoryUtil.holdItem(MightyMinerConfig.slayerWeapon);
+                macro.disable();
                 break;
             case QUEUEING:
                 if (!timer.passed() && timer.isScheduled()) {

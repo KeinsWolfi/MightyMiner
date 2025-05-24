@@ -10,10 +10,8 @@ import kotlin.Pair;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -602,5 +600,30 @@ public class BlockUtil {
         hash = 8734625L * hash + y;
         hash = 2873465L * hash + z;
         return hash;
+    }
+
+    public static List<BlockPos> getBlocksBlocking(boolean behind) {
+        List<BlockPos> blocks = new ArrayList<>();
+        BlockPos playerPos = PlayerUtil.getBlockStandingOn();
+        EnumFacing facing = EnumFacing.fromAngle(mc.thePlayer.rotationYaw);
+
+        BlockPos feetPos = playerPos.add(0, 1, 0);
+        BlockPos headPos = playerPos.add(0, 2, 0);
+        if (behind) {
+            facing = facing.getOpposite();
+            Vec3i dir = facing.getDirectionVec();
+
+            for (int i = 0; i <= 3; i++) {
+                BlockPos blockingFeet = feetPos.add(dir.getX() * i, dir.getY() * i, dir.getZ() * i);
+                BlockPos blockingHead = headPos.add(dir.getX() * i, dir.getY() * i, dir.getZ() * i);
+                if (mc.theWorld.getBlockState(blockingFeet).getBlock() != Blocks.air) {
+                    blocks.add(blockingFeet);
+                }
+            }
+        }
+        // Sort by nearest to furthest from head
+        return blocks.stream()
+                .sorted(Comparator.comparingDouble(block -> mc.thePlayer.getPositionEyes(1).distanceTo(new Vec3(block.getX(), block.getY(), block.getZ()))))
+                .collect(Collectors.toList());
     }
 }

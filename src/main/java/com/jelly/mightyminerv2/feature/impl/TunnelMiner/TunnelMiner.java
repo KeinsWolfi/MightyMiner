@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TunnelMiner extends AbstractFeature {
@@ -72,6 +73,10 @@ public class TunnelMiner extends AbstractFeature {
     public enum DIRECTION {
         NORTH, EAST, SOUTH, WEST
     }
+
+    @Getter
+    @Setter
+    private List<BlockPos> blocksBlocking;
 
     @Override
     public String getName() {

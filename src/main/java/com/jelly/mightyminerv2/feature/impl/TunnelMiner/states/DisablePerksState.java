@@ -116,7 +116,7 @@ public class DisablePerksState implements TunnelMinerState {
                                             InventoryUtil.ClickMode.QUICK_MOVE
                                     );
                                 }
-                                swapSubState(SUBSTATE.CLOSING_HOTM, 1000);
+                                swapSubState(SUBSTATE.CLOSING_HOTM, 200);
                                 break;
                         }
                         break;

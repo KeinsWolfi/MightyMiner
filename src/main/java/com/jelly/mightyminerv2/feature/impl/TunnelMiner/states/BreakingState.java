@@ -4,6 +4,7 @@ import com.jelly.mightyminerv2.event.WormSpawnEvent;
 import com.jelly.mightyminerv2.feature.impl.BlockMiner.BlockMiner;
 import com.jelly.mightyminerv2.feature.impl.TunnelMiner.TunnelMiner;
 import com.jelly.mightyminerv2.macro.impl.ScathaMacro.states.MiningState;
+import com.jelly.mightyminerv2.util.BlockUtil;
 import com.jelly.mightyminerv2.util.KeyBindUtil;
 import com.jelly.mightyminerv2.util.Logger;
 import com.jelly.mightyminerv2.util.SystemNotificationUtil;
@@ -12,6 +13,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
+
+import java.util.List;
 
 public class BreakingState implements TunnelMinerState {
 
@@ -43,9 +46,9 @@ public class BreakingState implements TunnelMinerState {
 
     @Override
     public TunnelMinerState onTick(TunnelMiner miner) {
-        BlockPos targetBlockPos = mc.thePlayer.rayTrace(6, 1).getBlockPos();
+        BlockPos targetBlockPos = mc.thePlayer.rayTrace(4, 1).getBlockPos();
         IBlockState state = mc.theWorld.getBlockState(targetBlockPos);
-        if (state.getBlock() == Blocks.bedrock || state.getBlock() == Blocks.air) {
+        if ((state.getBlock() == Blocks.bedrock || state.getBlock() == Blocks.air) || (mc.thePlayer.posX == mc.thePlayer.lastTickPosX && mc.thePlayer.posY == mc.thePlayer.lastTickPosY && mc.thePlayer.posZ == mc.thePlayer.lastTickPosZ && miner.getTunnelMinerState() == TunnelMiner.TunnelMinerStateEnum.BACKWARD)) {
             breakAttemptTime++;
         } else {
             breakAttemptTime = 0;
@@ -99,6 +102,12 @@ public class BreakingState implements TunnelMinerState {
                 Logger.sendError("Failed to break block after " + FAILSAFE_TICKS + " ticks. Stopping.");
                 KeyBindUtil.releaseAllExcept();
                 return null;
+            } else {
+                Logger.sendError("Failed to break block after " + FAILSAFE_TICKS + " ticks. Looking at: " + state.getBlock().toString());
+                List<BlockPos> blocksBlocking = BlockUtil.getBlocksBlocking(true);
+                miner.setBlocksBlocking(blocksBlocking);
+                SystemNotificationUtil.systemNotification("Blocked", "Blocked by: " + blocksBlocking.size() + " blocks");
+                return new ClearBehindState();
             }
         }
 
