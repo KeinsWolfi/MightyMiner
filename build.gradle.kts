@@ -31,7 +31,7 @@ loom {
             property("mixin.debug", "true")
             property("asmhelper.verbose", "true")
             arg("--tweakClass", "cc.polyfrost.oneconfig.loader.stage0.LaunchWrapperTweaker")
-            arg("-Ddevauth.enabled", "true")
+            property("devauth.configDir", rootProject.file(".devauth").absolutePath)
         }
     }
     forge {
@@ -77,7 +77,7 @@ dependencies {
     
     shadowImpl("org.java-websocket:Java-WebSocket:1.5.4")
     
-    runtimeOnly("me.djtheredstoner:DevAuth-forge-legacy:1.2.0")
+    runtimeOnly("me.djtheredstoner:DevAuth-forge-legacy:1.1.2")
     shadowImpl("it.unimi.dsi:fastutil:8.2.1")
 }
 

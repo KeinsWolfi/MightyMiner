@@ -3,4 +3,5 @@
 run/
 build/
 .gradle/
-
+.devauth/*
+!.devauth/config.toml

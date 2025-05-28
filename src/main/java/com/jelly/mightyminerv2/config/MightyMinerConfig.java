@@ -169,6 +169,21 @@ public class MightyMinerConfig extends Config {
     public static int oreRespawnWaitThreshold = 5;
 
     @Switch(
+            name = "Custom Mining Speed",
+            category = GENERAL,
+            subcategory = "Mining Behaviour"
+    )
+    public static boolean setMiningSpeed = false;
+
+    @Slider(
+            name = "Mining Speed",
+            category = GENERAL,
+            subcategory = "Mining Behaviour",
+            min = 0, max = 20000
+    )
+    public static int miningSpeed = 0;
+
+    @Switch(
             name = "Enabled (Requires abiphone!)",
             category = GENERAL,
             subcategory = "Auto Refuel"
