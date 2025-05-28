@@ -63,7 +63,8 @@ public class MightyMinerConfig extends Config {
                     "Glacial Commissions",
                     "Mining Macro",
                     "Route Miner",
-                    "Gemstone Powder"
+                    "Gemstone Powder",
+                    "Auto Shafts"
             },
             subcategory = "Macro"
     )

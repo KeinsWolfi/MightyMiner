@@ -11004,6 +11004,12 @@
         "y": 139,
         "z": 268,
         "transportMethod": "WALK"
+      },
+      {
+        "x": 57,
+        "y": 141,
+        "z": 268,
+        "transportMethod": "WALK"
       }
     ],
     "-70,119,269,WALK": [
@@ -28275,6 +28281,7 @@
         "transportMethod": "WALK"
       }
     ],
+    "57,141,268,WALK": [],
     "-62,124,348,ETHERWARP": [
       {
         "x": -72,
@@ -74634,6 +74641,12 @@
         "x": 57,
         "y": 141,
         "z": 282,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 57,
+        "y": 141,
+        "z": 268,
         "transportMethod": "WALK"
       }
     ],

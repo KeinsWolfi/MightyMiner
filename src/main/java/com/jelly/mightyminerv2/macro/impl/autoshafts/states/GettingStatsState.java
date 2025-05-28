@@ -15,11 +15,32 @@ public class GettingStatsState implements AutoShaftState {
 
     @Override
     public AutoShaftState onTick(ShaftMacro macro) {
+        if (autoInventory.isRunning()) {
+            return this;
+        }
+
+        if (autoInventory.sbSucceeded()) {
+            int[] sb = autoInventory.getSpeedBoostValues();
+            macro.setMiningSpeed(sb[0]);
+            return new StartingState();
+        }
+
+        switch (autoInventory.getSbError()) {
+            case NONE:
+                throw new IllegalStateException("AutoInventory failed but no error is detected! Please contact the developer");
+            case CANNOT_OPEN_INV:
+                macro.disable("Cannot open player's inventory to get statistics!");
+                break;
+            case CANNOT_GET_VALUE:
+                macro.disable("Cannot get the value of statistics! Please contact the developer");
+                break;
+        }
         return null;
     }
 
     @Override
     public void onEnd(ShaftMacro macro) {
+        autoInventory.stop();
         log("Exiting getting stats state");
     }
 }

@@ -19,7 +19,7 @@ public class ApplyAbilityState implements BlockMinerState {
     private final Clock timer = new Clock();
     private final Clock timer2 = new Clock();
 
-    private final long COOLDOWN = 1000; // 1-second cooldown for activating ability
+    private final long COOLDOWN = 400; // 1-second cooldown for activating ability
 
     @Override
     public void onStart(BlockMiner blockMiner) {

@@ -60,7 +60,7 @@ public class GraphHandler {
 
     public void start() {
         editing = true;
-        Multithreading.schedule(this::save, 0, TimeUnit.MILLISECONDS);
+        // Multithreading.schedule(this::save, 0, TimeUnit.MILLISECONDS);
     }
 
     public void stop() {
@@ -122,7 +122,7 @@ public class GraphHandler {
         return route;
     }
 
-    public synchronized void save() {
+    public void save() {
         while (editing) {
             if (!dirty) continue;
             Graph<RouteWaypoint> graph = graphs.get(activeGraphKey);
@@ -130,6 +130,7 @@ public class GraphHandler {
             try (BufferedWriter writer = Files.newBufferedWriter(MightyMiner.routesDirectory.resolve(activeGraphKey + ".json"), StandardCharsets.UTF_8)) {
                 writer.write(MightyMiner.gson.toJson(graph));
                 Logger.sendLog("Saved graph: " + activeGraphKey);
+                System.out.println("Saved graph: " + activeGraphKey);
             } catch (Exception e) {
                 Logger.sendLog("Failed to save graph: " + activeGraphKey);
             }

@@ -7,6 +7,7 @@ import com.jelly.mightyminerv2.feature.FeatureManager;
 import com.jelly.mightyminerv2.feature.impl.MouseUngrab;
 import com.jelly.mightyminerv2.macro.impl.*;
 import com.jelly.mightyminerv2.macro.impl.CommissionMacro.CommissionMacro;
+import com.jelly.mightyminerv2.macro.impl.autoshafts.ShaftMacro;
 import com.jelly.mightyminerv2.util.Logger;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
@@ -34,6 +35,8 @@ public class MacroManager {
                 return RouteMinerMacro.getInstance();
             case 4:
                 return GemstonePowderMacro.getInstance();
+            case 5:
+                return ShaftMacro.getInstance();
             default:
                 return CommissionMacro.getInstance();
         }
