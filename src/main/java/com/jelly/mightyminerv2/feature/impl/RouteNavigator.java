@@ -4,10 +4,7 @@ import com.jelly.mightyminerv2.config.MightyMinerConfig;
 import com.jelly.mightyminerv2.event.PacketEvent;
 import com.jelly.mightyminerv2.feature.AbstractFeature;
 import com.jelly.mightyminerv2.handler.RotationHandler;
-import com.jelly.mightyminerv2.util.AngleUtil;
-import com.jelly.mightyminerv2.util.BlockUtil;
-import com.jelly.mightyminerv2.util.KeyBindUtil;
-import com.jelly.mightyminerv2.util.PlayerUtil;
+import com.jelly.mightyminerv2.util.*;
 import com.jelly.mightyminerv2.util.helper.RotationConfiguration;
 import com.jelly.mightyminerv2.util.helper.RotationConfiguration.RotationType;
 import com.jelly.mightyminerv2.util.helper.Target;
@@ -195,11 +192,25 @@ public class RouteNavigator extends AbstractFeature {
                 if (this.routeToFollow.get(this.currentRouteIndex).getTransportMethod() == TransportMethod.WALK) {
                     this.swapState(State.WALK, 0);
                 } else {
-                    this.swapState(State.ROTATION, 0);
+                    this.swapState(State.SWAP_TO_AOTV, 0);
                 }
 
                 log("Going To Index: " + this.currentRouteIndex);
                 break;
+            }
+            case SWAP_TO_AOTV: {
+                if (this.timer.isScheduled() && !this.timer.passed()) {
+                    return;
+                }
+
+                if (InventoryUtil.holdItem("Aspect of the Void")) {
+                    this.swapState(State.ROTATION, 100);
+                    break;
+                } else {
+                    sendError("Aspect of the Void not found in inventory. Disabling.");
+                    this.stop(NavError.NONE);
+                    return;
+                }
             }
             case ROTATION: {
                 RouteWaypoint nextPoint = this.routeToFollow.get(this.currentRouteIndex);
@@ -361,7 +372,7 @@ public class RouteNavigator extends AbstractFeature {
     }
 
     enum State {
-        STARTING, DETECT_ROUTE, ROTATION, ROTATION_VERIFY, AOTV, AOTV_VERIFY, WALK, WALK_VERIFY, END_VERIFY
+        STARTING, DETECT_ROUTE, ROTATION, ROTATION_VERIFY, SWAP_TO_AOTV, AOTV, AOTV_VERIFY, WALK, WALK_VERIFY, END_VERIFY
     }
 
     public enum NavError {

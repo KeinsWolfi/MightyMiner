@@ -5,7 +5,7 @@ import com.jelly.mightyminerv2.macro.impl.autoshafts.ShaftMacro;
 public class WarpingState implements AutoShaftState {
     @Override
     public void onStart(ShaftMacro macro) {
-
+        log("Entering warping state");
     }
 
     @Override
@@ -15,6 +15,6 @@ public class WarpingState implements AutoShaftState {
 
     @Override
     public void onEnd(ShaftMacro macro) {
-
+        log("Exiting warping state");
     }
 }

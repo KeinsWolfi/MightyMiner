@@ -97,6 +97,15 @@ public class EntityUtil {
         return ((long) x << 32) | (z & 0xFFFFFFFFL);
     }
 
+    public static EntityLivingBase getClosestMineshaft() {
+        final EntityLivingBase[] closestEntity = {null};
+        mc.theWorld.loadedEntityList.stream()
+                .filter(entity -> entity instanceof EntityLivingBase)
+                .filter(entity -> entity.getName().toLowerCase().contains("mineshaft"))
+                .min(Comparator.comparingDouble(entity -> entity.getDistanceToEntity(mc.thePlayer)))
+                .ifPresent(entity -> closestEntity[0] = (EntityLivingBase) entity);
+        return closestEntity[0];
+    }
 
     public static BlockPos nearbyBlock(EntityLivingBase entityLivingBase) {
         BlockPos closestBlock = null;

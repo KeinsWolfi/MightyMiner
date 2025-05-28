@@ -7,24 +7,36 @@ import com.jelly.mightyminerv2.util.PlayerUtil;
 import com.jelly.mightyminerv2.util.helper.route.Route;
 import com.jelly.mightyminerv2.util.helper.route.RouteWaypoint;
 import com.jelly.mightyminerv2.util.helper.route.TransportMethod;
+import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class PathingToVeinState implements AutoShaftState {
     private final RouteNavigator routeNavigator = RouteNavigator.getInstance();
     private final String GRAPH_NAME = "Glacial Macro";
     private int attempts = 0;
 
-    RouteWaypoint end = new RouteWaypoint(57, 141, 268, TransportMethod.WALK);
+    private final Random random = new Random();
+
+    @Getter
+    private static final List<RouteWaypoint> VEINS = new ArrayList<>();
+
+    RouteWaypoint vein1 = new RouteWaypoint(57, 141, 268, TransportMethod.WALK);
+    // RouteWaypoint vein2 = new RouteWaypoint(39, 147, 295, TransportMethod.WALK);//38, 147, 294, TransportMethod.ETHERWARP);
 
     @Override
     public void onStart(ShaftMacro macro) {
         log("Entering pathing to vein state");
+        VEINS.add(vein1);
+        // VEINS.add(vein2);
+        int veinIndex = random.nextInt(VEINS.size());
 
-        List<RouteWaypoint> nodes = GraphHandler.instance.findPathFrom(GRAPH_NAME, PlayerUtil.getBlockStandingOn(), end);
+        List<RouteWaypoint> nodes = GraphHandler.instance.findPathFrom(GRAPH_NAME, PlayerUtil.getBlockStandingOn(), VEINS.get(veinIndex));
 
         if (nodes.isEmpty()) {
-            logError("Starting block: " + PlayerUtil.getBlockStandingOn() + ", Ending block: " + end);
+            logError("Starting block: " + PlayerUtil.getBlockStandingOn() + ", Ending block: " + VEINS.get(veinIndex));
             macro.disable("Could not find a path to the target block! Please send the logs to the developer.");
             return;
         }

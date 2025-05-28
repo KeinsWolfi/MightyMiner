@@ -123,20 +123,19 @@ public class GraphHandler {
     }
 
     public void save() {
-        while (editing) {
-            if (!dirty) continue;
-            Graph<RouteWaypoint> graph = graphs.get(activeGraphKey);
+        if (!dirty) return;
+        Graph<RouteWaypoint> graph = graphs.get(activeGraphKey);
 
-            try (BufferedWriter writer = Files.newBufferedWriter(MightyMiner.routesDirectory.resolve(activeGraphKey + ".json"), StandardCharsets.UTF_8)) {
-                writer.write(MightyMiner.gson.toJson(graph));
-                Logger.sendLog("Saved graph: " + activeGraphKey);
-                System.out.println("Saved graph: " + activeGraphKey);
-            } catch (Exception e) {
-                Logger.sendLog("Failed to save graph: " + activeGraphKey);
-            }
-
-            dirty = false;
+        try (BufferedWriter writer = Files.newBufferedWriter(MightyMiner.routesDirectory.resolve(activeGraphKey + ".json"), StandardCharsets.UTF_8)) {
+            writer.write(MightyMiner.gson.toJson(graph));
+            Logger.sendLog("Saved graph: " + activeGraphKey);
+            System.out.println("Saved graph: " + activeGraphKey);
+        } catch (Exception e) {
+            Logger.sendLog("Failed to save graph: " + activeGraphKey);
         }
+
+        dirty = false;
+
     }
 
     @SubscribeEvent
