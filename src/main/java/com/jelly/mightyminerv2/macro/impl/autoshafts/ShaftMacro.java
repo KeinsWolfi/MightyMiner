@@ -2,7 +2,6 @@ package com.jelly.mightyminerv2.macro.impl.autoshafts;
 
 import com.jelly.mightyminerv2.config.MightyMinerConfig;
 import com.jelly.mightyminerv2.feature.FeatureManager;
-import com.jelly.mightyminerv2.feature.impl.BlockMiner.BlockMiner;
 import com.jelly.mightyminerv2.macro.AbstractMacro;
 import com.jelly.mightyminerv2.macro.impl.autoshafts.states.AutoShaftState;
 import com.jelly.mightyminerv2.macro.impl.autoshafts.states.EnterShaftState;
