@@ -3,6 +3,7 @@ package com.jelly.mightyminerv2.failsafe.impl;
 import com.jelly.mightyminerv2.failsafe.AbstractFailsafe;
 import com.jelly.mightyminerv2.feature.impl.AutoWarp;
 import com.jelly.mightyminerv2.macro.MacroManager;
+import com.jelly.mightyminerv2.macro.impl.autoshafts.ShaftMacro;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.event.world.WorldEvent;
@@ -33,6 +34,7 @@ public class WorldChangeFailsafe extends AbstractFailsafe {
 
     @Override
     public boolean react() {
+        if (MacroManager.getInstance().getCurrentMacro() == ShaftMacro.getInstance()) return true;
         warn("Stopping macro due to world change.");
         MacroManager.getInstance().disable();
         return true;

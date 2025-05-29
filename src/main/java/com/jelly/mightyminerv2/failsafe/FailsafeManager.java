@@ -7,6 +7,7 @@ import com.jelly.mightyminerv2.failsafe.AbstractFailsafe.Failsafe;
 import com.jelly.mightyminerv2.failsafe.impl.*;
 import com.jelly.mightyminerv2.feature.FeatureManager;
 import com.jelly.mightyminerv2.macro.MacroManager;
+import com.jelly.mightyminerv2.macro.impl.autoshafts.ShaftMacro;
 import com.jelly.mightyminerv2.util.StrafeUtil;
 import com.jelly.mightyminerv2.util.helper.AudioManager;
 import com.jelly.mightyminerv2.util.helper.Clock;
@@ -55,7 +56,7 @@ public class FailsafeManager {
     }
 
     public boolean shouldNotCheckForFailsafe() {
-        return !MacroManager.getInstance().isRunning() || this.triggeredFailsafe.isPresent();
+        return !MacroManager.getInstance().isRunning() || this.triggeredFailsafe.isPresent() || (MacroManager.getInstance().getCurrentMacro() == ShaftMacro.getInstance());
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

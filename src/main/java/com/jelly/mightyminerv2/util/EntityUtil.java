@@ -28,6 +28,18 @@ public class EntityUtil {
         return !TablistUtil.getTabListPlayersSkyblock().contains(entity.getName());
     }
 
+    public static BlockPos getBlockBelow(Entity entity) {
+        BlockPos target = null;
+        for (int y = 0; y < 5; y++) {
+            BlockPos pos = new BlockPos(entity.posX, Math.ceil(entity.posY - 0.25) - y, entity.posZ);
+            if (MovementHelper.INSTANCE.canStandOn(new BlockStateAccessor(mc.theWorld), pos.getX(), pos.getY(), pos.getZ(), mc.theWorld.getBlockState(pos))) {
+                target = pos;
+                break;
+            }
+        }
+        return target;
+    }
+
     public static BlockPos getBlockStandingOn(Entity entity) {
         return new BlockPos(entity.posX, Math.ceil(entity.posY - 0.25) - 1, entity.posZ);
     }
@@ -98,13 +110,12 @@ public class EntityUtil {
     }
 
     public static EntityLivingBase getClosestMineshaft() {
-        final EntityLivingBase[] closestEntity = {null};
-        mc.theWorld.loadedEntityList.stream()
+        return mc.theWorld.loadedEntityList.stream()
                 .filter(entity -> entity instanceof EntityLivingBase)
-                .filter(entity -> entity.getName().toLowerCase().contains("mineshaft"))
+                .filter(entity -> entity.getName().toLowerCase().contains("enter"))
                 .min(Comparator.comparingDouble(entity -> entity.getDistanceToEntity(mc.thePlayer)))
-                .ifPresent(entity -> closestEntity[0] = (EntityLivingBase) entity);
-        return closestEntity[0];
+                .map(entity -> (EntityLivingBase) entity)
+                .orElse(null);
     }
 
     public static BlockPos nearbyBlock(EntityLivingBase entityLivingBase) {

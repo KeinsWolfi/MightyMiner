@@ -41,6 +41,7 @@ public class EnterShaftState implements AutoShaftState {
 
     @Override
     public AutoShaftState onTick(ShaftMacro macro) {
+        /*
         switch (enteringShaftState) {
             case FINDING_SHAFT:
                 closestMineshaft = EntityUtil.getClosestMineshaft();
@@ -55,20 +56,19 @@ public class EnterShaftState implements AutoShaftState {
                 if (this.timer.isScheduled() && !this.timer.passed())
                     break;
 
-                BlockPos blockUnderShaft = EntityUtil.getBlockStandingOn(closestMineshaft);
-                // BlockUtil.getWalkableBlocksAround(blockUnderShaft);
-                Pathfinder.getInstance().stopAndRequeue(blockUnderShaft);
-                log("Pathing to mineshaft at: " + blockUnderShaft);
+                BlockPos blockUnderShaft = EntityUtil.getBlockBelow(closestMineshaft);
+                BlockPos target = BlockUtil.getWalkableBlocksAround(blockUnderShaft).remove(0);
+                Pathfinder.getInstance().stopAndRequeue(target);
+                log("Pathing to mineshaft at: " + target);
 
                 if (!Pathfinder.getInstance().isRunning()) {
                     log("Pathfinder wasnt enabled. starting");
-                    Pathfinder.getInstance().setSprintState(true);
-                    Pathfinder.getInstance().setInterpolationState(MightyMinerConfig.mobKillerInterpolate);
+                    Pathfinder.getInstance().setInterpolationState(true);
                     Pathfinder.getInstance().start();
+                    break;
                 }
 
-                if (PlayerUtil.getNextTickPosition().squareDistanceTo(this.closestMineshaft.getPositionVector()) < 2 && mc.thePlayer.canEntityBeSeen(this.closestMineshaft)) { // 8 cuz why not
-                    log("Looking at mob");
+                if (PlayerUtil.getNextTickPosition().squareDistanceTo(this.closestMineshaft.getPositionVector()) < 1 && mc.thePlayer.canEntityBeSeen(this.closestMineshaft)) { // 8 cuz why not
                     Pathfinder.getInstance().stop();
                     KeyBindUtil.releaseAllExcept();
                     this.swapState(EnteringShaftState.ROTATING_TO_SHAFT, 0);
@@ -98,7 +98,7 @@ public class EnterShaftState implements AutoShaftState {
                     break;
                 }
 
-                if (InventoryUtil.getInventoryName().toLowerCase().contains("mineshaft")) {
+                if (InventoryUtil.getInventoryName().toLowerCase().contains("glacite mineshaft")) {
                     KeyBindUtil.releaseAllExcept();
                     log("Entered mineshaft inventory");
                     this.swapState(EnteringShaftState.CLICKING_SHAFT_INV, 500);
@@ -107,7 +107,7 @@ public class EnterShaftState implements AutoShaftState {
                 break;
             case CLICKING_SHAFT_INV:
                 if (this.timer.isScheduled() && this.timer.passed()) {
-                    int slot = InventoryUtil.getSlotIdOfItemInContainer("Enter");
+                    int slot = InventoryUtil.getSlotIdOfItemInContainer("Enter Mineshaft");
                     if (slot == -1) {
                         logError("No 'Enter' button found in mineshaft inventory!");
                         InventoryUtil.closeScreen();
@@ -122,6 +122,25 @@ public class EnterShaftState implements AutoShaftState {
                     return new StartingState();
                 }
         }
+        */
+        switch (enteringShaftState) {
+            case FINDING_SHAFT:
+                closestMineshaft = EntityUtil.getClosestMineshaft();
+                if (closestMineshaft != null) {
+                    Logger.sendLog("Found a mineshaft: " + closestMineshaft.getName());
+                    swapState(EnteringShaftState.PATHING_TO_SHAFT, 200);
+                } else {
+                    Logger.sendLog("No mineshaft found, retrying...");
+                }
+                break;
+            case PATHING_TO_SHAFT:
+                if (this.timer.isScheduled() && !this.timer.passed())
+                    break;
+
+                BlockPos blockUnderShaft = EntityUtil.getBlockBelow(closestMineshaft);
+                Logger.sendLog("Block under shaft: " + blockUnderShaft);
+                break;
+        }
         return this;
     }
 
@@ -129,11 +148,13 @@ public class EnterShaftState implements AutoShaftState {
     public void onEnd(ShaftMacro macro) {
         closestMineshaft = null;
         Pathfinder.getInstance().stop();
+        KeyBindUtil.releaseAllExcept();
         log("Exiting shaft state");
     }
 
     public void swapState(final EnteringShaftState toState, final int delay) {
         this.enteringShaftState = toState;
         this.timer.schedule(delay);
+        log("Swapped state to: " + toState.name());
     }
 }

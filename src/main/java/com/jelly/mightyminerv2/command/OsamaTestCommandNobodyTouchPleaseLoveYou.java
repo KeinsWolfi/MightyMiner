@@ -27,10 +27,7 @@ import com.jelly.mightyminerv2.pathfinder.movement.movements.MovementDescend;
 import com.jelly.mightyminerv2.pathfinder.movement.movements.MovementDiagonal;
 import com.jelly.mightyminerv2.pathfinder.movement.movements.MovementTraverse;
 import com.jelly.mightyminerv2.pathfinder.util.BlockUtil;
-import com.jelly.mightyminerv2.util.CommissionUtil;
-import com.jelly.mightyminerv2.util.Logger;
-import com.jelly.mightyminerv2.util.PlayerUtil;
-import com.jelly.mightyminerv2.util.RenderUtil;
+import com.jelly.mightyminerv2.util.*;
 import com.jelly.mightyminerv2.util.helper.Angle;
 import com.jelly.mightyminerv2.util.helper.Clock;
 import com.jelly.mightyminerv2.util.helper.MineableBlock;
@@ -217,6 +214,12 @@ public class OsamaTestCommandNobodyTouchPleaseLoveYou {
     @SubCommand
     public void save() {
         GraphHandler.instance.save();
+    }
+
+    @SubCommand
+    public void shaft() {
+        EntityLivingBase closestShaft = EntityUtil.getClosestMineshaft();
+        Logger.sendMessage("Closest Shaft at: " + closestShaft.getPositionVector().toString());
     }
 
     @SubCommand
