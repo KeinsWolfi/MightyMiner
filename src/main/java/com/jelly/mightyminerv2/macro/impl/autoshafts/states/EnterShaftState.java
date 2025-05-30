@@ -185,7 +185,7 @@ public class EnterShaftState implements AutoShaftState {
                 if (timer.isScheduled() && timer.passed()) {
                     log("Entering shaft at: " + closestMineshaft.getPositionVector());
                     KeyBindUtil.setKeyBindState(mc.gameSettings.keyBindUseItem, true);
-                    timeoutTimer.schedule(15_000);
+                    timeoutTimer.schedule(5_000);
                 }
 
                 if (timeoutTimer.isScheduled() && timeoutTimer.passed()) {
