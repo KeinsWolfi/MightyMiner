@@ -1,6 +1,7 @@
 package com.jelly.mightyminerv2.macro.impl.autoshafts;
 
 import com.jelly.mightyminerv2.config.MightyMinerConfig;
+import com.jelly.mightyminerv2.event.MotionUpdateEvent;
 import com.jelly.mightyminerv2.event.UpdateScoreboardEvent;
 import com.jelly.mightyminerv2.event.UpdateTablistEvent;
 import com.jelly.mightyminerv2.feature.FeatureManager;
@@ -144,6 +145,15 @@ public class ShaftMacro extends AbstractMacro {
         }
         if (ScoreboardUtil.cold >= MightyMinerConfig.coldEvacuate) {
             transitionTo(new WarpingState());
+        }
+    }
+
+    @Override
+    public void onMotionUpdate(MotionUpdateEvent event) {
+        if (!this.isEnabled()) return;
+
+        if (currentState instanceof HandleShaftState) {
+            currentState.onMotionUpdate(this);
         }
     }
 }

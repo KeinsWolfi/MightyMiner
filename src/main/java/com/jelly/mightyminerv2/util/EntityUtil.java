@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.StringUtils;
 import net.minecraft.util.Vec3;
 
 import java.util.*;
@@ -116,6 +117,22 @@ public class EntityUtil {
                 .min(Comparator.comparingDouble(entity -> entity.getDistanceToEntity(mc.thePlayer)))
                 .map(entity -> (EntityLivingBase) entity)
                 .orElse(null);
+    }
+
+    public static EntityLivingBase getSecondMineshaftEntity(EntityLivingBase mineshaftPartEntity) {
+        if (mineshaftPartEntity == null) {
+            return null;
+        }
+
+        EntityLivingBase baseEntity = mineshaftPartEntity;
+        EntityLivingBase closestSecondPart = mc.theWorld.loadedEntityList.stream()
+                .filter(entity -> entity instanceof EntityLivingBase)
+                .filter(entity -> StringUtils.stripControlCodes(entity.getName().toLowerCase()).contains("'s mineshaft portal"))
+                .min(Comparator.comparingDouble(entity -> entity.getDistanceToEntity(baseEntity)))
+                .map(entity -> (EntityLivingBase) entity)
+                .orElse(null);
+
+        return closestSecondPart;
     }
 
     public static EntityLivingBase getClosestVanguard() {

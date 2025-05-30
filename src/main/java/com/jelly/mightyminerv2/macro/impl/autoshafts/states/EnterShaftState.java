@@ -44,11 +44,13 @@ public class EnterShaftState implements AutoShaftState {
 
     private EntityLivingBase closestMineshaft = null;
 
+    private EntityLivingBase fullClosestMineshaft = null;
+
     private final Minecraft mc = Minecraft.getMinecraft();
 
     @Override
     public void onStart(ShaftMacro macro) {
-        enteringShaftState = EnteringShaftState.FINDING_SHAFT;
+        swapState(EnteringShaftState.FINDING_SHAFT, 3000);
         pathRetryCount = 0;
         retryCount = 0;
         rotating = false;
@@ -59,7 +61,9 @@ public class EnterShaftState implements AutoShaftState {
     public AutoShaftState onTick(ShaftMacro macro) {
         switch (enteringShaftState) {
             case FINDING_SHAFT:
+                if (timer.isScheduled() && !timer.passed()) break;
                 closestMineshaft = EntityUtil.getClosestMineshaft();
+                fullClosestMineshaft = EntityUtil.getSecondMineshaftEntity(closestMineshaft);
                 if (closestMineshaft != null) {
                     log("Found a mineshaft: " + closestMineshaft.getName());
                     swapState(EnteringShaftState.PATHING_TO_SHAFT,0);
@@ -73,7 +77,7 @@ public class EnterShaftState implements AutoShaftState {
 
                 BlockPos blockUnderShaft = EntityUtil.getBlockBelow(closestMineshaft);
                 List<BlockPos> target1 = BlockUtil.getWalkableBlocksAround(blockUnderShaft);
-                BlockPos target = null;
+                BlockPos target;
                 if (target1.isEmpty()) {
                     logError("No walkable blocks found around the mineshaft, using block below");
                     target = blockUnderShaft;
@@ -127,6 +131,10 @@ public class EnterShaftState implements AutoShaftState {
                     return new StartingState();
                 }
 
+                if(mc.thePlayer.isCollidedHorizontally && mc.thePlayer.onGround) {
+                    mc.thePlayer.jump();
+                }
+
                 if (PlayerUtil.getNextTickPosition().squareDistanceTo(this.closestMineshaft.getPositionVector()) < 6) {
                     KeyBindUtil.releaseAllExcept();
                     swapState(EnteringShaftState.ROTATING_TO_SHAFT, 0);
@@ -135,7 +143,13 @@ public class EnterShaftState implements AutoShaftState {
                 break;
             case ROTATING_TO_SHAFT:
                 if (!Pathfinder.getInstance().isRunning()) {
-                    RotationHandler.getInstance().easeTo(new RotationConfiguration(new Target(closestMineshaft), MightyMinerConfig.getRandomRotationTime(), null));
+                    if (mc.thePlayer.getDistanceSqToEntity(closestMineshaft) < 1 && (Objects.equals(mc.objectMouseOver.entityHit, closestMineshaft) || Objects.equals(mc.objectMouseOver.entityHit, fullClosestMineshaft))) {
+                        log("Already close to the mineshaft, skipping rotation");
+                        swapState(EnteringShaftState.ENTERING_SHAFT, 500);
+                        break;
+                    }
+
+                    RotationHandler.getInstance().easeTo(new RotationConfiguration(new Target(closestMineshaft), MightyMinerConfig.getRandomAotvLookDelay(), null));
                     swapState(EnteringShaftState.CONFIRM_ROTATION, 0);
                     InventoryUtil.holdItem(MightyMinerConfig.altMiningTool);
                     log("Rotating to mineshaft: " + closestMineshaft.getName());
@@ -147,11 +161,15 @@ public class EnterShaftState implements AutoShaftState {
                     break;
                 }
 
-                if(!Objects.equals(mc.objectMouseOver.entityHit, closestMineshaft)) {
+                if(!Objects.equals(mc.objectMouseOver.entityHit, closestMineshaft) && !Objects.equals(mc.objectMouseOver.entityHit, fullClosestMineshaft)) {
                     if (++retryCount < 3) {
                         logError("Failed to rotate to mineshaft, retrying...");
                         swapState(EnteringShaftState.ROTATING_TO_SHAFT, 0);
                         retryCount++;
+                        break;
+                    } else {
+                        swapState(EnteringShaftState.WALK_FORWARD, 300);
+                        KeyBindUtil.releaseAllExcept();
                         break;
                     }
                 }

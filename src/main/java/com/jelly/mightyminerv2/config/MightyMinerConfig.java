@@ -818,7 +818,7 @@ public class MightyMinerConfig extends Config {
     }
 
     public static int getRandomAotvLookDelay() {
-        return delayAutoAotvEtherwarpLookDelay + (int) (Math.random() * 600);
+        return delayAutoAotvEtherwarpLookDelay + (int) (Math.random() * delayAutoAotvEtherwarpLookDelay);
     }
 
     public static int getRandomGuiWaitDelay() {

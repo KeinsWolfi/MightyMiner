@@ -19,8 +19,10 @@ import com.jelly.mightyminerv2.util.helper.route.RouteWaypoint;
 import com.jelly.mightyminerv2.util.helper.route.TransportMethod;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 
 import java.util.List;
 import java.util.Objects;
@@ -53,12 +55,15 @@ public class HandleShaftState implements AutoShaftState {
     @Setter
     private boolean pathing = false;
 
+    private boolean overLadder = false;
+
     @Override
     public void onStart(ShaftMacro macro) {
         log("Handling shaft state");
         timer.schedule(15_000);
         handleShaftState = HandleShaftStateState.DETECTING_SHAFT;
         pathing = false;
+        overLadder = false;
     }
 
     @Override
@@ -72,7 +77,7 @@ public class HandleShaftState implements AutoShaftState {
 
                 if (GameStateHandler.getInstance().getCurrentMineshaftType() != null) {
                     Logger.sendLog("Detected mineshaft type: " + GameStateHandler.getInstance().getCurrentMineshaftType());
-                    swapState(HandleShaftStateState.PATHING_TO_VANGUARD, 3000);
+                    swapState(HandleShaftStateState.PATHING_TO_VANGUARD, 2000);
                 }
                 break;
             case PATHING_TO_VANGUARD:
@@ -80,15 +85,21 @@ public class HandleShaftState implements AutoShaftState {
                 log("Pathing to Vanguard");
                 if(GameStateHandler.getInstance().getCurrentMineshaftType() == GameStateHandler.MineshaftTypes.FAIR) {
                     KeyBindUtil.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindForward, true);
-                    swapState(HandleShaftStateState.PATHING_TO_VANGUARD2, MightyMinerConfig.vanguardWalkForwardTime);
+                    swapState(HandleShaftStateState.PATHING_TO_VANGUARD2, 400);
                 } else {
                     Logger.sendMessage("Not a Vanguard mineshaft, returning to base");
-                    swapState(HandleShaftStateState.RETURNING_TO_BASE, 4000);
+                    swapState(HandleShaftStateState.RETURNING_TO_BASE, 2000);
                 }
                 break;
             case PATHING_TO_VANGUARD2:
-                if (timer.isScheduled() && !timer.passed()) break;
+                if (overLadder) {
+                    KeyBindUtil.releaseAllExcept();
+                    KeyBindUtil.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindBack, true);
+                }
+
+                if(timer.isScheduled() && !timer.passed()) break;
                 KeyBindUtil.releaseAllExcept();
+
                 swapState(HandleShaftStateState.PATHING_TO_VANGUARD3, 1500);
                 break;
             case PATHING_TO_VANGUARD3:
@@ -107,16 +118,17 @@ public class HandleShaftState implements AutoShaftState {
                     pathing = true;
                 }
 
-                if (routeNavigator.succeeded() && pathing) {
+                vanguard = EntityUtil.getClosestVanguard();
+
+                if (routeNavigator.succeeded() && pathing && Minecraft.getMinecraft().thePlayer.getDistanceSqToEntity(vanguard) < 6) {
                     routeNavigator.stop();
-                    swapState(HandleShaftStateState.ROTATING_TO_VANGUARD, 200);
+                    Pathfinder.getInstance().stop();
+                    swapState(HandleShaftStateState.ROTATING_TO_VANGUARD, 400);
                 }
                 break;
             case ROTATING_TO_VANGUARD:
                 if (timer.isScheduled() && !timer.passed()) break;
                 RotationHandler.getInstance().stop();
-
-                vanguard = EntityUtil.getClosestVanguard();
 
                 RotationHandler.getInstance().easeTo(new RotationConfiguration(
                         new Target(vanguard),
@@ -137,12 +149,14 @@ public class HandleShaftState implements AutoShaftState {
                     swapState(HandleShaftStateState.ROTATING_TO_VANGUARD, 0);
                 }
 
+                KeyBindUtil.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindForward, true);
                 log("Rotation confirmed, opening Vanguard");
                 swapState(HandleShaftStateState.OPENING_VANGUARD, 200);
                 RotationHandler.getInstance().stop();
                 break;
             case OPENING_VANGUARD:
                 if (timer.isScheduled() && !timer.passed()) break;
+                KeyBindUtil.releaseAllExcept();
                 log("Opening Vanguard");
                 KeyBindUtil.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindUseItem, true);
                 swapState(HandleShaftStateState.REACTING_TO_VANGUARD, 200);
@@ -177,5 +191,15 @@ public class HandleShaftState implements AutoShaftState {
         this.handleShaftState = newState;
         timer.schedule(delay);
         log("Switched to state: " + newState);
+    }
+
+    @Override
+    public void onMotionUpdate(ShaftMacro macro) {
+        if (handleShaftState == HandleShaftStateState.PATHING_TO_VANGUARD2) {
+            Block below = Minecraft.getMinecraft().theWorld.getBlockState(PlayerUtil.getBlockStandingOn()).getBlock();
+            if (/*below == Blocks.ladder ||*/ below == Blocks.air) {
+                overLadder = true;
+            }
+        }
     }
 }

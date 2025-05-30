@@ -1,5 +1,6 @@
 package com.jelly.mightyminerv2.macro;
 
+import com.jelly.mightyminerv2.event.MotionUpdateEvent;
 import com.jelly.mightyminerv2.event.PacketEvent;
 import com.jelly.mightyminerv2.event.UpdateScoreboardEvent;
 import com.jelly.mightyminerv2.event.UpdateTablistEvent;
@@ -107,6 +108,9 @@ public abstract class AbstractMacro {
     }
 
     public void onScoreBoardUpdate(UpdateScoreboardEvent event) {
+    }
+
+    public void onMotionUpdate(MotionUpdateEvent event) {
     }
 
     protected void log(String message) {

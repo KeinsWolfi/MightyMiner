@@ -3,6 +3,7 @@ package com.jelly.mightyminerv2.macro.impl.autoshafts.states;
 import com.jelly.mightyminerv2.feature.impl.RouteNavigator;
 import com.jelly.mightyminerv2.handler.GraphHandler;
 import com.jelly.mightyminerv2.macro.impl.autoshafts.ShaftMacro;
+import com.jelly.mightyminerv2.util.KeyBindUtil;
 import com.jelly.mightyminerv2.util.Logger;
 import com.jelly.mightyminerv2.util.PlayerUtil;
 import com.jelly.mightyminerv2.util.helper.route.Route;
@@ -63,14 +64,9 @@ public class PathingToVeinState implements AutoShaftState {
                 break;
             case TIME_FAIL: case PATHFIND_FAILED:
                 attempts++;
-                macro.setPathingAttempts(macro.getPathingAttempts() + 1);
-                if (macro.getPathingAttempts() > 10) {
-                    logError("Pathfinding failed too many times.");
-                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/warp base");
-                    return new StartingState();
-                }
-                if(attempts >= 3) {
+                if(attempts >= 10) {
                     logError("Failed to pathfind. Warping and restarting");
+                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/warp base");
                     return new WarpingState();
                 } else {
                     logError("Failed to pathfind. Retrying to pathfind");

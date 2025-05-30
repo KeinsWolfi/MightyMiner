@@ -1,6 +1,7 @@
 package com.jelly.mightyminerv2.macro;
 
 import com.jelly.mightyminerv2.config.MightyMinerConfig;
+import com.jelly.mightyminerv2.event.MotionUpdateEvent;
 import com.jelly.mightyminerv2.event.PacketEvent;
 import com.jelly.mightyminerv2.event.UpdateScoreboardEvent;
 import com.jelly.mightyminerv2.event.UpdateTablistEvent;
@@ -179,6 +180,16 @@ public class MacroManager {
         }
 
         this.currentMacro.onScoreBoardUpdate(event);
+    }
+
+    @SubscribeEvent
+    public void onMotionUpdate(MotionUpdateEvent event) {
+        if (mc.theWorld == null || mc.thePlayer == null) return;
+        if (this.currentMacro == null) {
+            return;
+        }
+
+        this.currentMacro.onMotionUpdate(event);
     }
 
     public void log(String message) {

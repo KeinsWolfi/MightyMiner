@@ -1,5 +1,19 @@
 {
   "map": {
+    "-175,10,-173,WALK": [
+      {
+        "x": -183,
+        "y": 10,
+        "z": -172,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": -169,
+        "y": 9,
+        "z": -177,
+        "transportMethod": "WALK"
+      }
+    ],
     "-145,3,-174,WALK": [
       {
         "x": -148,
@@ -11,6 +25,20 @@
         "x": -141,
         "y": 3,
         "z": -169,
+        "transportMethod": "WALK"
+      }
+    ],
+    "-157,6,-174,WALK": [
+      {
+        "x": -161,
+        "y": 7,
+        "z": -176,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": -153,
+        "y": 4,
+        "z": -173,
         "transportMethod": "WALK"
       }
     ],
@@ -28,73 +56,45 @@
         "transportMethod": "WALK"
       }
     ],
-    "-186,25,-172,WALK": [
+    "-166,8,-178,WALK": [
       {
-        "x": -190,
-        "y": 25,
-        "z": -174,
+        "x": -169,
+        "y": 9,
+        "z": -177,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": -161,
+        "y": 7,
+        "z": -176,
         "transportMethod": "WALK"
       }
     ],
     "-153,4,-173,WALK": [
       {
-        "x": -160,
-        "y": 6,
-        "z": -175,
-        "transportMethod": "WALK"
-      },
-      {
         "x": -148,
         "y": 3,
         "z": -173,
         "transportMethod": "WALK"
+      },
+      {
+        "x": -157,
+        "y": 6,
+        "z": -174,
+        "transportMethod": "WALK"
       }
     ],
-    "-160,6,-175,WALK": [
+    "-161,7,-176,WALK": [
       {
-        "x": -164,
+        "x": -166,
         "y": 8,
         "z": -178,
         "transportMethod": "WALK"
       },
       {
-        "x": -153,
-        "y": 4,
-        "z": -173,
-        "transportMethod": "WALK"
-      }
-    ],
-    "-190,25,-174,WALK": [
-      {
-        "x": -190,
-        "y": 25,
+        "x": -157,
+        "y": 6,
         "z": -174,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": -190,
-        "y": 25,
-        "z": -174,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": -186,
-        "y": 25,
-        "z": -172,
-        "transportMethod": "WALK"
-      }
-    ],
-    "-175,10,-173,WALK": [
-      {
-        "x": -183,
-        "y": 10,
-        "z": -172,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": -169,
-        "y": 9,
-        "z": -177,
         "transportMethod": "WALK"
       }
     ],
@@ -114,23 +114,9 @@
         "transportMethod": "WALK"
       },
       {
-        "x": -164,
+        "x": -166,
         "y": 8,
         "z": -178,
-        "transportMethod": "WALK"
-      }
-    ],
-    "-164,8,-178,WALK": [
-      {
-        "x": -169,
-        "y": 9,
-        "z": -177,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": -160,
-        "y": 6,
-        "z": -175,
         "transportMethod": "WALK"
       }
     ],

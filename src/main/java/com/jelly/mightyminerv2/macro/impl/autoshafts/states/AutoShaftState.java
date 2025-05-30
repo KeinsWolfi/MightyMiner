@@ -8,6 +8,10 @@ public interface AutoShaftState {
 
     AutoShaftState onTick(ShaftMacro macro);
 
+    default void onMotionUpdate(ShaftMacro macro) {
+        // Default implementation does nothing
+    }
+
     void onEnd(ShaftMacro macro);
 
     default void logMessage(String message) {

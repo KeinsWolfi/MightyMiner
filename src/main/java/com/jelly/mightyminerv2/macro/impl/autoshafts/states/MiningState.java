@@ -13,9 +13,12 @@ public class MiningState implements AutoShaftState {
             MineableBlock.TITANIUM};
     private final int[] titaniumPriority = {3, 2, 1, 20};
 
+    private int noFuelCounter = 0;
+
     @Override
     public void onStart(ShaftMacro macro) {
         log("Entering mining state");
+        noFuelCounter = 0; // Reset fuel counter when starting mining state
         miner.start(
                 blocksToMine,
                 macro.getMiningSpeed(),
@@ -29,13 +32,20 @@ public class MiningState implements AutoShaftState {
         String miningTool = MightyMinerConfig.miningTool;
         if (miningTool.toLowerCase().contains("drill") || InventoryUtil.getFullName(miningTool).contains("Drill")) {
             // log("Fuel detected: " + InventoryUtil.getDrillRemainingFuel(miningTool));
-            if (InventoryUtil.getDrillRemainingFuel(miningTool) <= 100) {
-                log("Less than 100 fuel left in drill. Starting to refuel");
+            if (InventoryUtil.getDrillRemainingFuel(miningTool) <= 500) {
+                noFuelCounter++;
+                //log("Less than 100 fuel left in drill. Starting to refuel");
                 if(MightyMinerConfig.drillRefuel)
-                    return new RefuelState();
+                    if (noFuelCounter >= 300) {
+                        return new RefuelState();
+                    }
                 else {
-                    macro.disable("Very little fuel left in drill");
-                    return null;
+                    if (noFuelCounter >= 300) {
+                        log("No fuel in drill for 300 ticks, restarting macro");
+                        return new StartingState();
+                    } else {
+                        log("No fuel in drill, but refuel is disabled. Continuing mining");
+                    }
                 }
             }
         }
