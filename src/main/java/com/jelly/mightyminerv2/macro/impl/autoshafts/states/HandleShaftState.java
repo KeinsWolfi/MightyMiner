@@ -57,8 +57,6 @@ public class HandleShaftState implements AutoShaftState {
 
     private boolean overLadder = false;
 
-    private int pathingAttempts = 0;
-
     @Override
     public void onStart(ShaftMacro macro) {
         log("Handling shaft state");
@@ -161,7 +159,7 @@ public class HandleShaftState implements AutoShaftState {
 
                 KeyBindUtil.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindForward, true);
                 log("Rotation confirmed, opening Vanguard");
-                swapState(HandleShaftStateState.OPENING_VANGUARD, 200);
+                swapState(HandleShaftStateState.OPENING_VANGUARD, MightyMinerConfig.vanguardWalkForwardTime);
                 RotationHandler.getInstance().stop();
                 break;
             case OPENING_VANGUARD:
@@ -174,10 +172,8 @@ public class HandleShaftState implements AutoShaftState {
             case REACTING_TO_VANGUARD:
                 if (timer.isScheduled() && !timer.passed()) break;
                 log("Reacting to Vanguard");
-                // Logic to handle Vanguard reaction, e.g., mining or combat
-                // This is a placeholder for actual logic
                 KeyBindUtil.releaseAllExcept();
-                swapState(HandleShaftStateState.RETURNING_TO_BASE, 5000);
+                swapState(HandleShaftStateState.RETURNING_TO_BASE, MightyMinerConfig.vanguardReactionTime);
                 break;
             case RETURNING_TO_BASE:
                 if (timer.isScheduled() && !timer.passed()) break;

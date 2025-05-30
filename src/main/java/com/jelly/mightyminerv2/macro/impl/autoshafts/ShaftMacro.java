@@ -132,6 +132,11 @@ public class ShaftMacro extends AbstractMacro {
             Logger.sendLog("Detected Glacite Mineshaft entrance in chat, transitioning to EnterShaftState.");
             transitionTo(new EnterShaftState());
         }
+
+        if (message.startsWith("Evacuating ")) {
+            Logger.sendLog("Detected evacuation message in chat, transitioning to StartingState.");
+            transitionTo(new StartingState());
+        }
     }
 
     @Override

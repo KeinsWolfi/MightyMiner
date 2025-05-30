@@ -2,10 +2,12 @@ package com.jelly.mightyminerv2.macro.impl.autoshafts.states;
 
 import com.jelly.mightyminerv2.config.MightyMinerConfig;
 import com.jelly.mightyminerv2.feature.impl.BlockMiner.BlockMiner;
+import com.jelly.mightyminerv2.handler.GameStateHandler;
 import com.jelly.mightyminerv2.macro.impl.autoshafts.ShaftMacro;
 import com.jelly.mightyminerv2.util.InventoryUtil;
 import com.jelly.mightyminerv2.util.KeyBindUtil;
 import com.jelly.mightyminerv2.util.helper.MineableBlock;
+import com.jelly.mightyminerv2.util.helper.location.SubLocation;
 
 public class MiningState implements AutoShaftState {
     private final BlockMiner miner = BlockMiner.getInstance();

@@ -35,7 +35,7 @@ public class StartingState implements AutoShaftState {
             return macro.getMiningSpeed() == 0 ? new GettingStatsState() : new PathingToVeinState();
         } else if (GameStateHandler.getInstance().getCurrentSubLocation() == SubLocation.GLACITE_MINESHAFT) {
             return new HandleShaftState();
-        }else {
+        } else {
             return new WarpingState();
         }
     }

@@ -717,6 +717,14 @@ public class MightyMinerConfig extends Config {
     )
     public static float rotmult = 2f;
 
+    @Slider(
+            name = "Vanguard Opening Delay",
+            category = DEBUG,
+            subcategory = "Vanguard",
+            min = 0, max = 1000
+    )
+    public static int vanguardOpeningDelay = 100;
+
     //</editor-fold>
     //<editor-fold desc="Failsafe">
 
@@ -824,6 +832,14 @@ public class MightyMinerConfig extends Config {
             min = 0, max = 100
     )
     public static int skeletonKeyBuyThreshold = 1;
+
+     @Slider(
+             name = "Vanguard Reaction Time",
+             category = AUTO_SHAFTS,
+             subcategory = "Vanguard",
+             min = 0, max = 5000
+     )
+    public static int vanguardReactionTime = 1000;
 
     public static int getRandomRotationTime() {
         return rotationTime + (int) (Math.random() * rotationTimeRandomizer);
