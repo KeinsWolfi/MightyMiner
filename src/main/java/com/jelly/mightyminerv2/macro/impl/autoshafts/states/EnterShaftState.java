@@ -19,7 +19,7 @@ import java.util.Objects;
 
 public class EnterShaftState implements AutoShaftState {
     private final Clock timer = new Clock();
-    private final Clock pathTimer = new Clock();
+    private final Clock timeoutTimer = new Clock();
 
     private int retryCount = 0;
 
@@ -88,6 +88,8 @@ public class EnterShaftState implements AutoShaftState {
                 Pathfinder.getInstance().stopAndRequeue(target);
                 log("Pathing to mineshaft at: " + target);
 
+                InventoryUtil.holdItem(MightyMinerConfig.altMiningTool);
+
                 if (!Pathfinder.getInstance().isRunning()) {
                     log("Pathfinder wasnt enabled. starting");
                     Pathfinder.getInstance().setInterpolationState(true);
@@ -151,7 +153,6 @@ public class EnterShaftState implements AutoShaftState {
 
                     RotationHandler.getInstance().easeTo(new RotationConfiguration(new Target(closestMineshaft), MightyMinerConfig.getRandomAotvLookDelay(), null));
                     swapState(EnteringShaftState.CONFIRM_ROTATION, 0);
-                    InventoryUtil.holdItem(MightyMinerConfig.altMiningTool);
                     log("Rotating to mineshaft: " + closestMineshaft.getName());
                 }
                 break;
@@ -184,6 +185,13 @@ public class EnterShaftState implements AutoShaftState {
                 if (timer.isScheduled() && timer.passed()) {
                     log("Entering shaft at: " + closestMineshaft.getPositionVector());
                     KeyBindUtil.setKeyBindState(mc.gameSettings.keyBindUseItem, true);
+                    timeoutTimer.schedule(15_000);
+                }
+
+                if (timeoutTimer.isScheduled() && timeoutTimer.passed()) {
+                    logError("Timeout while entering shaft, retrying...");
+                    KeyBindUtil.releaseAllExcept();
+                    return new StartingState();
                 }
 
                 if (InventoryUtil.getInventoryName().toLowerCase().contains("glacite mineshaft")) {

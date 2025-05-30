@@ -190,6 +190,12 @@ public class Pathfinder extends AbstractFeature {
                 BlockPos end = startEnd.getSecond();
                 double walkSpeed = mc.thePlayer.getAIMoveSpeed();
                 CalculationContext ctx = new CalculationContext(walkSpeed * 1.3, walkSpeed, walkSpeed * 0.3);
+                if (startEnd == null || startEnd.getFirst() == null || startEnd.getSecond() == null) {
+                    this.pathfinding = false;
+                    failed = true;
+                    stop();
+                    return;
+                }
                 finder = new AStarPathFinder(start.getX(), start.getY(), start.getZ(), new Goal(end.getX(), end.getY(), end.getZ(), ctx), ctx);
                 Path path = finder.calculatePath();
                 log("done pathfinding");
