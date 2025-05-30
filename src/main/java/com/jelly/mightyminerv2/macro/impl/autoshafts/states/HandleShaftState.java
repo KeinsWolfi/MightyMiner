@@ -107,9 +107,9 @@ public class HandleShaftState implements AutoShaftState {
             case PATHING_TO_VANGUARD3:
                 if (timer.isScheduled() && !timer.passed()) break;
                 RouteWaypoint vang = new RouteWaypoint(-141, 3, -169, TransportMethod.WALK);
-                Minecraft.getMinecraft().thePlayer.sendChatMessage("/p warp");
 
                 if (!routeNavigator.isRunning() && !pathing) {
+                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/p warp");
                     List<RouteWaypoint> nodes = GraphHandler.instance.findPathFrom("Vanguard", PlayerUtil.getBlockStandingOn(), vang);
 
                     if (nodes.isEmpty()) {

@@ -170,6 +170,14 @@ public class MightyMinerConfig extends Config {
     public static boolean precisionMiner = false;
 
     @Slider(
+            name = "BlockMiner Wait Threshold",
+            category = GENERAL,
+            subcategory = "Mining Behaviour",
+            min = 10, max = 60
+    )
+    public static int blockMinerWaitThreshold = 30;
+
+    @Slider(
             name = "Ore Respawn Wait Threshold (seconds)",
             category = GENERAL, subcategory = "Mining Behaviour",
             description = "How long to wait (in seconds) when no ores are present before stopping",

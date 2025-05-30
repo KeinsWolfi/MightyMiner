@@ -57,6 +57,8 @@ public class BazaarHandler extends AbstractFeature {
     private final List<Integer> sellTypes = new ArrayList<>();
     private SellState sellState = SellState.STARTING;
 
+    private int serverSwitchCooldown = 0;
+
     @Override
     public String getName() {
         return "AutoBazaar";
@@ -162,6 +164,12 @@ public class BazaarHandler extends AbstractFeature {
             this.sellState = SellState.STARTING;
             timer.schedule(500);
         }
+
+        if (message.startsWith("You may only use this command after 4s on the server!")) {
+            this.serverSwitchCooldown = 80; // 4 seconds in ticks
+            timer.schedule(6000);
+            this.buyState = BuyState.OPEN_BZ;
+        }
     }
 
     private void handleBuyFromBz() {
@@ -171,6 +179,10 @@ public class BazaarHandler extends AbstractFeature {
                 this.buyState = BuyState.OPEN_BZ;
                 break;
             case OPEN_BZ:
+                if (this.serverSwitchCooldown > 0) {
+                    this.serverSwitchCooldown--;
+                    return;
+                }
                 mc.thePlayer.sendChatMessage("/bz " + this.itemToBuy);
                 timer.schedule(2000);
                 this.buyState = BuyState.BZ_VERIFY;

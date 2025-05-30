@@ -27,7 +27,7 @@ public class BreakingState implements BlockMinerState{
 
     private static final double MIN_WALK_DISTANCE = 0.2;  // Minimum distance to trigger walking
     private static final double MAX_MINE_DISTANCE = 4;    // Maximum mining distance for player
-    private static final int FAILSAFE_TICKS = 40;         // Safety mechanism if we've been trying to break for too long
+    private static final int FAILSAFE_TICKS = MightyMinerConfig.blockMinerWaitThreshold;         // Safety mechanism if we've been trying to break for too long
 
     private final Minecraft mc = Minecraft.getMinecraft();
     private final Random random = new Random();
