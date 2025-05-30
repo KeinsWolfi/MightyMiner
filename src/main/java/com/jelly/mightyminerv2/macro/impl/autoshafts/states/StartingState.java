@@ -11,7 +11,7 @@ import java.util.List;
 public class StartingState implements AutoShaftState {
     @Override
     public void onStart(ShaftMacro macro) {
-        log("Entrring starting state");
+        log("Entering starting state");
     }
 
     @Override
@@ -19,6 +19,8 @@ public class StartingState implements AutoShaftState {
         if (!InventoryUtil.areItemsInHotbar(macro.getNecessaryItems())) {
             logError("Not all necessary items are in the hotbar. Please put the following items in your hotbar: " + macro.getNecessaryItems());
         }
+
+        macro.setPathingAttempts(0);
 
         if (GameStateHandler.getInstance().getCurrentSubLocation() == SubLocation.DWARVEN_BASE_CAMP || GameStateHandler.getInstance().getCurrentSubLocation() == SubLocation.GLACITE_TUNNELS) {
             if (InventoryUtil.isInventoryFull()) {
@@ -30,7 +32,9 @@ public class StartingState implements AutoShaftState {
             }
 
             return macro.getMiningSpeed() == 0 ? new GettingStatsState() : new PathingToVeinState();
-        } else {
+        } else if (GameStateHandler.getInstance().getCurrentSubLocation() == SubLocation.GLACITE_MINESHAFT) {
+            return new HandleShaftState();
+        }else {
             return new WarpingState();
         }
     }

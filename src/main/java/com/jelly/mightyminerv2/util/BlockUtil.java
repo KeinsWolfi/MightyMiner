@@ -40,7 +40,13 @@ public class BlockUtil {
     public static List<BlockPos> getWalkableBlocksAround(BlockPos playerPos) {
         List<BlockPos> walkableBlocks = new ArrayList<>();
         BlockStateAccessor bsa = new BlockStateAccessor(mc.theWorld);
-        int yOffset = MovementHelper.INSTANCE.isBottomSlab(bsa.get(playerPos.getX(), playerPos.getY(), playerPos.getZ())) ? -1 : 0;
+        int yOffset = 0;
+        try {
+            yOffset = MovementHelper.INSTANCE.isBottomSlab(bsa.get(playerPos.getX(), playerPos.getY(), playerPos.getZ())) ? -1 : 0;
+        } catch (Exception e) {
+            // If the block is not a slab, we can safely assume yOffset is 0
+            e.printStackTrace();
+        }
 
         for (int i = -1; i <= 1; i++) {
             for (int j = yOffset; j <= 0; j++) {

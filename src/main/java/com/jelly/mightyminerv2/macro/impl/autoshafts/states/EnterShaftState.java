@@ -25,13 +25,17 @@ public class EnterShaftState implements AutoShaftState {
 
     private int pathRetryCount = 0;
 
+    private boolean rotating = false;
+
     @Getter
     @Setter
     private EnteringShaftState enteringShaftState = EnteringShaftState.FINDING_SHAFT;
     public enum EnteringShaftState {
         FINDING_SHAFT,
         PATHING_TO_SHAFT,
-        WATING_FOR_PATH,
+        WAITING_FOR_PATH,
+        WALK_FORWARD,
+        TIMEOUT,
         ROTATING_TO_SHAFT,
         CONFIRM_ROTATION,
         ENTERING_SHAFT,
@@ -47,6 +51,7 @@ public class EnterShaftState implements AutoShaftState {
         enteringShaftState = EnteringShaftState.FINDING_SHAFT;
         pathRetryCount = 0;
         retryCount = 0;
+        rotating = false;
         log("Entering shaft state");
     }
 
@@ -83,11 +88,11 @@ public class EnterShaftState implements AutoShaftState {
                     log("Pathfinder wasnt enabled. starting");
                     Pathfinder.getInstance().setInterpolationState(true);
                     Pathfinder.getInstance().start();
-                    swapState(EnteringShaftState.WATING_FOR_PATH,0);
+                    swapState(EnteringShaftState.WAITING_FOR_PATH,0);
                     break;
                 }
                 break;
-            case WATING_FOR_PATH:
+            case WAITING_FOR_PATH:
                 if ((PlayerUtil.getNextTickPosition().squareDistanceTo(this.closestMineshaft.getPositionVector()) < 6 || Pathfinder.getInstance().succeeded())) { // 8 cuz why not
                     Pathfinder.getInstance().stop();
                     KeyBindUtil.releaseAllExcept();
@@ -99,8 +104,33 @@ public class EnterShaftState implements AutoShaftState {
                     logError("Pathfinder failed to find a path to the mineshaft, retrying...");
                     pathRetryCount++;
                     if (pathRetryCount > 3) {
-                        return new StartingState();
+                        this.swapState(EnteringShaftState.WALK_FORWARD, 0);
                     }
+                }
+                break;
+            case WALK_FORWARD:
+                if (timer.isScheduled() && timer.passed() && !rotating) {
+                    RotationHandler.getInstance().easeTo(new RotationConfiguration(new Target(closestMineshaft), MightyMinerConfig.getRandomRotationTime(), null));
+                    InventoryUtil.holdItem(MightyMinerConfig.altMiningTool);
+                    rotating = true;
+                }
+
+                if (!RotationHandler.getInstance().isEnabled() && rotating) {
+                    KeyBindUtil.setKeyBindState(mc.gameSettings.keyBindForward, true);
+                    swapState(EnteringShaftState.TIMEOUT, 3000);
+                    rotating = false;
+                }
+                break;
+            case TIMEOUT:
+                if (timer.isScheduled() && timer.passed()) {
+                    log("Timeout reached while walking forward");
+                    return new StartingState();
+                }
+
+                if (PlayerUtil.getNextTickPosition().squareDistanceTo(this.closestMineshaft.getPositionVector()) < 6) {
+                    KeyBindUtil.releaseAllExcept();
+                    swapState(EnteringShaftState.ROTATING_TO_SHAFT, 0);
+                    log("Reached mineshaft while walking forward, rotating now");
                 }
                 break;
             case ROTATING_TO_SHAFT:

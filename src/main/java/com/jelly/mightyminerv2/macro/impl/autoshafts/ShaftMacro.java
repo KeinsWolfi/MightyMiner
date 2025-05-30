@@ -34,6 +34,14 @@ public class ShaftMacro extends AbstractMacro {
     @Setter
     private long lastShaftEntranceTime = 0;
 
+    @Getter
+    @Setter
+    private int pathingAttempts = 0;
+
+    @Getter
+    @Setter
+    private boolean wasInShaft = false;
+
     @Override
     public String getName() {
         return "Auto Shafts";
@@ -59,6 +67,8 @@ public class ShaftMacro extends AbstractMacro {
             this.miningSpeed = MightyMinerConfig.miningSpeed;
         }
         currentState = new StartingState();
+        nextVeinIndex = 0;
+        pathingAttempts = 0;
     }
 
     @Override
@@ -127,7 +137,7 @@ public class ShaftMacro extends AbstractMacro {
     @Override
     public void onScoreBoardUpdate(UpdateScoreboardEvent event) {
         if (GameStateHandler.getInstance().getCurrentMineshaftType() != null) {
-            if (!(currentState instanceof HandleShaftState)) {
+            if (!(currentState instanceof HandleShaftState) && !wasInShaft) {
                 log("Detected mineshaft type: " + GameStateHandler.getInstance().getCurrentMineshaftType());
                 transitionTo(new HandleShaftState());
             }

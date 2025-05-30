@@ -9,6 +9,7 @@ import com.jelly.mightyminerv2.util.helper.route.Route;
 import com.jelly.mightyminerv2.util.helper.route.RouteWaypoint;
 import com.jelly.mightyminerv2.util.helper.route.TransportMethod;
 import lombok.Getter;
+import net.minecraft.client.Minecraft;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,12 @@ public class PathingToVeinState implements AutoShaftState {
                 break;
             case TIME_FAIL: case PATHFIND_FAILED:
                 attempts++;
+                macro.setPathingAttempts(macro.getPathingAttempts() + 1);
+                if (macro.getPathingAttempts() > 10) {
+                    logError("Pathfinding failed too many times.");
+                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/warp base");
+                    return new StartingState();
+                }
                 if(attempts >= 3) {
                     logError("Failed to pathfind. Warping and restarting");
                     return new WarpingState();

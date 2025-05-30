@@ -72,7 +72,7 @@ public class HandleShaftState implements AutoShaftState {
 
                 if (GameStateHandler.getInstance().getCurrentMineshaftType() != null) {
                     Logger.sendLog("Detected mineshaft type: " + GameStateHandler.getInstance().getCurrentMineshaftType());
-                    swapState(HandleShaftStateState.PATHING_TO_VANGUARD, 0);
+                    swapState(HandleShaftStateState.PATHING_TO_VANGUARD, 3000);
                 }
                 break;
             case PATHING_TO_VANGUARD:
@@ -80,7 +80,7 @@ public class HandleShaftState implements AutoShaftState {
                 log("Pathing to Vanguard");
                 if(GameStateHandler.getInstance().getCurrentMineshaftType() == GameStateHandler.MineshaftTypes.FAIR) {
                     KeyBindUtil.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindForward, true);
-                    swapState(HandleShaftStateState.PATHING_TO_VANGUARD2, 400);
+                    swapState(HandleShaftStateState.PATHING_TO_VANGUARD2, MightyMinerConfig.vanguardWalkForwardTime);
                 } else {
                     Logger.sendMessage("Not a Vanguard mineshaft, returning to base");
                     swapState(HandleShaftStateState.RETURNING_TO_BASE, 4000);
@@ -158,6 +158,7 @@ public class HandleShaftState implements AutoShaftState {
             case RETURNING_TO_BASE:
                 if (timer.isScheduled() && !timer.passed()) break;
                 log("Returning to base");
+                macro.setWasInShaft(true);
                 // Logic to return to base
                 return new WarpingState();
         }

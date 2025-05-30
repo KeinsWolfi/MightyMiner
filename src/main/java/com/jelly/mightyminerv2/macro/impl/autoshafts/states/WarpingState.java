@@ -22,6 +22,7 @@ public class WarpingState implements AutoShaftState {
 
         if (AutoWarp.getInstance().hasSucceeded()) {
             log("Auto Warp Completed");
+            macro.setWasInShaft(false);
             return new StartingState();
         }
 

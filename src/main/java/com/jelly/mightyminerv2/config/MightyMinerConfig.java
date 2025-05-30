@@ -40,6 +40,7 @@ public class MightyMinerConfig extends Config {
     private transient static final String FAILSAFE = "Failsafe";
     private transient static final String DEBUG = "Debug";
     private transient static final String DISCORD_INTEGRATION = "Discord Integration";
+    private transient static final String AUTO_SHAFTS = "Auto Shafts";
 
 
     public MightyMinerConfig() {
@@ -798,6 +799,15 @@ public class MightyMinerConfig extends Config {
     )
     Runnable _stopFailsafeSoundButton = () -> AudioManager.getInstance().resetSound();
     //</editor-fold>
+    //<editor-fold desc="Auto Shafts">
+
+    @Slider(
+            name = "Vanguard Walk Forward Time",
+            category = AUTO_SHAFTS,
+            subcategory = "Vanguard",
+            min = 0, max = 500
+    )
+    public static int vanguardWalkForwardTime = 350;
 
     public static int getRandomRotationTime() {
         return rotationTime + (int) (Math.random() * rotationTimeRandomizer);
