@@ -57,6 +57,8 @@ public class HandleShaftState implements AutoShaftState {
 
     private boolean overLadder = false;
 
+    private int pathingAttempts = 0;
+
     @Override
     public void onStart(ShaftMacro macro) {
         log("Handling shaft state");
@@ -77,15 +79,17 @@ public class HandleShaftState implements AutoShaftState {
 
                 if (GameStateHandler.getInstance().getCurrentMineshaftType() != null) {
                     Logger.sendLog("Detected mineshaft type: " + GameStateHandler.getInstance().getCurrentMineshaftType());
+                    macro.setWasInShaft(true);
                     swapState(HandleShaftStateState.PATHING_TO_VANGUARD, 2000);
                 }
                 break;
             case PATHING_TO_VANGUARD:
                 if (timer.isScheduled() && !timer.passed()) break;
                 log("Pathing to Vanguard");
-                if(GameStateHandler.getInstance().getCurrentMineshaftType() == GameStateHandler.MineshaftTypes.FAIR) {
+                if (GameStateHandler.getInstance().getCurrentMineshaftType() == GameStateHandler.MineshaftTypes.FAIR) {
                     KeyBindUtil.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindForward, true);
                     swapState(HandleShaftStateState.PATHING_TO_VANGUARD2, 400);
+                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc !ptme");
                 } else {
                     Logger.sendMessage("Not a Vanguard mineshaft, returning to base");
                     swapState(HandleShaftStateState.RETURNING_TO_BASE, 2000);
@@ -97,7 +101,7 @@ public class HandleShaftState implements AutoShaftState {
                     KeyBindUtil.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindBack, true);
                 }
 
-                if(timer.isScheduled() && !timer.passed()) break;
+                if (timer.isScheduled() && !timer.passed()) break;
                 KeyBindUtil.releaseAllExcept();
 
                 swapState(HandleShaftStateState.PATHING_TO_VANGUARD3, 1500);
@@ -105,6 +109,7 @@ public class HandleShaftState implements AutoShaftState {
             case PATHING_TO_VANGUARD3:
                 if (timer.isScheduled() && !timer.passed()) break;
                 RouteWaypoint vang = new RouteWaypoint(-141, 3, -169, TransportMethod.WALK);
+                Minecraft.getMinecraft().thePlayer.sendChatMessage("/p warp");
 
                 if (!routeNavigator.isRunning() && !pathing) {
                     List<RouteWaypoint> nodes = GraphHandler.instance.findPathFrom("Vanguard", PlayerUtil.getBlockStandingOn(), vang);
@@ -121,6 +126,11 @@ public class HandleShaftState implements AutoShaftState {
                 vanguard = EntityUtil.getClosestVanguard();
 
                 if (routeNavigator.succeeded() && pathing && Minecraft.getMinecraft().thePlayer.getDistanceSqToEntity(vanguard) < 6) {
+                    routeNavigator.stop();
+                    Pathfinder.getInstance().stop();
+                    swapState(HandleShaftStateState.ROTATING_TO_VANGUARD, 400);
+                } else if (routeNavigator.succeeded() && pathing && Minecraft.getMinecraft().thePlayer.getDistanceSqToEntity(vanguard) >= 6) {
+                    log("Reached Vanguard, but too far away, still rotating...");
                     routeNavigator.stop();
                     Pathfinder.getInstance().stop();
                     swapState(HandleShaftStateState.ROTATING_TO_VANGUARD, 400);
@@ -172,7 +182,6 @@ public class HandleShaftState implements AutoShaftState {
             case RETURNING_TO_BASE:
                 if (timer.isScheduled() && !timer.passed()) break;
                 log("Returning to base");
-                macro.setWasInShaft(true);
                 // Logic to return to base
                 return new WarpingState();
         }
