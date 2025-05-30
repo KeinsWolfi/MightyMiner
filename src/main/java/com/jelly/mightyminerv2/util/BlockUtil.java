@@ -49,6 +49,11 @@ public class BlockUtil {
                 e.printStackTrace();
             }
 
+            if (mc.thePlayer == null || mc.theWorld == null) {
+                System.out.println("Player or world is null, cannot get walkable blocks.");
+                return Collections.emptyList();
+            }
+
             for (int i = -1; i <= 1; i++) {
                 for (int j = yOffset; j <= 0; j++) {
                     for (int k = -1; k <= 1; k++) {
