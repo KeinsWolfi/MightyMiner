@@ -155,6 +155,13 @@ public class MightyMinerConfig extends Config {
     public static boolean usePickaxeAbility = true;
 
     @Switch(
+            name = "Strafe While Mining",
+            category = GENERAL,
+            subcategory = "Mining Behaviour"
+    )
+    public static boolean strafe = true;
+
+    @Switch(
             name = "Precision Miner (to be implemented)", description = "Looks at particles spawned by precision miner perk",
             category = GENERAL,
             subcategory = "Mining Behaviour"
@@ -183,6 +190,22 @@ public class MightyMinerConfig extends Config {
             min = 0, max = 20000
     )
     public static int miningSpeed = 0;
+
+    @Slider(
+            name = "Retarget While Breaking Chance",
+            category = GENERAL,
+            subcategory = "Mining Behaviour",
+            min = 1, max = 100
+    )
+    public static int retargetWhileBreakingChance = 10;
+
+    @Slider(
+            name = "Cold Evacuate",
+            category = GENERAL,
+            subcategory = "Mining Behaviour",
+            min = 1, max = 100
+    )
+    public static int coldEvacuate = 80;
 
     @Switch(
             name = "Enabled (Requires abiphone!)",
@@ -782,6 +805,10 @@ public class MightyMinerConfig extends Config {
 
     public static int getRandomSneakTime() {
         return sneakTime + (int) (Math.random() * sneakTimeRandomizer);
+    }
+
+    public static int getRandomAotvLookDelay() {
+        return delayAutoAotvEtherwarpLookDelay + (int) (Math.random() * 600);
     }
 
     public static int getRandomGuiWaitDelay() {

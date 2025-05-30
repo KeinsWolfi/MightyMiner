@@ -208,7 +208,8 @@ public class OsamaTestCommandNobodyTouchPleaseLoveYou {
     @SubCommand
     public void graph() {
         GraphHandler.instance.toggleEdit(//CommissionMacro.getInstance().getName());
-                GlacialMacro.getInstance().getName());
+                //GlacialMacro.getInstance().getName());
+                "Vanguard");
     }
 
     @SubCommand
@@ -344,7 +345,9 @@ public class OsamaTestCommandNobodyTouchPleaseLoveYou {
                 blockToDraw.clear();
                 if (go == 0) {
                     blockToDraw.addAll(path.getSmoothedPath());
-//          Pathfinder.getInstance().queue();
+                    // PathExecutor.getInstance().start();
+                    // PathExecutor.getInstance().queuePath(path);
+                    // Pathfinder.getInstance().queue();
                 } else {
                     blockToDraw.addAll(path.getPath());
                 }

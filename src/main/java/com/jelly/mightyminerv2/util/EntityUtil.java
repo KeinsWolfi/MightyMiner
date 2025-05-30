@@ -118,6 +118,19 @@ public class EntityUtil {
                 .orElse(null);
     }
 
+    public static EntityLivingBase getClosestVanguard() {
+        return mc.theWorld.loadedEntityList.stream()
+                .filter(entity -> entity instanceof EntityLivingBase)
+                .filter(entity -> entity instanceof EntityArmorStand)
+                .filter(entity ->
+                        ((EntityArmorStand) entity).hasNoBasePlate() &&
+                                ((EntityArmorStand) entity).getShowArms() &&
+                                !entity.isInvisible())
+                .min(Comparator.comparingDouble(entity -> entity.getDistanceToEntity(mc.thePlayer)))
+                .map(entity -> (EntityLivingBase) entity)
+                .orElse(null);
+    }
+
     public static BlockPos nearbyBlock(EntityLivingBase entityLivingBase) {
         BlockPos closestBlock = null;
         double closestDistance = Double.MAX_VALUE;

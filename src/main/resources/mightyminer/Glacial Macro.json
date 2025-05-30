@@ -14620,6 +14620,14 @@
         "transportMethod": "WALK"
       }
     ],
+    "32,151,313,WALK": [
+      {
+        "x": 34,
+        "y": 151,
+        "z": 318,
+        "transportMethod": "WALK"
+      }
+    ],
     "1,138,451,WALK": [
       {
         "x": 4,
@@ -20955,6 +20963,14 @@
         "transportMethod": "WALK"
       }
     ],
+    "35,151,315,WALK": [
+      {
+        "x": 35,
+        "y": 152,
+        "z": 314,
+        "transportMethod": "WALK"
+      }
+    ],
     "109,123,379,WALK": [
       {
         "x": 102,
@@ -23340,6 +23356,14 @@
         "x": -45,
         "y": 122,
         "z": 356,
+        "transportMethod": "WALK"
+      }
+    ],
+    "35,152,314,WALK": [
+      {
+        "x": 32,
+        "y": 151,
+        "z": 313,
         "transportMethod": "WALK"
       }
     ],
@@ -33870,12 +33894,6 @@
         "transportMethod": "WALK"
       },
       {
-        "x": 31,
-        "y": 151,
-        "z": 317,
-        "transportMethod": "WALK"
-      },
-      {
         "x": 28,
         "y": 150,
         "z": 320,
@@ -38454,68 +38472,6 @@
         "transportMethod": "WALK"
       }
     ],
-    "31,151,317,WALK": [
-      {
-        "x": 38,
-        "y": 152,
-        "z": 320,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 31,
-        "y": 151,
-        "z": 317,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 31,
-        "y": 151,
-        "z": 317,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 31,
-        "y": 151,
-        "z": 317,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 31,
-        "y": 151,
-        "z": 317,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 31,
-        "y": 151,
-        "z": 317,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 31,
-        "y": 151,
-        "z": 317,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 31,
-        "y": 151,
-        "z": 317,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 31,
-        "y": 151,
-        "z": 317,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 23,
-        "y": 148,
-        "z": 314,
-        "transportMethod": "WALK"
-      }
-    ],
     "2,126,339,ETHERWARP": [
       {
         "x": -1,
@@ -42130,6 +42086,12 @@
     ],
     "37,146,294,WALK": [
       {
+        "x": 36,
+        "y": 145,
+        "z": 294,
+        "transportMethod": "WALK"
+      },
+      {
         "x": 38,
         "y": 147,
         "z": 294,
@@ -45008,20 +44970,6 @@
         "transportMethod": "WALK"
       }
     ],
-    "40,144,290,WALK": [
-      {
-        "x": 40,
-        "y": 146,
-        "z": 292,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 42,
-        "y": 143,
-        "z": 284,
-        "transportMethod": "WALK"
-      }
-    ],
     "5,126,305,WALK": [
       {
         "x": 5,
@@ -47600,6 +47548,20 @@
         "transportMethod": "WALK"
       }
     ],
+    "34,151,318,WALK": [
+      {
+        "x": 35,
+        "y": 151,
+        "z": 315,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 38,
+        "y": 152,
+        "z": 320,
+        "transportMethod": "WALK"
+      }
+    ],
     "28,123,329,ETHERWARP": [
       {
         "x": 32,
@@ -49105,20 +49067,6 @@
         "x": 23,
         "y": 152,
         "z": 331,
-        "transportMethod": "WALK"
-      }
-    ],
-    "40,146,292,WALK": [
-      {
-        "x": 40,
-        "y": 147,
-        "z": 293,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 40,
-        "y": 144,
-        "z": 290,
         "transportMethod": "WALK"
       }
     ],
@@ -52135,20 +52083,6 @@
         "x": -67,
         "y": 131,
         "z": 357,
-        "transportMethod": "WALK"
-      }
-    ],
-    "40,147,293,WALK": [
-      {
-        "x": 39,
-        "y": 147,
-        "z": 295,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 40,
-        "y": 146,
-        "z": 292,
         "transportMethod": "WALK"
       }
     ],
@@ -57788,6 +57722,26 @@
         "transportMethod": "ETHERWARP"
       }
     ],
+    "30,150,316,WALK": [
+      {
+        "x": 30,
+        "y": 150,
+        "z": 316,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 34,
+        "y": 151,
+        "z": 318,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 23,
+        "y": 148,
+        "z": 314,
+        "transportMethod": "WALK"
+      }
+    ],
     "-87,128,318,WALK": [
       {
         "x": -83,
@@ -62776,6 +62730,12 @@
         "y": 146,
         "z": 294,
         "transportMethod": "WALK"
+      },
+      {
+        "x": 36,
+        "y": 145,
+        "z": 294,
+        "transportMethod": "WALK"
       }
     ],
     "-53,117,457,WALK": [
@@ -63053,12 +63013,6 @@
       }
     ],
     "23,148,314,WALK": [
-      {
-        "x": 31,
-        "y": 151,
-        "z": 317,
-        "transportMethod": "WALK"
-      },
       {
         "x": 16,
         "y": 147,
@@ -76626,11 +76580,19 @@
         "transportMethod": "WALK"
       }
     ],
+    "39,147,294,WALK": [
+      {
+        "x": 38,
+        "y": 147,
+        "z": 294,
+        "transportMethod": "WALK"
+      }
+    ],
     "39,147,295,WALK": [
       {
-        "x": 40,
+        "x": 39,
         "y": 147,
-        "z": 293,
+        "z": 294,
         "transportMethod": "WALK"
       }
     ],

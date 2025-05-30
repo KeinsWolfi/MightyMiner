@@ -11,7 +11,9 @@ import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,9 +31,13 @@ public class GameStateHandler {
     @Getter
     private SubLocation currentSubLocation = SubLocation.KNOWHERE;
     @Getter
+    private MineshaftTypes currentMineshaftType = null;
+    @Getter
     private boolean godpotActive = false;
     @Getter
     private boolean cookieActive = false;
+    @Getter
+    private int tickCount = 0;
 
     public boolean isPlayerInSkyBlock() {
         return this.currentLocation.ordinal() < Location.values().length - 3;
@@ -41,6 +47,7 @@ public class GameStateHandler {
     public void onWorldUnload(WorldEvent.Unload event) {
         currentLocation = Location.KNOWHERE;
         currentSubLocation = SubLocation.KNOWHERE;
+        currentMineshaftType = null;
     }
 
     @SubscribeEvent
@@ -102,12 +109,60 @@ public class GameStateHandler {
     public void onScoreboardListUpdate(UpdateScoreboardEvent event) {
         for (int i = 0; i < event.scoreboard.size(); i++) {
             final String line = event.scoreboard.get(i);
-            if (!(line.contains("⏣") || line.contains("ф"))) {
-                continue;
+            if (line.contains("⏣") || line.contains("ф")) {
+                this.currentSubLocation = SubLocation.fromName(ScoreboardUtil.sanitizeString(line).trim());
+                break;
             }
 
-            this.currentSubLocation = SubLocation.fromName(ScoreboardUtil.sanitizeString(line).trim());
-            break;
+            MineshaftTypes type = MineshaftTypes.fromLine(line);
+            if (type != null) {
+                this.currentMineshaftType = type;
+                break;
+            }
         }
     }
+
+    /*
+    @SubscribeEvent
+    public void onTick(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.START) return;
+        if (++tickCount >= 20) {
+            tickCount = 0;
+            for (int i = 0; i < ScoreboardUtil.getScoreboard().size(); i++) {
+                final String line = ScoreboardUtil.getScoreboard().get(i);
+                if (line.contains("⏣") || line.contains("ф")) {
+                    this.currentSubLocation = SubLocation.fromName(ScoreboardUtil.sanitizeString(line).trim());
+                }
+
+                MineshaftTypes type = MineshaftTypes.fromLine(line);
+                if (type != null) {
+                    this.currentMineshaftType = type;
+                }
+
+                break;
+            }
+        }
+    }
+     */
+
+    public enum MineshaftTypes {
+        TOPA, SAPP, AMET, AMBE, JADE, TITA, UMBE, TUNG,
+        FAIR, RUBY, ONYX, AQUA, CITR, PERI, JASP, OPAL;
+
+        private static final Pattern SHAFT_TYPE_PATTERN =
+                Pattern.compile("\\b([A-Z]{4})\\d\\b");
+
+        public static MineshaftTypes fromLine(String line) {
+            Matcher matcher = SHAFT_TYPE_PATTERN.matcher(line);
+            if (matcher.find()) {
+                String typeStr = matcher.group(1);
+                try {
+                    return MineshaftTypes.valueOf(typeStr);
+                } catch (IllegalArgumentException ignored) {}
+            }
+            return null;
+        }
+    }
+
 }
+

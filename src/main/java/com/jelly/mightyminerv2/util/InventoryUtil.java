@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class InventoryUtil {
 
@@ -38,6 +39,16 @@ public class InventoryUtil {
         Slot slot = getSlotOfItemInContainer(item, equals);
         return slot != null ? slot.slotNumber : -1;
     }
+
+    public static Slot getSlotOfIdInContainer(int id) {
+        for (Slot slot : mc.thePlayer.openContainer.inventorySlots) {
+            if (slot.slotNumber == id) {
+                return slot;
+            }
+        }
+        return null;
+    }
+
 
     public static Slot getSlotOfItemInContainer(String item) {
         return getSlotOfItemInContainer(item, false);
@@ -297,6 +308,15 @@ public class InventoryUtil {
         return true;
     }
 
+    public static boolean isInventoryFull() {
+        for (int i = 0; i < mc.thePlayer.inventory.getSizeInventory(); i++) {
+            if (mc.thePlayer.inventory.getStackInSlot(i) == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static String getFullName(String name) {
         for (int i = 0; i < mc.thePlayer.openContainer.inventorySlots.size(); i++) {
             Slot slot = mc.thePlayer.openContainer.getSlot(i);
@@ -355,6 +375,19 @@ public class InventoryUtil {
         }
         return -1;
 
+    }
+
+    public static ArrayList<Slot> getIndexesOfItemsFromContainer(Predicate<Slot> predicate) {
+        ArrayList<Slot> indexes = new ArrayList<>();
+        for (int i = 0; i < mc.thePlayer.openContainer.inventorySlots.size(); i++) {
+            Slot slot = mc.thePlayer.openContainer.getSlot(i);
+            if (slot != null && slot.getHasStack()) {
+                if (predicate.test(slot)) {
+                    indexes.add(slot);
+                }
+            }
+        }
+        return indexes;
     }
 
     public enum ClickType {

@@ -152,7 +152,7 @@ public class RouteNavigator extends AbstractFeature {
         if (waypoint.getTransportMethod().ordinal() == 0) {
             return MightyMinerConfig.delayAutoAotvLookDelay;
         }
-        return MightyMinerConfig.delayAutoAotvEtherwarpLookDelay;
+        return MightyMinerConfig.getRandomAotvLookDelay();
     }
 
     public int getCurrentIndex(final BlockPos playerBlock) {

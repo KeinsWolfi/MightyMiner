@@ -4,6 +4,7 @@ import com.jelly.mightyminerv2.config.MightyMinerConfig;
 import com.jelly.mightyminerv2.feature.impl.BlockMiner.BlockMiner;
 import com.jelly.mightyminerv2.macro.impl.autoshafts.ShaftMacro;
 import com.jelly.mightyminerv2.util.InventoryUtil;
+import com.jelly.mightyminerv2.util.KeyBindUtil;
 import com.jelly.mightyminerv2.util.helper.MineableBlock;
 
 public class MiningState implements AutoShaftState {
@@ -27,7 +28,7 @@ public class MiningState implements AutoShaftState {
     public AutoShaftState onTick(ShaftMacro macro) {
         String miningTool = MightyMinerConfig.miningTool;
         if (miningTool.toLowerCase().contains("drill") || InventoryUtil.getFullName(miningTool).contains("Drill")) {
-            log("Fuel detected: " + InventoryUtil.getDrillRemainingFuel(miningTool));
+            // log("Fuel detected: " + InventoryUtil.getDrillRemainingFuel(miningTool));
             if (InventoryUtil.getDrillRemainingFuel(miningTool) <= 100) {
                 log("Less than 100 fuel left in drill. Starting to refuel");
                 if(MightyMinerConfig.drillRefuel)
@@ -51,13 +52,14 @@ public class MiningState implements AutoShaftState {
                 return new MiningState();
             case NOT_ENOUGH_BLOCKS:
                 log ("Not enough blocks nearby! Restarting macro");
-                return new StartingState();
+                return new EtherWarpToNextVeinState();
             case NO_PICKAXE_ABILITY:
-                macro.disable("Cannot find messages for pickaxe ability! " +
-                        "Either enable any pickaxe ability in HOTM or enable chat messages. You can also disable pickaxe ability in configs.");
-                break;
+                log("Not enough pickaxes nearby! Restarting macro");
+                KeyBindUtil.releaseAllExcept();
+                return new StartingState();
             default:
                 logError("Block miner error: " + miner.getError().name());
+                KeyBindUtil.releaseAllExcept();
                 macro.disable("Block miner failed unexpectedly! Please send the logs to the developer");
                 break;
         }

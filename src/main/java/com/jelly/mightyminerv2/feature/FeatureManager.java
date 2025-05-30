@@ -30,7 +30,8 @@ public class FeatureManager {
                 AutoDrillRefuel.getInstance(),
                 AutoChestUnlocker.instance,
                 WorldScanner.getInstance(),
-                AutoSell.getInstance()
+                AutoSell.getInstance(),
+                BazaarHandler.getInstance()
         ));
     }
 

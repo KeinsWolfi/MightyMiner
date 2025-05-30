@@ -60,7 +60,11 @@ public class BreakingState implements BlockMinerState{
 
         // Handle walking toward block if needed
         if (isWalking) {
-            handleWalking();
+            if (MightyMinerConfig.strafe) {
+                handleWalking();
+            } else {
+                return new StartingState();
+            }
         }
 
         // Safety mechanism: if we've been trying to break for too long, reset
@@ -153,7 +157,7 @@ public class BreakingState implements BlockMinerState{
         );
 
         // Sometimes randomly choose a different point on the block (for variety)
-        if (random.nextBoolean()) {
+        if (random.nextInt(MightyMinerConfig.retargetWhileBreakingChance) == 0) {
             int halfwayMark = points.size() / 2;
             this.targetPoint = points.get(random.nextInt(halfwayMark) + halfwayMark - 1);
 

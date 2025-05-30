@@ -1,6 +1,7 @@
 package com.jelly.mightyminerv2.macro;
 
 import com.jelly.mightyminerv2.event.PacketEvent;
+import com.jelly.mightyminerv2.event.UpdateScoreboardEvent;
 import com.jelly.mightyminerv2.event.UpdateTablistEvent;
 import com.jelly.mightyminerv2.hud.CommissionHUD;
 import com.jelly.mightyminerv2.util.Logger;
@@ -103,6 +104,9 @@ public abstract class AbstractMacro {
     }
 
     public void onReceivePacket(PacketEvent.Received event) {
+    }
+
+    public void onScoreBoardUpdate(UpdateScoreboardEvent event) {
     }
 
     protected void log(String message) {

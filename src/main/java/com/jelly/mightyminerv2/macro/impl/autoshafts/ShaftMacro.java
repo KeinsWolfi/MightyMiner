@@ -1,12 +1,14 @@
 package com.jelly.mightyminerv2.macro.impl.autoshafts;
 
 import com.jelly.mightyminerv2.config.MightyMinerConfig;
+import com.jelly.mightyminerv2.event.UpdateScoreboardEvent;
+import com.jelly.mightyminerv2.event.UpdateTablistEvent;
 import com.jelly.mightyminerv2.feature.FeatureManager;
+import com.jelly.mightyminerv2.handler.GameStateHandler;
 import com.jelly.mightyminerv2.macro.AbstractMacro;
-import com.jelly.mightyminerv2.macro.impl.autoshafts.states.AutoShaftState;
-import com.jelly.mightyminerv2.macro.impl.autoshafts.states.EnterShaftState;
-import com.jelly.mightyminerv2.macro.impl.autoshafts.states.StartingState;
+import com.jelly.mightyminerv2.macro.impl.autoshafts.states.*;
 import com.jelly.mightyminerv2.util.Logger;
+import com.jelly.mightyminerv2.util.ScoreboardUtil;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -23,6 +25,14 @@ public class ShaftMacro extends AbstractMacro {
     @Getter
     @Setter
     private int miningSpeed = 0;
+
+    @Getter
+    @Setter
+    private int nextVeinIndex = 0;
+
+    @Getter
+    @Setter
+    private long lastShaftEntranceTime = 0;
 
     @Override
     public String getName() {
@@ -111,6 +121,19 @@ public class ShaftMacro extends AbstractMacro {
         if (message.contains("You found a") && message.contains("Glacite Mineshaft")) {
             Logger.sendLog("Detected Glacite Mineshaft entrance in chat, transitioning to EnterShaftState.");
             transitionTo(new EnterShaftState());
+        }
+    }
+
+    @Override
+    public void onScoreBoardUpdate(UpdateScoreboardEvent event) {
+        if (GameStateHandler.getInstance().getCurrentMineshaftType() != null) {
+            if (!(currentState instanceof HandleShaftState)) {
+                log("Detected mineshaft type: " + GameStateHandler.getInstance().getCurrentMineshaftType());
+                transitionTo(new HandleShaftState());
+            }
+        }
+        if (ScoreboardUtil.cold >= MightyMinerConfig.coldEvacuate) {
+            transitionTo(new WarpingState());
         }
     }
 }

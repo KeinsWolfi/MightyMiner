@@ -2,6 +2,7 @@ package com.jelly.mightyminerv2.macro;
 
 import com.jelly.mightyminerv2.config.MightyMinerConfig;
 import com.jelly.mightyminerv2.event.PacketEvent;
+import com.jelly.mightyminerv2.event.UpdateScoreboardEvent;
 import com.jelly.mightyminerv2.event.UpdateTablistEvent;
 import com.jelly.mightyminerv2.feature.FeatureManager;
 import com.jelly.mightyminerv2.feature.impl.MouseUngrab;
@@ -168,6 +169,16 @@ public class MacroManager {
         }
 
         this.currentMacro.onReceivePacket(event);
+    }
+
+    @SubscribeEvent
+    public void onScoreBoardUpdate(UpdateScoreboardEvent event) {
+        if (mc.theWorld == null || mc.thePlayer == null) return;
+        if (this.currentMacro == null) {
+            return;
+        }
+
+        this.currentMacro.onScoreBoardUpdate(event);
     }
 
     public void log(String message) {
