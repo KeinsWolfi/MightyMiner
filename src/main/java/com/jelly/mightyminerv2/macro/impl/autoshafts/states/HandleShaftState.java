@@ -139,7 +139,7 @@ public class HandleShaftState implements AutoShaftState {
                 RotationHandler.getInstance().stop();
 
                 RotationHandler.getInstance().easeTo(new RotationConfiguration(
-                        new Target(vanguard),
+                        new Target(vanguard.getPositionVector().addVector(0, -0.5, 0)),
                         MightyMinerConfig.getRandomRotationTime(),
                         null
                 ));
