@@ -3,6 +3,7 @@ package com.jelly.mightyminerv2.handler;
 import com.jelly.mightyminerv2.event.UpdateScoreboardEvent;
 import com.jelly.mightyminerv2.event.UpdateTablistEvent;
 import com.jelly.mightyminerv2.event.UpdateTablistFooterEvent;
+import com.jelly.mightyminerv2.macro.impl.autoshafts.ShaftMacro;
 import com.jelly.mightyminerv2.util.InventoryUtil;
 import com.jelly.mightyminerv2.util.ScoreboardUtil;
 import com.jelly.mightyminerv2.util.helper.location.Location;
@@ -48,6 +49,7 @@ public class GameStateHandler {
         currentLocation = Location.KNOWHERE;
         currentSubLocation = SubLocation.KNOWHERE;
         currentMineshaftType = null;
+        ShaftMacro.getInstance().setWasInShaft(false);
     }
 
     @SubscribeEvent

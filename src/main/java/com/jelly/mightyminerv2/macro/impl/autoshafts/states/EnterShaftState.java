@@ -162,15 +162,18 @@ public class EnterShaftState implements AutoShaftState {
                 }
 
                 if(!Objects.equals(mc.objectMouseOver.entityHit, closestMineshaft) && !Objects.equals(mc.objectMouseOver.entityHit, fullClosestMineshaft)) {
-                    if (++retryCount < 3) {
+                    if (retryCount < 3) {
                         logError("Failed to rotate to mineshaft, retrying...");
                         swapState(EnteringShaftState.ROTATING_TO_SHAFT, 0);
                         retryCount++;
                         break;
-                    } else {
+                    } else if (retryCount >= 3 && retryCount < 7) {
                         swapState(EnteringShaftState.WALK_FORWARD, 300);
                         KeyBindUtil.releaseAllExcept();
                         break;
+                    } else {
+                        logError("Failed to rotate to mineshaft after 7 attempts, giving up");
+                        return new StartingState();
                     }
                 }
 
@@ -193,6 +196,17 @@ public class EnterShaftState implements AutoShaftState {
             case CLICKING_SHAFT_INV:
                 if (timer.isScheduled() && timer.passed()) {
                     if (System.currentTimeMillis() - macro.getLastShaftEntranceTime() < 31_000) {
+                        break;
+                    }
+
+                    if (!InventoryUtil.getInventoryName().toLowerCase().contains("glacite mineshaft")) {
+                        logError("Not in mineshaft inventory, retrying...");
+                        InventoryUtil.closeScreen();
+                        swapState(EnteringShaftState.FINDING_SHAFT, 0);
+                        break;
+                    }
+
+                    if (!InventoryUtil.isInventoryLoaded()) {
                         break;
                     }
 

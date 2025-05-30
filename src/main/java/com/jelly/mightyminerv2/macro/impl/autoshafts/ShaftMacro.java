@@ -3,7 +3,6 @@ package com.jelly.mightyminerv2.macro.impl.autoshafts;
 import com.jelly.mightyminerv2.config.MightyMinerConfig;
 import com.jelly.mightyminerv2.event.MotionUpdateEvent;
 import com.jelly.mightyminerv2.event.UpdateScoreboardEvent;
-import com.jelly.mightyminerv2.event.UpdateTablistEvent;
 import com.jelly.mightyminerv2.feature.FeatureManager;
 import com.jelly.mightyminerv2.handler.GameStateHandler;
 import com.jelly.mightyminerv2.macro.AbstractMacro;
@@ -141,8 +140,16 @@ public class ShaftMacro extends AbstractMacro {
             if (!(currentState instanceof HandleShaftState) && !wasInShaft) {
                 log("Detected mineshaft type: " + GameStateHandler.getInstance().getCurrentMineshaftType());
                 transitionTo(new HandleShaftState());
+            } else if (currentState instanceof HandleShaftState && !wasInShaft) {
+                log("In Handleshaftstate, but was not in a mineshaft (warped into another one?) - transitioning to HandleShaftState.");
+                transitionTo(new HandleShaftState());
             }
+        } else if (currentState instanceof HandleShaftState && !wasInShaft) {
+            log("No mineshaft detected, transitioning to StartingState.");
+            transitionTo(new HandleShaftState());
         }
+
+
         if (ScoreboardUtil.cold >= MightyMinerConfig.coldEvacuate) {
             transitionTo(new WarpingState());
         }

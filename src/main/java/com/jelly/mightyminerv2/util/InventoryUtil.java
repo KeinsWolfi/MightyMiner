@@ -309,12 +309,17 @@ public class InventoryUtil {
     }
 
     public static boolean isInventoryFull() {
+        return isInventoryFull(0);
+    }
+
+    public static boolean isInventoryFull(int slotsEmpty) {
+        int emptySlots = 0;
         for (int i = 0; i < mc.thePlayer.inventory.getSizeInventory(); i++) {
             if (mc.thePlayer.inventory.getStackInSlot(i) == null) {
-                return false;
+                emptySlots++;
             }
         }
-        return true;
+        return emptySlots <= slotsEmpty;
     }
 
     public static String getFullName(String name) {

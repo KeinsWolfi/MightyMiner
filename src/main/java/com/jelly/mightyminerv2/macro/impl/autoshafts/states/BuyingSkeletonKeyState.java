@@ -1,5 +1,6 @@
 package com.jelly.mightyminerv2.macro.impl.autoshafts.states;
 
+import com.jelly.mightyminerv2.config.MightyMinerConfig;
 import com.jelly.mightyminerv2.feature.impl.BazaarHandler;
 import com.jelly.mightyminerv2.macro.impl.autoshafts.ShaftMacro;
 
@@ -7,7 +8,7 @@ public class BuyingSkeletonKeyState implements AutoShaftState {
     @Override
     public void onStart(ShaftMacro macro) {
         log("Buying Skeleton Key state started");
-        BazaarHandler.getInstance().buy("Skeleton Key", 1);
+        BazaarHandler.getInstance().buy("Skeleton Key", MightyMinerConfig.skeletonKeyBuyAmount);
     }
 
     @Override

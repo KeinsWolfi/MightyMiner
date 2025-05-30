@@ -1,5 +1,6 @@
 package com.jelly.mightyminerv2.macro.impl.autoshafts.states;
 
+import com.jelly.mightyminerv2.config.MightyMinerConfig;
 import com.jelly.mightyminerv2.handler.GameStateHandler;
 import com.jelly.mightyminerv2.macro.impl.autoshafts.ShaftMacro;
 import com.jelly.mightyminerv2.util.InventoryUtil;
@@ -23,11 +24,11 @@ public class StartingState implements AutoShaftState {
         macro.setPathingAttempts(0);
 
         if (GameStateHandler.getInstance().getCurrentSubLocation() == SubLocation.DWARVEN_BASE_CAMP || GameStateHandler.getInstance().getCurrentSubLocation() == SubLocation.GLACITE_TUNNELS) {
-            if (InventoryUtil.isInventoryFull()) {
+            if (InventoryUtil.isInventoryFull(MightyMinerConfig.skeletonKeyBuyAmount + 1)) {
                 return new SellingInventoryState();
             }
 
-            if (InventoryUtil.getAmountOfItemInInventory("Skeleton Key") < 1) {
+            if (InventoryUtil.getAmountOfItemInInventory("Skeleton Key") <= MightyMinerConfig.skeletonKeyBuyThreshold) {
                 return new BuyingSkeletonKeyState();
             }
 

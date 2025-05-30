@@ -64,7 +64,7 @@ public class PathingToVeinState implements AutoShaftState {
                 break;
             case TIME_FAIL: case PATHFIND_FAILED:
                 attempts++;
-                if(attempts >= 10) {
+                if(attempts >= 3) {
                     logError("Failed to pathfind. Warping and restarting");
                     Minecraft.getMinecraft().thePlayer.sendChatMessage("/warp base");
                     return new WarpingState();

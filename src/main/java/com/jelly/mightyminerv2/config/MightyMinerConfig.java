@@ -809,6 +809,22 @@ public class MightyMinerConfig extends Config {
     )
     public static int vanguardWalkForwardTime = 350;
 
+    @Slider(
+            name = "Skeleton Key buy amount",
+            category = AUTO_SHAFTS,
+            subcategory = "Skeleton Key",
+            min = 1, max = 36
+    )
+    public static int skeletonKeyBuyAmount = 1;
+
+    @Slider(
+            name = "When to buy Skeleton Key",
+            category = AUTO_SHAFTS,
+            subcategory = "Skeleton Key",
+            min = 0, max = 100
+    )
+    public static int skeletonKeyBuyThreshold = 1;
+
     public static int getRandomRotationTime() {
         return rotationTime + (int) (Math.random() * rotationTimeRandomizer);
     }
