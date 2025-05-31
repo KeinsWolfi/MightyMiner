@@ -57,6 +57,8 @@ public class HandleShaftState implements AutoShaftState {
 
     private boolean overLadder = false;
 
+    private boolean vanguardFound = false;
+
     @Override
     public void onStart(ShaftMacro macro) {
         log("Handling shaft state");
@@ -64,6 +66,7 @@ public class HandleShaftState implements AutoShaftState {
         handleShaftState = HandleShaftStateState.DETECTING_SHAFT;
         pathing = false;
         overLadder = false;
+        vanguardFound = false;
     }
 
     @Override
@@ -172,8 +175,11 @@ public class HandleShaftState implements AutoShaftState {
             case REACTING_TO_VANGUARD:
                 if (timer.isScheduled() && !timer.passed()) break;
                 log("Reacting to Vanguard");
-                KeyBindUtil.releaseAllExcept();
-                swapState(HandleShaftStateState.RETURNING_TO_BASE, MightyMinerConfig.vanguardReactionTime);
+                if (vanguardFound) {
+                    swapState(HandleShaftStateState.RETURNING_TO_BASE, MightyMinerConfig.vanguardReactionTime);
+                } else {
+                    swapState(HandleShaftStateState.ROTATING_TO_VANGUARD, 0);
+                }
                 break;
             case RETURNING_TO_BASE:
                 if (timer.isScheduled() && !timer.passed()) break;
@@ -205,6 +211,13 @@ public class HandleShaftState implements AutoShaftState {
             if (/*below == Blocks.ladder ||*/ below == Blocks.air) {
                 overLadder = true;
             }
+        }
+    }
+
+    @Override
+    public void onChat(ShaftMacro macro, String message) {
+        if (message.contains("VANGUARD CORPSE LOOT!")) {
+            vanguardFound = true;
         }
     }
 }

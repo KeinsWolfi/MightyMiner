@@ -208,8 +208,9 @@ public class OsamaTestCommandNobodyTouchPleaseLoveYou {
     @SubCommand
     public void graph() {
         GraphHandler.instance.toggleEdit(//CommissionMacro.getInstance().getName());
-                //GlacialMacro.getInstance().getName());
-                "Vanguard");
+                GlacialMacro.getInstance().getName());
+                //"Vanguard");
+                //"EtherWarpPath1");
     }
 
     @SubCommand

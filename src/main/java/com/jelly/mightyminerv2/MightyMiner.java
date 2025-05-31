@@ -58,7 +58,7 @@ public class MightyMiner {
     public static final Path routesDirectory = Paths.get("./config/mightyminerv2/graphs");
     private static final ThreadPoolExecutor executor = new ThreadPoolExecutor(4, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<>());
     private static final Minecraft mc = Minecraft.getMinecraft();
-    private static final List<String> expectedRoutes = Arrays.asList("Glacial Macro.json", "Commission Macro.json", "Vanguard.json");
+    private static final List<String> expectedRoutes = Arrays.asList("Glacial Macro.json", "Commission Macro.json", "Vanguard.json", "EtherWarpPath1.json");
     public static MightyMinerConfig config;
     @Mod.Instance
     public static MightyMiner instance;

@@ -1,9 +1,9 @@
 package com.jelly.mightyminerv2.macro.impl.autoshafts.states;
 
+import com.jelly.mightyminerv2.config.MightyMinerConfig;
 import com.jelly.mightyminerv2.feature.impl.RouteNavigator;
 import com.jelly.mightyminerv2.handler.GraphHandler;
 import com.jelly.mightyminerv2.macro.impl.autoshafts.ShaftMacro;
-import com.jelly.mightyminerv2.util.KeyBindUtil;
 import com.jelly.mightyminerv2.util.Logger;
 import com.jelly.mightyminerv2.util.PlayerUtil;
 import com.jelly.mightyminerv2.util.helper.route.Route;
@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class PathingToVeinState implements AutoShaftState {
     private final RouteNavigator routeNavigator = RouteNavigator.getInstance();
-    private final String GRAPH_NAME = "Glacial Macro";
+    private final String GRAPH_NAME = (MightyMinerConfig.etherwarpPath) ? "EtherWarpPath1" : "Glacial Macro";
     private int attempts = 0;
 
     private final Random random = new Random();
@@ -27,6 +27,7 @@ public class PathingToVeinState implements AutoShaftState {
     private static final List<RouteWaypoint> VEINS = new ArrayList<>();
 
     RouteWaypoint vein1 = new RouteWaypoint(57, 141, 268, TransportMethod.WALK);
+    RouteWaypoint vein2 = new RouteWaypoint(104, 124, 333, TransportMethod.WALK);
 
     private boolean failed = false;
 
@@ -34,12 +35,12 @@ public class PathingToVeinState implements AutoShaftState {
     public void onStart(ShaftMacro macro) {
         log("Entering pathing to vein state");
         VEINS.add(vein1);
-        int veinIndex = random.nextInt(VEINS.size());
+        VEINS.add(vein2);
 
-        List<RouteWaypoint> nodes = GraphHandler.instance.findPathFrom(GRAPH_NAME, PlayerUtil.getBlockStandingOn(), VEINS.get(veinIndex));
+        List<RouteWaypoint> nodes = GraphHandler.instance.findPathFrom(GRAPH_NAME, PlayerUtil.getBlockStandingOn(), VEINS.get(MightyMinerConfig.veinIndex));
 
         if (nodes.isEmpty()) {
-            logError("Starting block: " + PlayerUtil.getBlockStandingOn() + ", Ending block: " + VEINS.get(veinIndex));
+            logError("Starting block: " + PlayerUtil.getBlockStandingOn() + ", Ending block: " + VEINS.get(MightyMinerConfig.veinIndex));
             Logger.sendError("Could not find a path to the target block! Please send the logs to the developer.");
             failed = true;
             return;

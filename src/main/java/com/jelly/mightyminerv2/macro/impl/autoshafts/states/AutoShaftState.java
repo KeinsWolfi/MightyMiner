@@ -12,6 +12,9 @@ public interface AutoShaftState {
         // Default implementation does nothing
     }
 
+    default void onChat(ShaftMacro macro, String message) {
+    }
+
     void onEnd(ShaftMacro macro);
 
     default void logMessage(String message) {

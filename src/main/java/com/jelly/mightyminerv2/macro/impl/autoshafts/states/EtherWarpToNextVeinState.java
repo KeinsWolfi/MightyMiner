@@ -19,10 +19,22 @@ import java.util.List;
 
 public class EtherWarpToNextVeinState implements AutoShaftState {
     @Getter
-    private static final List<RouteWaypoint> VEINS = new ArrayList<>();
+    List<List<RouteWaypoint>> routeWaypoints = new ArrayList<>();
 
-    RouteWaypoint vein1 = new RouteWaypoint(57, 141, 268, TransportMethod.ETHERWARP);
-    RouteWaypoint vein2 = new RouteWaypoint(36, 149, 296, TransportMethod.ETHERWARP);
+    @Getter
+    List<RouteWaypoint> waypointsVein1 = new ArrayList<>();
+    RouteWaypoint vein11 = new RouteWaypoint(57, 141, 268, TransportMethod.ETHERWARP);
+    RouteWaypoint vein12 = new RouteWaypoint(36, 149, 296, TransportMethod.ETHERWARP);
+
+    @Getter
+    List<RouteWaypoint> waypointsVein2 = new ArrayList<>();
+    RouteWaypoint vein21 = new RouteWaypoint(104, 124, 333, TransportMethod.ETHERWARP);
+    RouteWaypoint vein22 = new RouteWaypoint(115, 125, 334, TransportMethod.ETHERWARP);
+
+    @Getter
+    List<RouteWaypoint> waypointsVein3 = new ArrayList<>();
+    RouteWaypoint vein31 = new RouteWaypoint(42, 119, 413, TransportMethod.ETHERWARP);
+    RouteWaypoint vein32 = new RouteWaypoint(15, 126, 437, TransportMethod.ETHERWARP);
 
     @Getter
     @Setter
@@ -41,10 +53,17 @@ public class EtherWarpToNextVeinState implements AutoShaftState {
     @Override
     public void onStart(ShaftMacro macro) {
         log("Entering Ether Warp to next vein state");
-        VEINS.add(vein1);
-        VEINS.add(vein2);
+        waypointsVein1.add(vein11);
+        waypointsVein1.add(vein12);
+        waypointsVein2.add(vein21);
+        waypointsVein2.add(vein22);
+        waypointsVein3.add(vein31);
+        waypointsVein3.add(vein32);
+        routeWaypoints.add(waypointsVein1);
+        routeWaypoints.add(waypointsVein2);
+        routeWaypoints.add(waypointsVein3);
 
-        if (macro.getNextVeinIndex() >= VEINS.size()) {
+        if (macro.getNextVeinIndex() >= routeWaypoints.get(MightyMinerConfig.veinIndex).size()) {
             log("Next vein index out of bounds, resetting to 0");
             macro.setNextVeinIndex(0);
         }
@@ -67,7 +86,7 @@ public class EtherWarpToNextVeinState implements AutoShaftState {
                     // Implement rotation logic here
                     int rotTime = MightyMinerConfig.getRandomAotvLookDelay();
                     RotationHandler.getInstance().easeTo(new RotationConfiguration(
-                            new Target(VEINS.get(macro.getNextVeinIndex()).toVec3().addVector(0.5, 0.5, 0.5)),
+                            new Target(routeWaypoints.get(MightyMinerConfig.veinIndex).get(macro.getNextVeinIndex()).toVec3().addVector(0.5, 0.5, 0.5)),
                             rotTime,
                             null
                     ));
@@ -89,7 +108,7 @@ public class EtherWarpToNextVeinState implements AutoShaftState {
             case WARPING:
                 if(timer.isScheduled() && !timer.passed()) break;
 
-                log("Warping to the next vein: " + VEINS.get(macro.getNextVeinIndex()));
+                log("Warping to the next vein: " + routeWaypoints.get(MightyMinerConfig.veinIndex).get(macro.getNextVeinIndex()));
                 KeyBindUtil.rightClick();
                 swapState(EWState.SWITCHING_TO_MINING, 500);
                 break;

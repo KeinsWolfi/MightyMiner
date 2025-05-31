@@ -137,6 +137,10 @@ public class ShaftMacro extends AbstractMacro {
             Logger.sendLog("Detected evacuation message in chat, transitioning to StartingState.");
             transitionTo(new StartingState());
         }
+
+        if (currentState instanceof HandleShaftState) {
+            currentState.onChat(this, message);
+        }
     }
 
     @Override

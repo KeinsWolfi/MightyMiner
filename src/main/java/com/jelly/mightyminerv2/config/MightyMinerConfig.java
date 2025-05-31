@@ -849,6 +849,25 @@ public class MightyMinerConfig extends Config {
      )
     public static int vanguardReactionTime = 1000;
 
+     @Switch(
+             name = "Etherwarp Path (Vein 1)",
+             category = AUTO_SHAFTS,
+             subcategory = "Pathing"
+     )
+     public static boolean etherwarpPath = false;
+
+     @Dropdown(
+             name = "Vein", category = AUTO_SHAFTS,
+             subcategory = "Pathing",
+             description = "Vein you should mine",
+             options = {
+                     "Vein 1",
+                     "Vein 2",
+                     "Vein 3"
+             }
+     )
+     public static int veinIndex = 0;
+
     public static int getRandomRotationTime() {
         return rotationTime + (int) (Math.random() * rotationTimeRandomizer);
     }

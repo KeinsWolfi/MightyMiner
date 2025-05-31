@@ -248,13 +248,16 @@ public class RouteNavigator extends AbstractFeature {
                 }
 
                 System.out.println("IsLookingAt: " + AngleUtil.isLookingAtDebug(this.rotationTarget, 0.5f));
+                if (!AngleUtil.isLookingAt(this.rotationTarget, 0.1f)) return;
+
                 System.out.println("Following: " + RotationHandler.getInstance().isFollowingTarget());
                 int sneakTime = 0;
 
                 RouteWaypoint target = this.routeToFollow.get(this.currentRouteIndex);
                 if (target.getTransportMethod() == TransportMethod.ETHERWARP && !mc.gameSettings.keyBindSneak.isKeyDown()) {
                     KeyBindUtil.setKeyBindState(mc.gameSettings.keyBindSneak, true);
-                    sneakTime = 250;
+                    RouteWaypoint nextPoint = this.routeToFollow.get(this.currentRouteIndex);
+                    sneakTime = this.getLookTime(nextPoint);
                 }
 
                 this.swapState(State.AOTV, sneakTime);
