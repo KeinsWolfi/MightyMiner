@@ -165,10 +165,16 @@ public class BazaarHandler extends AbstractFeature {
             timer.schedule(500);
         }
 
-        if (message.startsWith("You may only use this command after 4s on the server!")) {
+        if (message.startsWith("You may only use this command after 4s on the server!") && this.mainState == MainState.BUY_FROM_BZ) {
             this.serverSwitchCooldown = 80; // 4 seconds in ticks
             timer.schedule(6000);
             this.buyState = BuyState.OPEN_BZ;
+        }
+
+        if (message.startsWith("You may only use this command after 4s on the server!") && this.mainState == MainState.SELL_TO_BZ) {
+            this.serverSwitchCooldown = 80; // 4 seconds in ticks
+            timer.schedule(6000);
+            this.sellState = SellState.OPEN_BZ;
         }
     }
 
@@ -438,6 +444,10 @@ public class BazaarHandler extends AbstractFeature {
                 }
                 break;
             case OPEN_BZ:
+                if (this.serverSwitchCooldown > 0) {
+                    this.serverSwitchCooldown--;
+                    return;
+                }
                 mc.thePlayer.sendChatMessage("/bz");
                 timer.schedule(2000);
                 this.sellState = SellState.BZ_VERIFY;

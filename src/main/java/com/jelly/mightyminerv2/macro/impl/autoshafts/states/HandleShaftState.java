@@ -63,7 +63,7 @@ public class HandleShaftState implements AutoShaftState {
     @Override
     public void onStart(ShaftMacro macro) {
         log("Handling shaft state");
-        timer.schedule(15_000);
+        timer.schedule(10_000);
         handleShaftState = HandleShaftStateState.DETECTING_SHAFT;
         pathing = false;
         overLadder = false;
@@ -170,6 +170,7 @@ public class HandleShaftState implements AutoShaftState {
             case OPENING_VANGUARD:
                 if (timer.isScheduled() && !timer.passed()) break;
                 KeyBindUtil.releaseAllExcept();
+                Minecraft.getMinecraft().thePlayer.sendChatMessage("/p warp");
                 log("Opening Vanguard");
                 KeyBindUtil.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindUseItem, true);
                 swapState(HandleShaftStateState.REACTING_TO_VANGUARD, 200);

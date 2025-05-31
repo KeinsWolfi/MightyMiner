@@ -11,6 +11,7 @@ import com.jelly.mightyminerv2.util.Logger;
 import com.jelly.mightyminerv2.util.ScoreboardUtil;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
@@ -108,7 +109,7 @@ public class ShaftMacro extends AbstractMacro {
         transitionTo(nextState);
     }
 
-    private void transitionTo(AutoShaftState nextState){
+    private void transitionTo(AutoShaftState nextState) {
         // Skip if no state change
         if (currentState == nextState)
             return;
@@ -171,5 +172,15 @@ public class ShaftMacro extends AbstractMacro {
         if (currentState instanceof HandleShaftState) {
             currentState.onMotionUpdate(this);
         }
+    }
+
+    @Override
+    public void onWorldUnload(WorldEvent.Unload event) {
+        if (!this.isEnabled()) return;
+
+        if (currentState instanceof HandleShaftState || currentState instanceof WarpingState) {
+            return;
+        }
+        transitionTo(new HandleShaftState());
     }
 }

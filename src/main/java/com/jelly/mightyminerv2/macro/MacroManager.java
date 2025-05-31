@@ -1,5 +1,6 @@
 package com.jelly.mightyminerv2.macro;
 
+import cc.polyfrost.oneconfig.events.event.WorldLoadEvent;
 import com.jelly.mightyminerv2.config.MightyMinerConfig;
 import com.jelly.mightyminerv2.event.MotionUpdateEvent;
 import com.jelly.mightyminerv2.event.PacketEvent;
@@ -16,6 +17,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -190,6 +192,26 @@ public class MacroManager {
         }
 
         this.currentMacro.onMotionUpdate(event);
+    }
+
+    @SubscribeEvent
+    public void onWorldLoad(WorldEvent.Load event) {
+        if (mc.theWorld == null || mc.thePlayer == null) return;
+        if (this.currentMacro == null) {
+            return;
+        }
+
+        this.currentMacro.onWorldLoad(event);
+    }
+
+    @SubscribeEvent
+    public void onWorldUnload(WorldEvent.Unload event) {
+        if (mc.theWorld == null || mc.thePlayer == null) return;
+        if (this.currentMacro == null) {
+            return;
+        }
+
+        this.currentMacro.onWorldUnload(event);
     }
 
     public void log(String message) {
