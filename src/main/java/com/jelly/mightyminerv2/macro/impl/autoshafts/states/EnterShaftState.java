@@ -76,6 +76,8 @@ public class EnterShaftState implements AutoShaftState {
                 .contains("glacite mineshaft")) {
 
             KeyBindUtil.releaseAllExcept();                 // stop every key
+            Pathfinder.getInstance().stop();
+            RotationHandler.getInstance().stop();
             log("Detected Glacite Mineshaft inventory → switching to CLICKING_SHAFT_INV");
             swapState(EnteringShaftState.CLICKING_SHAFT_INV, 900);  // small delay
             return this;                                    // nothing else this tick
