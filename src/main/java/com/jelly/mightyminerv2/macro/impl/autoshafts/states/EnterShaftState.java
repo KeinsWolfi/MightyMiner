@@ -55,6 +55,8 @@ public class EnterShaftState implements AutoShaftState {
         retryCount = 0;
         rotating = false;
         log("Entering shaft state");
+        timer.reset();
+        timeoutTimer.reset();
     }
 
     @Override
@@ -116,14 +118,16 @@ public class EnterShaftState implements AutoShaftState {
                 break;
             case WALK_FORWARD:
                 if (timer.isScheduled() && timer.passed() && !rotating) {
-                    RotationHandler.getInstance().easeTo(new RotationConfiguration(new Target(closestMineshaft), MightyMinerConfig.getRandomRotationTime(), null));
+                    RotationHandler.getInstance().easeTo(new RotationConfiguration(new Target(closestMineshaft), MightyMinerConfig.getRandomRotationTime(), null).followTarget(true));
                     InventoryUtil.holdItem(MightyMinerConfig.altMiningTool);
                     rotating = true;
                 }
 
-                if (!RotationHandler.getInstance().isEnabled() && rotating) {
+                if (RotationHandler.getInstance().isEnabled() && rotating && RotationHandler.getInstance().isFollowingTarget()) {
                     KeyBindUtil.setKeyBindState(mc.gameSettings.keyBindForward, true);
-                    swapState(EnteringShaftState.TIMEOUT, 3000);
+                    KeyBindUtil.setKeyBindState(mc.gameSettings.keyBindSneak, true);
+                    KeyBindUtil.setKeyBindState(mc.gameSettings.keyBindJump, true);
+                    swapState(EnteringShaftState.TIMEOUT, 5000);
                     rotating = false;
                 }
                 break;
@@ -131,10 +135,6 @@ public class EnterShaftState implements AutoShaftState {
                 if (timer.isScheduled() && timer.passed()) {
                     log("Timeout reached while walking forward");
                     return new StartingState();
-                }
-
-                if(mc.thePlayer.isCollidedHorizontally && mc.thePlayer.onGround) {
-                    mc.thePlayer.jump();
                 }
 
                 if (PlayerUtil.getNextTickPosition().squareDistanceTo(this.closestMineshaft.getPositionVector()) < 6) {
@@ -185,7 +185,9 @@ public class EnterShaftState implements AutoShaftState {
                 if (timer.isScheduled() && timer.passed()) {
                     log("Entering shaft at: " + closestMineshaft.getPositionVector());
                     KeyBindUtil.setKeyBindState(mc.gameSettings.keyBindUseItem, true);
-                    timeoutTimer.schedule(5_000);
+                    if (!timeoutTimer.isScheduled()) {
+                        timeoutTimer.schedule(5_000);
+                    }
                 }
 
                 if (timeoutTimer.isScheduled() && timeoutTimer.passed()) {

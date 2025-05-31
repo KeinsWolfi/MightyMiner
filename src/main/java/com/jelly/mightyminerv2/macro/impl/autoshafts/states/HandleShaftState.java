@@ -56,6 +56,7 @@ public class HandleShaftState implements AutoShaftState {
     private boolean pathing = false;
 
     private boolean overLadder = false;
+    private boolean overAir = false;
 
     private boolean vanguardFound = false;
 
@@ -67,6 +68,7 @@ public class HandleShaftState implements AutoShaftState {
         pathing = false;
         overLadder = false;
         vanguardFound = false;
+        overAir = false;
     }
 
     @Override
@@ -97,12 +99,12 @@ public class HandleShaftState implements AutoShaftState {
                 }
                 break;
             case PATHING_TO_VANGUARD2:
-                if (overLadder) {
+                if (overAir) {
                     KeyBindUtil.releaseAllExcept();
                     KeyBindUtil.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindBack, true);
                 }
 
-                if (timer.isScheduled() && !timer.passed()) break;
+                if (timer.isScheduled() && !timer.passed() && !overAir) break;
                 KeyBindUtil.releaseAllExcept();
 
                 swapState(HandleShaftStateState.PATHING_TO_VANGUARD3, 1500);
@@ -196,6 +198,7 @@ public class HandleShaftState implements AutoShaftState {
         pathing = false;
         routeNavigator.stop();
         RotationHandler.getInstance().stop();
+        KeyBindUtil.releaseAllExcept();
     }
 
     private void swapState(HandleShaftStateState newState, int delay) {
@@ -207,9 +210,21 @@ public class HandleShaftState implements AutoShaftState {
     @Override
     public void onMotionUpdate(ShaftMacro macro) {
         if (handleShaftState == HandleShaftStateState.PATHING_TO_VANGUARD2) {
-            Block below = Minecraft.getMinecraft().theWorld.getBlockState(PlayerUtil.getBlockStandingOn()).getBlock();
-            if (/*below == Blocks.ladder ||*/ below == Blocks.air) {
+            Block below = Minecraft.getMinecraft().theWorld.getBlockState(PlayerUtil.getBlockStandingOnFloor()).getBlock();
+            if (below == Blocks.ladder) { //|| below == Blocks.air) {
                 overLadder = true;
+            }
+        }
+        if (handleShaftState == HandleShaftStateState.PATHING_TO_VANGUARD2) {
+            Block below = Minecraft.getMinecraft().theWorld.getBlockState(PlayerUtil.getBlockStandingOnFloor()).getBlock();
+            if (below == Blocks.air && overLadder) {
+                overAir = true;
+            }
+        }
+        if (vanguard != null) {
+            if (Minecraft.getMinecraft().thePlayer.getDistanceSqToEntity(vanguard) < 100) {
+                overLadder = true;
+                overAir = true;
             }
         }
     }

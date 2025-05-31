@@ -28,6 +28,7 @@ public class PathingToVeinState implements AutoShaftState {
 
     RouteWaypoint vein1 = new RouteWaypoint(57, 141, 268, TransportMethod.WALK);
     RouteWaypoint vein2 = new RouteWaypoint(104, 124, 333, TransportMethod.WALK);
+    RouteWaypoint vein3 = new RouteWaypoint(42, 119, 413, TransportMethod.WALK);
 
     private boolean failed = false;
 
@@ -36,6 +37,7 @@ public class PathingToVeinState implements AutoShaftState {
         log("Entering pathing to vein state");
         VEINS.add(vein1);
         VEINS.add(vein2);
+        VEINS.add(vein3);
 
         List<RouteWaypoint> nodes = GraphHandler.instance.findPathFrom(GRAPH_NAME, PlayerUtil.getBlockStandingOn(), VEINS.get(MightyMinerConfig.veinIndex));
 

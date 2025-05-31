@@ -144,6 +144,12 @@
         "y": 116,
         "z": 413,
         "transportMethod": "WALK"
+      },
+      {
+        "x": 54,
+        "y": 117,
+        "z": 398,
+        "transportMethod": "WALK"
       }
     ],
     "-17,118,451,WALK": [
@@ -1042,8 +1048,8 @@
     ],
     "10,124,344,WALK": [
       {
-        "x": 9,
-        "y": 125,
+        "x": 11,
+        "y": 124,
         "z": 339,
         "transportMethod": "WALK"
       },
@@ -2606,10 +2612,10 @@
         "transportMethod": "ETHERWARP"
       },
       {
-        "x": 38,
+        "x": 41,
         "y": 120,
-        "z": 364,
-        "transportMethod": "ETHERWARP"
+        "z": 365,
+        "transportMethod": "WALK"
       }
     ],
     "-71,146,309,WALK": [
@@ -4908,9 +4914,9 @@
     ],
     "46,118,393,WALK": [
       {
-        "x": 45,
+        "x": 47,
         "y": 118,
-        "z": 390,
+        "z": 387,
         "transportMethod": "WALK"
       },
       {
@@ -4971,12 +4977,6 @@
         "x": 46,
         "y": 118,
         "z": 393,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 49,
-        "y": 118,
-        "z": 394,
         "transportMethod": "WALK"
       },
       {
@@ -5281,6 +5281,26 @@
         "x": -25,
         "y": 117,
         "z": 465,
+        "transportMethod": "WALK"
+      }
+    ],
+    "59,116,311,WALK": [
+      {
+        "x": 55,
+        "y": 116,
+        "z": 293,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 55,
+        "y": 117,
+        "z": 312,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 66,
+        "y": 116,
+        "z": 303,
         "transportMethod": "WALK"
       }
     ],
@@ -6768,8 +6788,8 @@
     ],
     "0,126,341,WALK": [
       {
-        "x": 9,
-        "y": 125,
+        "x": 11,
+        "y": 124,
         "z": 339,
         "transportMethod": "WALK"
       },
@@ -7052,12 +7072,6 @@
         "y": 121,
         "z": 360,
         "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
       }
     ],
     "-23,129,358,ETHERWARP": [
@@ -7084,158 +7098,6 @@
         "y": 129,
         "z": 358,
         "transportMethod": "ETHERWARP"
-      }
-    ],
-    "46,119,378,WALK": [
-      {
-        "x": 44,
-        "y": 119,
-        "z": 373,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 39,
-        "y": 119,
-        "z": 385,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 40,
-        "y": 120,
-        "z": 373,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 372,
-        "transportMethod": "WALK"
       }
     ],
     "-79,130,336,WALK": [
@@ -8085,74 +7947,6 @@
         "x": 11,
         "y": 124,
         "z": 343,
-        "transportMethod": "WALK"
-      }
-    ],
-    "52,114,284,WALK": [
-      {
-        "x": 55,
-        "y": 116,
-        "z": 293,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 53,
-        "y": 114,
-        "z": 278,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 52,
-        "y": 114,
-        "z": 284,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 52,
-        "y": 114,
-        "z": 284,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 52,
-        "y": 114,
-        "z": 284,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 52,
-        "y": 114,
-        "z": 284,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 52,
-        "y": 114,
-        "z": 284,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 52,
-        "y": 114,
-        "z": 284,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 50,
-        "y": 115,
-        "z": 286,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 51,
-        "y": 114,
-        "z": 278,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 50,
-        "y": 114,
-        "z": 280,
         "transportMethod": "WALK"
       }
     ],
@@ -9156,8 +8950,8 @@
         "transportMethod": "WALK"
       },
       {
-        "x": 9,
-        "y": 125,
+        "x": 11,
+        "y": 124,
         "z": 339,
         "transportMethod": "WALK"
       },
@@ -13500,56 +13294,6 @@
         "transportMethod": "WALK"
       }
     ],
-    "49,118,394,WALK": [
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 49,
-        "y": 118,
-        "z": 394,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 49,
-        "y": 118,
-        "z": 394,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 49,
-        "y": 118,
-        "z": 394,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 49,
-        "y": 118,
-        "z": 394,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 54,
-        "y": 117,
-        "z": 398,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 118,
-        "z": 393,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 50,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      }
-    ],
     "79,118,412,WALK": [
       {
         "x": 76,
@@ -15530,9 +15274,9 @@
         "transportMethod": "WALK"
       },
       {
-        "x": 45,
+        "x": 47,
         "y": 118,
-        "z": 390,
+        "z": 387,
         "transportMethod": "WALK"
       },
       {
@@ -15545,12 +15289,6 @@
         "x": 40,
         "y": 119,
         "z": 377,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
         "transportMethod": "WALK"
       },
       {
@@ -17286,8 +17024,8 @@
         "transportMethod": "WALK"
       },
       {
-        "x": 9,
-        "y": 125,
+        "x": 11,
+        "y": 124,
         "z": 339,
         "transportMethod": "WALK"
       },
@@ -19057,7 +18795,7 @@
     ],
     "55,116,293,WALK": [
       {
-        "x": 52,
+        "x": 53,
         "y": 114,
         "z": 284,
         "transportMethod": "WALK"
@@ -19093,9 +18831,9 @@
         "transportMethod": "WALK"
       },
       {
-        "x": 58,
+        "x": 59,
         "y": 116,
-        "z": 309,
+        "z": 311,
         "transportMethod": "WALK"
       }
     ],
@@ -21775,9 +21513,9 @@
     ],
     "55,117,312,WALK": [
       {
-        "x": 58,
+        "x": 59,
         "y": 116,
-        "z": 309,
+        "z": 311,
         "transportMethod": "WALK"
       },
       {
@@ -23497,9 +23235,9 @@
     ],
     "42,120,365,WALK": [
       {
-        "x": 38,
+        "x": 41,
         "y": 120,
-        "z": 364,
+        "z": 365,
         "transportMethod": "WALK"
       },
       {
@@ -27007,38 +26745,6 @@
         "transportMethod": "ETHERWARP"
       }
     ],
-    "9,125,339,WALK": [
-      {
-        "x": 16,
-        "y": 124,
-        "z": 334,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 10,
-        "y": 124,
-        "z": 344,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 0,
-        "y": 126,
-        "z": 341,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 2,
-        "y": 126,
-        "z": 339,
-        "transportMethod": "ETHERWARP"
-      },
-      {
-        "x": 13,
-        "y": 124,
-        "z": 338,
-        "transportMethod": "WALK"
-      }
-    ],
     "-17,131,383,WALK": [
       {
         "x": -21,
@@ -28067,26 +27773,6 @@
         "transportMethod": "WALK"
       }
     ],
-    "58,116,309,WALK": [
-      {
-        "x": 55,
-        "y": 116,
-        "z": 293,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 55,
-        "y": 117,
-        "z": 312,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 66,
-        "y": 116,
-        "z": 303,
-        "transportMethod": "WALK"
-      }
-    ],
     "57,141,268,WALK": [],
     "-62,124,348,ETHERWARP": [
       {
@@ -28813,182 +28499,6 @@
         "x": 6,
         "y": 126,
         "z": 316,
-        "transportMethod": "WALK"
-      }
-    ],
-    "45,118,390,WALK": [
-      {
-        "x": 39,
-        "y": 119,
-        "z": 385,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 45,
-        "y": 118,
-        "z": 390,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 43,
-        "y": 119,
-        "z": 383,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 49,
-        "y": 118,
-        "z": 394,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 118,
-        "z": 393,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
         "transportMethod": "WALK"
       }
     ],
@@ -32162,7 +31672,7 @@
         "transportMethod": "WALK"
       },
       {
-        "x": 52,
+        "x": 53,
         "y": 114,
         "z": 284,
         "transportMethod": "WALK"
@@ -38142,10 +37652,10 @@
         "transportMethod": "ETHERWARP"
       },
       {
-        "x": 9,
-        "y": 125,
+        "x": 11,
+        "y": 124,
         "z": 339,
-        "transportMethod": "ETHERWARP"
+        "transportMethod": "WALK"
       },
       {
         "x": 2,
@@ -40593,32 +40103,6 @@
         "x": -70,
         "y": 118,
         "z": 258,
-        "transportMethod": "ETHERWARP"
-      }
-    ],
-    "38,120,364,WALK": [
-      {
-        "x": 34,
-        "y": 121,
-        "z": 359,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 44,
-        "y": 119,
-        "z": 373,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 35,
-        "y": 134,
-        "z": 360,
-        "transportMethod": "ETHERWARP"
-      },
-      {
-        "x": 33,
-        "y": 121,
-        "z": 361,
         "transportMethod": "ETHERWARP"
       }
     ],
@@ -48304,6 +47788,32 @@
         "transportMethod": "ETHERWARP"
       }
     ],
+    "41,120,365,WALK": [
+      {
+        "x": 34,
+        "y": 121,
+        "z": 359,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 44,
+        "y": 119,
+        "z": 373,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 35,
+        "y": 134,
+        "z": 360,
+        "transportMethod": "ETHERWARP"
+      },
+      {
+        "x": 33,
+        "y": 121,
+        "z": 361,
+        "transportMethod": "ETHERWARP"
+      }
+    ],
     "-19,118,450,WALK": [
       {
         "x": -23,
@@ -48404,9 +47914,9 @@
         "transportMethod": "WALK"
       },
       {
-        "x": 53,
+        "x": 50,
         "y": 114,
-        "z": 278,
+        "z": 277,
         "transportMethod": "WALK"
       },
       {
@@ -49802,12 +49312,6 @@
     ],
     "54,117,398,WALK": [
       {
-        "x": 49,
-        "y": 118,
-        "z": 394,
-        "transportMethod": "WALK"
-      },
-      {
         "x": 54,
         "y": 117,
         "z": 398,
@@ -49889,6 +49393,18 @@
         "x": 59,
         "y": 117,
         "z": 400,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 56,
+        "y": 116,
+        "z": 408,
         "transportMethod": "WALK"
       }
     ],
@@ -53760,15 +53276,15 @@
         "transportMethod": "WALK"
       },
       {
-        "x": 38,
+        "x": 41,
         "y": 120,
-        "z": 364,
+        "z": 365,
         "transportMethod": "WALK"
       },
       {
-        "x": 46,
-        "y": 119,
-        "z": 378,
+        "x": 47,
+        "y": 118,
+        "z": 387,
         "transportMethod": "WALK"
       }
     ],
@@ -54250,6 +53766,44 @@
         "transportMethod": "WALK"
       }
     ],
+    "50,114,277,WALK": [
+      {
+        "x": 57,
+        "y": 115,
+        "z": 273,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 53,
+        "y": 114,
+        "z": 284,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 53,
+        "y": 114,
+        "z": 271,
+        "transportMethod": "ETHERWARP"
+      },
+      {
+        "x": 50,
+        "y": 114,
+        "z": 277,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 50,
+        "y": 114,
+        "z": 277,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 43,
+        "y": 114,
+        "z": 274,
+        "transportMethod": "WALK"
+      }
+    ],
     "-29,121,438,ETHERWARP": [
       {
         "x": -32,
@@ -54290,7 +53844,7 @@
     ],
     "50,114,280,WALK": [
       {
-        "x": 52,
+        "x": 53,
         "y": 114,
         "z": 284,
         "transportMethod": "WALK"
@@ -55438,6 +54992,38 @@
         "transportMethod": "WALK"
       }
     ],
+    "11,124,339,WALK": [
+      {
+        "x": 16,
+        "y": 124,
+        "z": 334,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 10,
+        "y": 124,
+        "z": 344,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 0,
+        "y": 126,
+        "z": 341,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 2,
+        "y": 126,
+        "z": 339,
+        "transportMethod": "ETHERWARP"
+      },
+      {
+        "x": 13,
+        "y": 124,
+        "z": 338,
+        "transportMethod": "WALK"
+      }
+    ],
     "-36,121,284,WALK": [
       {
         "x": -40,
@@ -55600,7 +55186,7 @@
     ],
     "50,115,286,WALK": [
       {
-        "x": 52,
+        "x": 53,
         "y": 114,
         "z": 284,
         "transportMethod": "WALK"
@@ -56496,9 +56082,9 @@
         "transportMethod": "WALK"
       },
       {
-        "x": 38,
+        "x": 41,
         "y": 120,
-        "z": 364,
+        "z": 365,
         "transportMethod": "WALK"
       },
       {
@@ -58843,6 +58429,182 @@
         "x": 50,
         "y": 116,
         "z": 302,
+        "transportMethod": "WALK"
+      }
+    ],
+    "47,118,387,WALK": [
+      {
+        "x": 39,
+        "y": 119,
+        "z": 385,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 47,
+        "y": 118,
+        "z": 387,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 43,
+        "y": 119,
+        "z": 383,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 46,
+        "y": 118,
+        "z": 393,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 44,
+        "y": 119,
+        "z": 373,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 54,
+        "y": 117,
+        "z": 398,
         "transportMethod": "WALK"
       }
     ],
@@ -61570,10 +61332,10 @@
         "transportMethod": "ETHERWARP"
       },
       {
-        "x": 53,
+        "x": 50,
         "y": 114,
-        "z": 278,
-        "transportMethod": "ETHERWARP"
+        "z": 277,
+        "transportMethod": "WALK"
       },
       {
         "x": 63,
@@ -61760,44 +61522,6 @@
         "transportMethod": "WALK"
       }
     ],
-    "53,114,278,WALK": [
-      {
-        "x": 57,
-        "y": 115,
-        "z": 273,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 52,
-        "y": 114,
-        "z": 284,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 53,
-        "y": 114,
-        "z": 271,
-        "transportMethod": "ETHERWARP"
-      },
-      {
-        "x": 53,
-        "y": 114,
-        "z": 278,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 53,
-        "y": 114,
-        "z": 278,
-        "transportMethod": "WALK"
-      },
-      {
-        "x": 43,
-        "y": 114,
-        "z": 274,
-        "transportMethod": "WALK"
-      }
-    ],
     "43,114,274,WALK": [
       {
         "x": 40,
@@ -61866,9 +61590,9 @@
         "transportMethod": "WALK"
       },
       {
-        "x": 53,
+        "x": 50,
         "y": 114,
-        "z": 278,
+        "z": 277,
         "transportMethod": "WALK"
       }
     ],
@@ -62372,6 +62096,74 @@
         "y": 121,
         "z": 455,
         "transportMethod": "ETHERWARP"
+      }
+    ],
+    "53,114,284,WALK": [
+      {
+        "x": 55,
+        "y": 116,
+        "z": 293,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 50,
+        "y": 114,
+        "z": 277,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 53,
+        "y": 114,
+        "z": 284,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 53,
+        "y": 114,
+        "z": 284,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 53,
+        "y": 114,
+        "z": 284,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 53,
+        "y": 114,
+        "z": 284,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 53,
+        "y": 114,
+        "z": 284,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 53,
+        "y": 114,
+        "z": 284,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 50,
+        "y": 115,
+        "z": 286,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 51,
+        "y": 114,
+        "z": 278,
+        "transportMethod": "WALK"
+      },
+      {
+        "x": 50,
+        "y": 114,
+        "z": 280,
+        "transportMethod": "WALK"
       }
     ],
     "20,151,333,WALK": [
@@ -63962,9 +63754,9 @@
         "transportMethod": "WALK"
       },
       {
-        "x": 38,
+        "x": 41,
         "y": 120,
-        "z": 364,
+        "z": 365,
         "transportMethod": "WALK"
       }
     ],
@@ -68093,12 +67885,6 @@
       }
     ],
     "50,118,390,WALK": [
-      {
-        "x": 49,
-        "y": 118,
-        "z": 394,
-        "transportMethod": "WALK"
-      },
       {
         "x": 50,
         "y": 118,
@@ -72736,12 +72522,6 @@
         "y": 120,
         "z": 373,
         "transportMethod": "WALK"
-      },
-      {
-        "x": 46,
-        "y": 119,
-        "z": 378,
-        "transportMethod": "WALK"
       }
     ],
     "76,149,323,WALK": [
@@ -76450,9 +76230,9 @@
     ],
     "66,116,303,WALK": [
       {
-        "x": 58,
+        "x": 59,
         "y": 116,
-        "z": 309,
+        "z": 311,
         "transportMethod": "WALK"
       },
       {
@@ -79590,9 +79370,9 @@
         "transportMethod": "WALK"
       },
       {
-        "x": 45,
+        "x": 47,
         "y": 118,
-        "z": 390,
+        "z": 387,
         "transportMethod": "WALK"
       },
       {
