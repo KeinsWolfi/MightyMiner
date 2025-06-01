@@ -7,10 +7,7 @@ import com.jelly.mightyminerv2.handler.GameStateHandler;
 import com.jelly.mightyminerv2.handler.GraphHandler;
 import com.jelly.mightyminerv2.handler.RotationHandler;
 import com.jelly.mightyminerv2.macro.impl.autoshafts.ShaftMacro;
-import com.jelly.mightyminerv2.util.EntityUtil;
-import com.jelly.mightyminerv2.util.KeyBindUtil;
-import com.jelly.mightyminerv2.util.Logger;
-import com.jelly.mightyminerv2.util.PlayerUtil;
+import com.jelly.mightyminerv2.util.*;
 import com.jelly.mightyminerv2.util.helper.Clock;
 import com.jelly.mightyminerv2.util.helper.RotationConfiguration;
 import com.jelly.mightyminerv2.util.helper.Target;
@@ -26,6 +23,7 @@ import net.minecraft.init.Blocks;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 public class HandleShaftState implements AutoShaftState {
     private final Clock timer = new Clock();
@@ -42,7 +40,8 @@ public class HandleShaftState implements AutoShaftState {
         CONFIRM_ROTATION,
         OPENING_VANGUARD,
         REACTING_TO_VANGUARD,
-        RETURNING_TO_BASE
+        RETURNING_TO_BASE,
+        PATHING_TO_VANGUARD_AFTER_FAIL
     }
 
     private final RouteNavigator routeNavigator = RouteNavigator.getInstance();
@@ -60,6 +59,10 @@ public class HandleShaftState implements AutoShaftState {
 
     private boolean vanguardFound = false;
 
+    private int vangRetry = 0;
+
+    private Random random = new Random();
+
     @Override
     public void onStart(ShaftMacro macro) {
         log("Handling shaft state");
@@ -69,34 +72,38 @@ public class HandleShaftState implements AutoShaftState {
         overLadder = false;
         vanguardFound = false;
         overAir = false;
+        vangRetry = 0;
     }
 
     @Override
     public AutoShaftState onTick(ShaftMacro macro) {
+        if (InventoryUtil.getInventoryName() != null) {
+            InventoryUtil.closeScreen();
+        }
         switch (handleShaftState) {
             case DETECTING_SHAFT:
                 if (timer.isScheduled() && timer.passed() && GameStateHandler.getInstance().getCurrentMineshaftType() == null) {
                     log("No mineshaft detected, disabling macro");
-                    macro.disable("No mineshaft detected. Please ensure you are in a mineshaft.");
+                    return new StartingState();
                 }
 
                 if (GameStateHandler.getInstance().getCurrentMineshaftType() != null) {
                     Logger.sendLog("Detected mineshaft type: " + GameStateHandler.getInstance().getCurrentMineshaftType());
                     macro.setWasInShaft(true);
-                    swapState(HandleShaftStateState.PATHING_TO_VANGUARD, 2000);
+                    if (GameStateHandler.getInstance().getCurrentMineshaftType() == GameStateHandler.MineshaftTypes.FAIR) {
+                        swapState(HandleShaftStateState.PATHING_TO_VANGUARD, 3000 + random.nextInt(5000));
+                    } else {
+                        Logger.sendMessage("Not a Vanguard mineshaft, returning to base");
+                        swapState(HandleShaftStateState.RETURNING_TO_BASE, 3000 + random.nextInt(1000));
+                    }
                 }
                 break;
             case PATHING_TO_VANGUARD:
                 if (timer.isScheduled() && !timer.passed()) break;
                 log("Pathing to Vanguard");
-                if (GameStateHandler.getInstance().getCurrentMineshaftType() == GameStateHandler.MineshaftTypes.FAIR) {
-                    KeyBindUtil.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindForward, true);
-                    swapState(HandleShaftStateState.PATHING_TO_VANGUARD2, 400);
-                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc !ptme");
-                } else {
-                    Logger.sendMessage("Not a Vanguard mineshaft, returning to base");
-                    swapState(HandleShaftStateState.RETURNING_TO_BASE, 2000);
-                }
+                KeyBindUtil.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindForward, true);
+                swapState(HandleShaftStateState.PATHING_TO_VANGUARD2, 400);
+                Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc !ptme");
                 break;
             case PATHING_TO_VANGUARD2:
                 if (overAir) {
@@ -138,6 +145,16 @@ public class HandleShaftState implements AutoShaftState {
                     Pathfinder.getInstance().stop();
                     swapState(HandleShaftStateState.ROTATING_TO_VANGUARD, 400);
                 }
+
+                switch (routeNavigator.getNavError()) {
+                    case PATHFIND_FAILED:
+                    case TIME_FAIL:
+                        logError("Pathfinding failed, trying to rotate to vang and opening anyways.");
+                        routeNavigator.stop();
+                        Pathfinder.getInstance().stop();
+                        swapState(HandleShaftStateState.ROTATING_TO_VANGUARD, 400);
+                        break;
+                }
                 break;
             case ROTATING_TO_VANGUARD:
                 if (timer.isScheduled() && !timer.passed()) break;
@@ -159,10 +176,22 @@ public class HandleShaftState implements AutoShaftState {
 
                 if(!Objects.equals(Minecraft.getMinecraft().objectMouseOver.entityHit, vanguard)) {
                     log("Failed to rotate to Vanguard, retrying...");
+                    if (++vangRetry >= 3) {
+                        log("failed to rotate completely, restarting pathfinder to vang entity");
+                        Pathfinder.getInstance().stopAndRequeue(EntityUtil.getBlockBelow(vanguard));
+                        if (!Pathfinder.getInstance().isRunning()) {
+                            log("pathfinder not enabled, starting");
+                            Pathfinder.getInstance().setInterpolationState(true);
+                            Pathfinder.getInstance().start();
+                        }
+                    }
                     swapState(HandleShaftStateState.ROTATING_TO_VANGUARD, 0);
                 }
 
-                KeyBindUtil.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindForward, true);
+                if (!Objects.equals(Minecraft.getMinecraft().thePlayer.rayTrace(2, 0).entityHit, vanguard)) {
+                    KeyBindUtil.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindForward, true);
+                }
+
                 log("Rotation confirmed, opening Vanguard");
                 swapState(HandleShaftStateState.OPENING_VANGUARD, MightyMinerConfig.vanguardWalkForwardTime);
                 RotationHandler.getInstance().stop();
@@ -189,6 +218,22 @@ public class HandleShaftState implements AutoShaftState {
                 log("Returning to base");
                 // Logic to return to base
                 return new WarpingState();
+            case PATHING_TO_VANGUARD_AFTER_FAIL:
+                if (Pathfinder.getInstance().isRunning())
+                    break;
+
+                if (Pathfinder.getInstance().succeeded()) {
+                    swapState(HandleShaftStateState.ROTATING_TO_VANGUARD, 0);
+                    log("Succeded pathfinding");
+                    vangRetry = 0;
+                    break;
+                }
+
+                if (Pathfinder.getInstance().failed()) {
+                    log("failed, returning to base");
+                    swapState(HandleShaftStateState.RETURNING_TO_BASE, 5000);
+                    break;
+                }
         }
         return this;
     }

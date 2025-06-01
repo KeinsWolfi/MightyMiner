@@ -9,6 +9,7 @@ import com.jelly.mightyminerv2.macro.AbstractMacro;
 import com.jelly.mightyminerv2.macro.impl.autoshafts.states.*;
 import com.jelly.mightyminerv2.util.Logger;
 import com.jelly.mightyminerv2.util.ScoreboardUtil;
+import com.jelly.mightyminerv2.util.helper.location.SubLocation;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraftforge.event.world.WorldEvent;
@@ -136,7 +137,7 @@ public class ShaftMacro extends AbstractMacro {
 
         if (message.startsWith("Evacuating ")) {
             Logger.sendLog("Detected evacuation message in chat, transitioning to StartingState.");
-            transitionTo(new StartingState());
+            transitionTo(new WarpingState());
         }
 
         if (currentState instanceof HandleShaftState) {
@@ -154,11 +155,10 @@ public class ShaftMacro extends AbstractMacro {
                 log("In Handleshaftstate, but was not in a mineshaft (warped into another one?) - transitioning to HandleShaftState.");
                 transitionTo(new HandleShaftState());
             }
-        } else if (currentState instanceof HandleShaftState && !wasInShaft) {
+        } else if (currentState instanceof HandleShaftState && !wasInShaft && GameStateHandler.getInstance().getCurrentSubLocation() == SubLocation.GLACITE_MINESHAFT) {
             log("No mineshaft detected, transitioning to StartingState.");
             transitionTo(new HandleShaftState());
         }
-
 
         if (ScoreboardUtil.cold >= MightyMinerConfig.coldEvacuate) {
             transitionTo(new WarpingState());
